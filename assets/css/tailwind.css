@@ -1399,11 +1399,11 @@ body {
 
 .bg-primary{
   --tw-bg-opacity: 1;
-  background-color: rgb	(9	230	123 / var(--tw-bg-opacity));
+  background-color: rgb(45, 87, 134);
 }
 
 .bg-primary\/5{
-  background-color: rgba(184, 185, 188, 0.801);
+  background-color: rgba(5, 197, 104, 1);
 }
 
 .bg-primary\/\[0\.08\]{
@@ -1859,7 +1859,7 @@ body {
 
 .text-white{
   --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: rgb(255 255 255/ var(--tw-text-opacity));
 }
 
 .text-white\/60{
@@ -2918,7 +2918,7 @@ body {
 
   .lg\:text-white{
     --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity));
+    color: rgb(255 255	255)
   }
 
   .lg\:opacity-0{
