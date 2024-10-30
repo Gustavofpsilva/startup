@@ -39,9 +39,63 @@
 </head>
 
 <body>
-  <!-- ====== Navbar Section Start -->
-  <!-- Seu código da navbar permanece o mesmo -->
-  <!-- ====== Navbar Section End -->
+ <!-- ====== Navbar Section Start -->
+ <div class="ud-header absolute left-0 top-0 z-40 flex w-full items-center bg-transparent">
+  <div class="container">
+    <div class="relative -mx-4 flex items-center justify-between">
+      <div class="w-60 max-w-full px-4">
+        <a href="index.html" class="navbar-logo block w-full py-5">
+          <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="header-logo w-full" />
+        </a>
+      </div>
+      <div class="flex w-full items-center justify-center px-4">
+        <div class="flex-grow">
+          <nav id="navbarCollapse" class="absolute right-4 top-full hidden w-full max-w-[250px] rounded-lg bg-white py-5 shadow-lg dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:px-4 lg:py-0 lg:shadow-none dark:lg:bg-transparent xl:px-6">
+            <ul class="flex justify-center">
+              <li class="group relative">
+                <a href="#home" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-dark group-hover:text-primary dark:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70">
+                  Home
+                </a>
+              </li>
+              <li class="group relative">
+                <a href="#features" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-dark group-hover:text-primary dark:text-white lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-10">
+                  Soluções
+                </a>
+              </li>
+              <li class="group relative">
+                <a href="#team" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-dark group-hover:text-primary dark:text-white lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-10">
+                  Time
+                </a>
+              </li>
+              <li class="group relative">
+                <a href="#blog" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-dark group-hover:text-primary dark:text-white lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-10">
+                  Blog
+                </a>
+              </li>
+              <li class="group relative">
+                <a href="#contact" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-dark group-hover:text-primary dark:text-white lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-10">
+                  Contato
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="flex items-center justify-end">
+          <label for="themeSwitcher" class="inline-flex cursor-pointer items-center" aria-label="themeSwitcher" name="themeSwitcher">
+            <input type="checkbox" name="themeSwitcher" id="themeSwitcher" class="sr-only" />
+          </label>
+          <div class="hidden sm:flex">
+            <a href="signin.html" class="loginBtn px-[22px] py-2 text-base font-medium text-white hover:opacity-70">Entrar</a>
+            <a href="signup.html" class="signUpBtn rounded-md bg-white bg-opacity-20 px-6 py-2 text-base font-medium text-white duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark">
+              Cadastrar-se
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== Navbar Section End -->
 
   <!-- ====== Forms Section Start -->
   <section class="bg-[#F4F7FF] py-14 lg:py-20 dark:bg-dark">
