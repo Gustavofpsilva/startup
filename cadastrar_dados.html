@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Dados - Dados Ambientais</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <!-- Substitui o texto pelo logo -->
+            <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" style="width: 100%; height: auto; margin-bottom: 20px;">
+            <nav>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="cadastrar_dados.html" class="active">Cadastrar Dados</a>
+                <a href="#">Análises</a>
+                <a href="#">Configurações</a>
+            </nav>
+        </aside>
+
+        <!-- Conteúdo principal -->
+        <main>
+            <!-- Cabeçalho -->
+            <header>
+                <input type="text" placeholder="Buscar...">
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="User">
+                </div>
+            </header>
+
+            <!-- Formulário de Cadastro de Dados Ambientais -->
+            <section class="dados-ambientais">
+                <h2>Cadastro de Dados Ambientais</h2>
+                <form id="dadosAmbientaisForm">
+                    <label for="localizacao">Localização:</label>
+                    <input type="text" id="localizacao" placeholder="Ex: Latitude, Longitude" required>
+                    
+                    <label for="temperatura">Temperatura (°C):</label>
+                    <input type="number" id="temperatura" placeholder="Temperatura" required>
+                    
+                    <label for="umidade">Umidade (%):</label>
+                    <input type="number" id="umidade" placeholder="Umidade" required>
+                    
+                    <label for="qualidade_ar">Qualidade do Ar:</label>
+                    <input type="text" id="qualidade_ar" placeholder="Qualidade do ar" required>
+                    
+                    <button type="submit">Enviar Dados</button>
+                </form>
+                <p id="status"></p>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@supabase/supabase-js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

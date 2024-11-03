@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Dados Ambientais</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" style="width: 100%; height: auto; margin-bottom: 20px;">
+            <nav>
+                <a href="dashboard.html" class="active">Dashboard</a>
+                <a href="cadastrar_dados.html">Cadastrar Dados</a>
+                <a href="#">Análises</a>
+                <a href="#">Configurações</a>
+            </nav>
+        </aside>
+
+        <!-- Conteúdo principal -->
+        <main>
+            <!-- Cabeçalho -->
+            <header>
+                <input type="text" placeholder="Buscar...">
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="User">
+                    <button id="logout-button">Logout</button>
+                </div>
+            </header>
+
+            <!-- Cartões de Estatísticas -->
+            <section class="stats-cards">
+                <div class="card">
+                    <h3>Temperatura</h3>
+                    <p><span id="temp-value">--</span> °C</p>
+                </div>
+                <div class="card">
+                    <h3>Umidade</h3>
+                    <p><span id="humidade-value">--</span> %</p>
+                </div>
+                <div class="card">
+                    <h3>Qualidade do Ar</h3>
+                    <p><span id="qualidade-ar-value">--</span></p>
+                </div>
+                <div class="card">
+                    <h3>Localização</h3>
+                    <p><span id="localizacao-value">--</span></p>
+                </div>
+            </section>
+
+            <!-- Tabela de Dados Ambientais -->
+            <section class="dados-tabela">
+                <h2>Dados Ambientais Registrados</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Localização</th>
+                            <th>Temperatura (°C)</th>
+                            <th>Umidade (%)</th>
+                            <th>Qualidade do Ar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dados-tabela-corpo">
+                        <!-- Dados serão carregados aqui -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@supabase/supabase-js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
