@@ -10,37 +10,35 @@
   <link rel="stylesheet" href="assets/css/animate.css" />
   <link rel="stylesheet" href="assets/css/tailwind.css" />
 
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Verifique se o Supabase foi carregado corretamente
+      if (typeof supabase === 'undefined') {
+        console.error("Erro: a biblioteca do Supabase não foi carregada.");
+        return;
+      }
+
+      // Configuração do Supabase
+      const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE"; // Substitua pelo valor completo da sua API Key
+
+      // Inicialização do cliente Supabase
+      window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      console.log('Supabase inicializado com sucesso.');
+    });
+  </script>
+
   <!-- ==== WOW JS ==== -->
   <script src="assets/js/wow.min.js"></script>
   <script>
     new WOW().init();
   </script>
-
-  <!-- Firebase App (necessário para todas as funcionalidades do Firebase) -->
-  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-  <!-- Firebase Authentication -->
-  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
-  <script>
-    // Configuração do Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyA1l1MSDo_lt_-Ni70sdRX-bwncuymKgg0",
-      authDomain: "startup-9d953.firebaseapp.com",
-      projectId: "startup-9d953",
-      storageBucket: "startup-9d953.appspot.com",
-      messagingSenderId: "312708791552",
-      appId: "1:312708791552:web:4d8dd5652f8e10c9e287e5",
-      measurementId: "G-EL8WP495S7"
-    };
-
-    // Inicializando o Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-  </script>
 </head>
 
 <body>
- <!-- ====== Navbar Section Start -->
- <div class="ud-header absolute left-0 top-0 z-40 flex w-full items-center bg-transparent">
+ <div class="ud-header left-0 top-0 z-40 flex w-full items-center bg-transparent lg:mb-32 mb-20">
   <div class="container">
     <div class="relative -mx-4 flex items-center justify-between">
       <div class="w-60 max-w-full px-4">
@@ -53,27 +51,27 @@
           <nav id="navbarCollapse" class="absolute right-4 top-full hidden w-full max-w-[250px] rounded-lg bg-white py-5 shadow-lg dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:px-4 lg:py-0 lg:shadow-none dark:lg:bg-transparent xl:px-6">
             <ul class="flex justify-center">
               <li class="group relative">
-                <a href="#home" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-dark group-hover:text-primary dark:text-white lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70">
+                <a href="#home" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-black group-hover:text-primary dark:text-black lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:group-hover:opacity-70">
                   Home
                 </a>
               </li>
               <li class="group relative">
-                <a href="#features" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-dark group-hover:text-primary dark:text-white lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-10">
+                <a href="#features" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-black group-hover:text-primary dark:text-black lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:group-hover:opacity-70 xl:ml-10">
                   Soluções
                 </a>
               </li>
               <li class="group relative">
-                <a href="#team" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-dark group-hover:text-primary dark:text-white lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-10">
+                <a href="#team" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-black group-hover:text-primary dark:text-black lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:group-hover:opacity-70 xl:ml-10">
                   Time
                 </a>
               </li>
               <li class="group relative">
-                <a href="#blog" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-dark group-hover:text-primary dark:text-white lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-10">
+                <a href="#blog" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-black group-hover:text-primary dark:text-black lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:group-hover:opacity-70 xl:ml-10">
                   Blog
                 </a>
               </li>
               <li class="group relative">
-                <a href="#contact" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-dark group-hover:text-primary dark:text-white lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-white lg:group-hover:text-white lg:group-hover:opacity-70 xl:ml-10">
+                <a href="#contact" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-black group-hover:text-primary dark:text-black lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:group-hover:opacity-70 xl:ml-10">
                   Contato
                 </a>
               </li>
@@ -85,8 +83,8 @@
             <input type="checkbox" name="themeSwitcher" id="themeSwitcher" class="sr-only" />
           </label>
           <div class="hidden sm:flex">
-            <a href="signin.html" class="loginBtn px-[22px] py-2 text-base font-medium text-white hover:opacity-70">Entrar</a>
-            <a href="signup.html" class="signUpBtn rounded-md bg-white bg-opacity-20 px-6 py-2 text-base font-medium text-white duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark">
+            <a href="signin.html" class="loginBtn px-[22px] py-2 text-base font-medium text-black hover:opacity-70">Entrar</a>
+            <a href="signup.html" class="signUpBtn rounded-md bg-white bg-opacity-20 px-6 py-2 text-base font-medium text-black duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark">
               Cadastrar-se
             </a>
           </div>
@@ -95,10 +93,9 @@
     </div>
   </div>
 </div>
-<!-- ====== Navbar Section End -->
 
   <!-- ====== Forms Section Start -->
-  <section class="bg-[#F4F7FF] py-14 lg:py-20 dark:bg-dark">
+  <section class="bg-[#F4F7FF] py-14 lg:py-20 dark:bg-dark lg:mt-20 mt-10">
     <div class="container">
       <div class="flex flex-wrap -mx-4">
         <div class="w-full px-4">
@@ -117,13 +114,13 @@
                   class="w-full px-5 py-3 text-base transition bg-transparent border rounded-md outline-none border-stroke dark:border-dark-3 text-body-color dark:text-dark-6 placeholder:text-dark-6 focus:border-primary dark:focus:border-primary focus-visible:shadow-none" />
               </div>
               <div class="mb-[22px]">
-                <input type="password" id="password" placeholder="Password"
+                <input type="password" id="password" placeholder="Senha"
                   class="w-full px-5 py-3 text-base transition bg-transparent border rounded-md outline-none border-stroke dark:border-dark-3 text-body-color dark:text-dark-6 placeholder:text-dark-6 focus:border-primary dark:focus:border-primary focus-visible:shadow-none" />
               </div>
               <div class="mb-9">
                 <button type="button" onclick="login()" 
                   class="w-full px-5 py-3 text-base text-white transition duration-300 ease-in-out border rounded-md cursor-pointer border-primary bg-primary hover:bg-blue-dark">
-                  Sign In
+                  Entrar
                 </button>
               </div>
             </form>
@@ -131,11 +128,7 @@
               <span class="absolute left-0 block w-full h-px -z-1 top-1/2 bg-stroke dark:bg-dark-3"></span>
               <span class="relative z-10 inline-block px-3 text-base bg-white dark:bg-dark-2 text-body-secondary">Connect With</span>
             </span>
-            <!-- Social buttons (Facebook, Google, etc.) -->
-            <ul class="flex justify-between -mx-2 mb-9">
-              <!-- Botões de redes sociais permanecem inalterados -->
-            </ul>
-            <a href="javascript:void(0)" class="inline-block mb-2 text-base text-dark dark:text-white hover:text-primary dark:hover:text-primary">
+            <a href="javascript:void(0)" class="inline-block mb-2 text-base text-black dark:text-white hover:text-primary dark:hover:text-primary">
               Esqueceu a senha?
             </a>
             <p class="text-base text-body-secondary">
@@ -151,29 +144,41 @@
   </section>
   <!-- ====== Forms Section End -->
 
-  <!-- Firebase Authentication Logic -->
+  <!-- Script de login com Supabase -->
   <script>
-    function login() {
+    async function login() {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          alert('Login realizado com sucesso!');
-          // Redirecionar para outra página após login bem-sucedido, se necessário
-          window.location.href = 'index.html';
-        })
-        .catch((error) => {
-          alert('Erro: ' + error.message);
-        });
+      if (!email || !password) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+
+      // Verifica se o Supabase está inicializado antes de tentar o login
+      if (typeof supabase === 'undefined') {
+        console.error("Erro: Supabase não foi inicializado.");
+        alert("Erro: O Supabase não está disponível.");
+        return;
+      }
+
+      // Realiza o login com o Supabase
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        alert('Erro: ' + error.message);
+      } else {
+        alert('Login realizado com sucesso!');
+        // Redireciona para outra página após o login bem-sucedido
+        window.location.href = 'pagina-destino.html'; // Substitua 'pagina-destino.html' pela página desejada
+      }
     }
   </script>
 
-  <!-- ====== Footer Section Start -->
-  <!-- Seu código do footer permanece o mesmo -->
-  <!-- ====== Footer Section End -->
-
-  <!-- ====== All Scripts -->
+  <!-- Scripts adicionais -->
   <script src="assets/js/main.js"></script>
 </body>
 

@@ -10,47 +10,92 @@
   <link rel="stylesheet" href="assets/css/animate.css" />
   <link rel="stylesheet" href="assets/css/tailwind.css" />
 
-  <!-- Firebase App (necessário para todas as funcionalidades do Firebase) -->
-  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-  <!-- Firebase Authentication -->
-  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Verificar se a biblioteca do Firebase foi carregada
-      if (typeof firebase === 'undefined') {
-        alert('Erro ao carregar a biblioteca do Firebase.');
-        return;
-      }
+      // Configuração do Supabase
+      const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE"; // Substitua pelo valor completo da sua API Key
 
-      // Inicializar Firebase
-      const firebaseConfig = {
-        apiKey: "AIzaSyA1l1MSDo_lt_-Ni70sdRX-bwncuymKgg0",
-        authDomain: "startup-9d953.firebaseapp.com",
-        projectId: "startup-9d953",
-        storageBucket: "startup-9d953.appspot.com",
-        messagingSenderId: "312708791552",
-        appId: "1:312708791552:web:4d8dd5652f8e10c9e287e5",
-        measurementId: "G-EL8WP495S7"
-      };
-
-      try {
-        firebase.initializeApp(firebaseConfig);
-        window.auth = firebase.auth();
-        console.log('Firebase Auth inicializado com sucesso.');
-      } catch (error) {
-        console.error('Erro durante a inicialização do Firebase:', error);
-        alert('Erro ao inicializar o Firebase Auth: ' + error.message);
-      }
+      // Inicialização do cliente Supabase
+      window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      console.log('Supabase inicializado com sucesso.');
     });
   </script>
 </head>
 
 <body>
-  <section class="bg-[#F4F7FF] py-14 lg:py-[90px] dark:bg-dark">
+  <div class="ud-header left-0 top-0 z-40 flex w-full items-center bg-transparent lg:mb-32 mb-20">
+    <div class="container">
+      <div class="relative -mx-4 flex items-center justify-between">
+        <div class="w-60 max-w-full px-4">
+          <a href="index.html" class="navbar-logo block w-full py-5">
+            <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="header-logo w-full" />
+          </a>
+        </div>
+        <div class="flex w-full items-center justify-center px-4">
+          <div class="flex-grow">
+            <nav id="navbarCollapse" class="absolute right-4 top-full hidden w-full max-w-[250px] rounded-lg bg-black py-5 shadow-lg dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:px-4 lg:py-0 lg:shadow-none dark:lg:bg-transparent xl:px-6">
+              <ul class="flex justify-center">
+                <li class="group relative">
+                  <a href="#home" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-black group-hover:text-primary dark:text-black lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-black lg:group-hover:opacity-70">
+                    Home
+                  </a>
+                </li>
+                <li class="group relative">
+                  <a href="#features" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-black group-hover:text-primary dark:text-black lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-black lg:group-hover:opacity-70 xl:ml-10">
+                    Soluções
+                  </a>
+                </li>
+                <li class="group relative">
+                  <a href="#team" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-black group-hover:text-primary dark:text-black lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-black lg:group-hover:opacity-70 xl:ml-10">
+                    Time
+                  </a>
+                </li>
+                <li class="group relative">
+                  <a href="#blog" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-black group-hover:text-primary dark:text-black lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-black lg:group-hover:opacity-70 xl:ml-10">
+                    Blog
+                  </a>
+                </li>
+                <li class="group relative">
+                  <a href="#contact" class="ud-menu-scroll mx-8 flex py-2 text-base font-medium text-black group-hover:text-primary dark:text-black lg:ml-7 lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 lg:text-black lg:group-hover:opacity-70 xl:ml-10">
+                    Contato
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="flex items-center justify-end">
+            <label for="themeSwitcher" class="inline-flex cursor-pointer items-center" aria-label="themeSwitcher" name="themeSwitcher">
+              <input type="checkbox" name="themeSwitcher" id="themeSwitcher" class="sr-only" />
+            </label>
+            <div class="hidden sm:flex">
+              <a href="signin.html" class="loginBtn px-[22px] py-2 text-base font-medium text-black hover:opacity-70">Entrar</a>
+              <a href="signup.html" class="signUpBtn rounded-md bg-white bg-opacity-20 px-6 py-2 text-base font-medium text-gray duration-300 ease-in-out hover:bg-opacity-100 hover:text-dark">
+                Cadastrar-se
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ====== Navbar Section End -->
+  <section class="bg-[#F4F7FF] py-14 lg:py-[90px] dark:bg-dark lg:mt-20 mt-10">
     <div class="container">
       <div class="flex flex-wrap -mx-4">
         <div class="w-full px-4">
+          <div
+            class="wow fadeInUp relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white dark:bg-dark-2 py-14 px-8 text-center sm:px-12 md:px-[60px]"
+            data-wow-delay=".15s">
+            <div class="mb-10 text-center">
+              <a href="javascript:void(0)" class="mx-auto inline-block max-w-[160px]">
+                <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="dark:hidden" />
+                <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="hidden dark:block" />
+              </a>
+            </div>
           <div
             class="wow fadeInUp relative mx-auto max-w-[525px] overflow-hidden rounded-xl shadow-form bg-white dark:bg-dark-2 py-14 px-8 text-center sm:px-12 md:px-[60px]"
             data-wow-delay=".15s">
@@ -78,7 +123,7 @@
   </section>
 
   <script>
-    function signUp() {
+    async function signUp() {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
@@ -87,22 +132,24 @@
         return;
       }
 
-      if (!window.auth) {
-        console.error('Firebase Auth não foi inicializado.');
-        alert('Firebase Auth não foi inicializado.');
-        return;
-      }
+      try {
+        const { error, user } = await supabase.auth.signUp({
+          email: email,
+          password: password
+        });
 
-      window.auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          console.log('Cadastro realizado com sucesso:', userCredential);
-          alert('Cadastro realizado com sucesso!');
-          window.location.href = 'index.html';
-        })
-        .catch((error) => {
+        if (error) {
           console.error('Erro no cadastro:', error);
           alert('Erro: ' + error.message);
-        });
+        } else {
+          console.log('Cadastro realizado com sucesso:', user);
+          alert('Cadastro realizado com sucesso! Verifique seu email para confirmar o cadastro.');
+          window.location.href = 'index.html';
+        }
+      } catch (error) {
+        console.error('Erro inesperado:', error);
+        alert('Erro inesperado: ' + error.message);
+      }
     }
   </script>
 </body>
