@@ -4,6 +4,22 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// Função para exibir o nome do usuário
+async function exibirNomeUsuario() {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error || !user) {
+        console.error("Erro ao obter usuário:", error);
+        return;
+    }
+    const userNameElem = document.getElementById("user-name");
+    if (userNameElem) {
+        userNameElem.innerText = user.email; // Exibe o e-mail do usuário logado
+    }
+}
+
+// Chama a função para exibir o nome do usuário na dashboard ou na página de cadastro de dados
+document.addEventListener("DOMContentLoaded", exibirNomeUsuario);
+
 // Função para atualizar os valores dos cartões de estatísticas
 function atualizarEstatisticas(dados) {
     const tempValue = document.getElementById("temp-value");
