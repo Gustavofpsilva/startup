@@ -13,9 +13,11 @@
 
 .sidebar {
     width: 250px;
-    background-color: 2E50D5;
+    background-color: #E4E0E0; /* Cor atualizada */
     color: #040404;
     padding: 20px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
 }
 
 .sidebar img {
@@ -40,6 +42,7 @@ main {
     flex: 1;
     padding: 20px;
     background-color: #F5F7FA;
+    overflow-y: auto;
 }
 
 header {
@@ -61,10 +64,8 @@ header input[type="text"] {
     align-items: center;
 }
 
-.user-info img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+.user-info #user-name {
+    font-weight: bold;
     margin-right: 10px;
 }
 
@@ -73,16 +74,18 @@ header input[type="text"] {
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .card {
     flex: 1;
-    background-color: #3B82F6; /* Azul similar ao exemplo fornecido */
+    background-color: #3B82F6;
     color: #fff;
     padding: 20px;
     text-align: center;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
 }
 
 .card h3 {
@@ -108,6 +111,7 @@ header input[type="text"] {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
+    overflow-x: auto;
 }
 
 .dados-tabela h2 {
@@ -206,4 +210,54 @@ td, th {
 
 .auth-forms button:hover {
     background-color: #2563EB;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        transform: translateX(0);
+    }
+
+    main {
+        padding: 10px;
+    }
+
+    header input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .stats-cards {
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar nav a {
+        margin: 5px 0;
+        font-size: 14px;
+    }
+
+    .card h3 {
+        font-size: 16px;
+    }
+
+    .card p {
+        font-size: 20px;
+    }
+
+    .dados-tabela h2 {
+        font-size: 16px;
+    }
 }
