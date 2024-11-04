@@ -4,10 +4,11 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Variáveis de controle de paginação
-const rowsPerPage = 50;
+// Variáveis de controle de paginação (certifique-se de declarar apenas uma vez)
+let rowsPerPage = 50;
 let currentPage = 1;
 let totalData = []; // Armazena todos os dados carregados do Supabase
+let currentUser = null; // Variável para armazenar o usuário autenticado
 
 // Função para exibir o nome do usuário
 async function exibirNomeUsuario() {
@@ -16,6 +17,7 @@ async function exibirNomeUsuario() {
         console.error("Erro ao obter usuário:", error);
         return;
     }
+    currentUser = user; // Armazena o usuário atual
     const userNameElem = document.getElementById("user-name");
     if (userNameElem) {
         userNameElem.innerText = user.email; // Exibe o e-mail do usuário logado
@@ -53,12 +55,17 @@ async function obterUsuarioAutenticado() {
     return user;
 }
 
-// Função para carregar e exibir todos os dados ambientais
+// Função para carregar e exibir os dados ambientais do cliente associado
 async function carregarDadosAmbientais() {
-    console.log("Tentando carregar todos os dados para depuração.");
+    const user = await obterUsuarioAutenticado();
+    if (!user) return;
+
+    console.log("Carregando dados ambientais para o usuário:", user.id);
+
     const { data, error } = await supabase
         .from('dados_ambientais')
         .select('*')
+        .eq('user_id', user.id) // Filtra para o cliente específico
         .order('data_hora', { ascending: false });
 
     if (error) {
@@ -69,13 +76,11 @@ async function carregarDadosAmbientais() {
     }
 
     if (!data || data.length === 0) {
-        console.log("Nenhum dado encontrado para exibir.");
         const statusElem = document.getElementById("status");
         if (statusElem) statusElem.innerText = "Nenhum dado ambiental disponível.";
+        console.log("Nenhum dado encontrado para exibir.");
         return;
     }
-
-    console.log("Dados carregados para depuração:", data);
 
     totalData = data; // Armazena todos os dados carregados
     atualizarEstatisticas(totalData); // Atualiza os cartões de estatísticas
@@ -86,7 +91,7 @@ async function carregarDadosAmbientais() {
 function displayTable() {
     const tableBody = document.getElementById("dados-tabela-corpo");
     if (!tableBody) {
-        console.error("Elemento da tabela não encontrado. Verifique o HTML.");
+        console.error("Elemento de corpo da tabela não encontrado.");
         return;
     }
     tableBody.innerHTML = "";
@@ -127,9 +132,9 @@ function prevPage() {
 
 // Função para carregar dados de um arquivo CSV
 document.addEventListener("DOMContentLoaded", () => {
-    const uploadCsvButton = document.getElementById("uploadCsvButton");
-    if (uploadCsvButton) {
-        uploadCsvButton.addEventListener("click", () => {
+    const uploadButton = document.getElementById("uploadCsvButton");
+    if (uploadButton) {
+        uploadButton.addEventListener("click", () => {
             const fileInput = document.getElementById("csvFileInput");
             const csvStatus = document.getElementById("csvStatus");
 
@@ -145,6 +150,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 complete: async function(results) {
                     csvStatus.textContent = "Carregando dados...";
                     const data = results.data;
+
+                    if (!currentUser) {
+                        csvStatus.textContent = "Erro: Usuário não autenticado.";
+                        return;
+                    }
                     
                     // Validação e envio de cada linha do CSV
                     for (const row of data) {
@@ -157,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (localizacao && temperatura && umidade && qualidade_ar) {
                             const { error } = await supabase
                                 .from("dados_ambientais")
-                                .insert([{ localizacao, temperatura: parseFloat(temperatura), umidade: parseInt(umidade), qualidade_ar, data_hora }]);
+                                .insert([{ localizacao, temperatura: parseFloat(temperatura), umidade: parseInt(umidade), qualidade_ar, data_hora, user_id: currentUser.id }]);
 
                             if (error) {
                                 csvStatus.textContent = `Erro ao carregar dados: ${error.message}`;
@@ -170,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
                     csvStatus.textContent = "Dados carregados com sucesso!";
+                    carregarDadosAmbientais(); // Recarrega os dados após a inserção
                 },
                 error: function(error) {
                     csvStatus.textContent = `Erro ao processar o arquivo CSV: ${error.message}`;
@@ -177,21 +188,20 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
-
-    carregarDadosAmbientais();
 });
+
+// Chama a função para carregar os dados quando a página da dashboard é carregada
+document.addEventListener("DOMContentLoaded", carregarDadosAmbientais);
 
 // Função de logout
-document.addEventListener("DOMContentLoaded", () => {
-    const logoutButton = document.getElementById("logout-button");
-    if (logoutButton) {
-        logoutButton.addEventListener("click", async () => {
-            const { error } = await supabase.auth.signOut();
-            if (error) {
-                console.error("Erro ao fazer logout:", error);
-            } else {
-                window.location.href = "index.html"; // Redireciona para a página de login após o logout
-            }
-        });
-    }
-});
+const logoutButton = document.getElementById("logout-button");
+if (logoutButton) {
+    logoutButton.addEventListener("click", async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error("Erro ao fazer logout:", error);
+        } else {
+            window.location.href = "index.html"; // Redireciona para a página de login após o logout
+        }
+    });
+}
