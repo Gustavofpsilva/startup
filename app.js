@@ -53,15 +53,12 @@ async function obterUsuarioAutenticado() {
     return user;
 }
 
-// Função para carregar e exibir os dados ambientais do usuário
+// Função para carregar e exibir todos os dados ambientais
 async function carregarDadosAmbientais() {
-    const user = await obterUsuarioAutenticado();
-    if (!user) return;
-
+    console.log("Tentando carregar todos os dados para depuração.");
     const { data, error } = await supabase
         .from('dados_ambientais')
         .select('*')
-        .eq('user_id', user.id)
         .order('data_hora', { ascending: false });
 
     if (error) {
@@ -72,10 +69,13 @@ async function carregarDadosAmbientais() {
     }
 
     if (!data || data.length === 0) {
+        console.log("Nenhum dado encontrado para exibir.");
         const statusElem = document.getElementById("status");
         if (statusElem) statusElem.innerText = "Nenhum dado ambiental disponível.";
         return;
     }
+
+    console.log("Dados carregados para depuração:", data);
 
     totalData = data; // Armazena todos os dados carregados
     atualizarEstatisticas(totalData); // Atualiza os cartões de estatísticas
@@ -85,6 +85,10 @@ async function carregarDadosAmbientais() {
 // Função para exibir a tabela com paginação
 function displayTable() {
     const tableBody = document.getElementById("dados-tabela-corpo");
+    if (!tableBody) {
+        console.error("Elemento da tabela não encontrado. Verifique o HTML.");
+        return;
+    }
     tableBody.innerHTML = "";
 
     const start = (currentPage - 1) * rowsPerPage;
@@ -121,18 +125,73 @@ function prevPage() {
     }
 }
 
-// Chama a função para carregar os dados quando a página da dashboard é carregada
-document.addEventListener("DOMContentLoaded", carregarDadosAmbientais);
+// Função para carregar dados de um arquivo CSV
+document.addEventListener("DOMContentLoaded", () => {
+    const uploadCsvButton = document.getElementById("uploadCsvButton");
+    if (uploadCsvButton) {
+        uploadCsvButton.addEventListener("click", () => {
+            const fileInput = document.getElementById("csvFileInput");
+            const csvStatus = document.getElementById("csvStatus");
+
+            if (fileInput.files.length === 0) {
+                csvStatus.textContent = "Por favor, selecione um arquivo CSV.";
+                return;
+            }
+
+            const file = fileInput.files[0];
+            Papa.parse(file, {
+                header: true,
+                skipEmptyLines: true,
+                complete: async function(results) {
+                    csvStatus.textContent = "Carregando dados...";
+                    const data = results.data;
+                    
+                    // Validação e envio de cada linha do CSV
+                    for (const row of data) {
+                        const { localizacao, temperatura, umidade, qualidade_ar } = row;
+                        
+                        // Adiciona a data e hora atuais se não estiver presente
+                        const data_hora = row.data_hora || new Date().toISOString();
+
+                        // Verifica se todos os campos estão presentes na linha
+                        if (localizacao && temperatura && umidade && qualidade_ar) {
+                            const { error } = await supabase
+                                .from("dados_ambientais")
+                                .insert([{ localizacao, temperatura: parseFloat(temperatura), umidade: parseInt(umidade), qualidade_ar, data_hora }]);
+
+                            if (error) {
+                                csvStatus.textContent = `Erro ao carregar dados: ${error.message}`;
+                                return;
+                            }
+                        } else {
+                            csvStatus.textContent = "Erro: Algumas linhas estão com dados incompletos.";
+                            return;
+                        }
+                    }
+
+                    csvStatus.textContent = "Dados carregados com sucesso!";
+                },
+                error: function(error) {
+                    csvStatus.textContent = `Erro ao processar o arquivo CSV: ${error.message}`;
+                }
+            });
+        });
+    }
+
+    carregarDadosAmbientais();
+});
 
 // Função de logout
-const logoutButton = document.getElementById("logout-button");
-if (logoutButton) {
-    logoutButton.addEventListener("click", async () => {
-        const { error } = await supabase.auth.signOut();
-        if (error) {
-            console.error("Erro ao fazer logout:", error);
-        } else {
-            window.location.href = "index.html"; // Redireciona para a página de login após o logout
-        }
-    });
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutButton = document.getElementById("logout-button");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", async () => {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error("Erro ao fazer logout:", error);
+            } else {
+                window.location.href = "index.html"; // Redireciona para a página de login após o logout
+            }
+        });
+    }
+});
