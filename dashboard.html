@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Dados Ambientais</title>
+    <title>Ambin - Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -26,6 +26,7 @@
                 <input type="text" placeholder="Buscar...">
                 <div class="user-info">
                     <span id="user-name">Usuário</span>
+                    <button id="export-pdf">Exportar como PDF</button>
                     <button id="logout-button">Logout</button>
                 </div>
             </header>
@@ -52,7 +53,7 @@
 
             <!-- Tabela de Dados Ambientais -->
             <section class="dados-tabela">
-                <h2>Dados Ambientais Registrados</h2>
+                <h2>Dados Ambientais </h2>
                 <table>
                     <thead>
                         <tr>
@@ -72,7 +73,27 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
     <script src="app.js"></script>
+
+    <script>
+        document.getElementById('export-pdf').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.text('Dados Ambientais', 14, 10);
+            doc.autoTable({
+                startY: 20,
+                head: [['Data', 'Localização', 'Temperatura (°C)', 'Umidade (%)', 'Qualidade do Ar']],
+                body: Array.from(document.querySelectorAll('#dados-tabela-corpo tr')).map(row => 
+                    Array.from(row.querySelectorAll('td')).map(cell => cell.textContent)
+                )
+            });
+
+            doc.save('dados_ambientais.pdf');
+        });
+    </script>
 </body>
 </html>
