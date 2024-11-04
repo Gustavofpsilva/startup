@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=50, initial-scale=1.0">
     <title>Ambin - Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -53,7 +53,7 @@
 
             <!-- Tabela de Dados Ambientais -->
             <section class="dados-tabela">
-                <h2>Dados Ambientais </h2>
+                <h2>Dados Ambientais</h2>
                 <table>
                     <thead>
                         <tr>
@@ -68,6 +68,13 @@
                         <!-- Dados serão carregados aqui -->
                     </tbody>
                 </table>
+
+                <!-- Controles de Paginação -->
+                <div id="pagination-controls">
+                    <button class="pagination-button previous-button" onclick="prevPage()">&#8592; Anterior</button>
+                    <span id="page-info"></span>
+                    <button class="pagination-button next-button" onclick="nextPage()">Próximo &#8594;</button>
+                </div>
             </section>
         </main>
     </div>
@@ -79,6 +86,60 @@
     <script src="app.js"></script>
 
     <script>
+        const rowsPerPage = 50;
+        let currentPage = 1;
+        let data = []; // Os dados carregados do Supabase serão armazenados aqui
+
+        // Função para carregar dados do Supabase (implementação real deve ser feita aqui)
+        async function carregarDados() {
+            // Substitua essa função para carregar dados do Supabase e armazená-los na variável 'data'
+            // Exemplo: data = await carregarDadosDoSupabase();
+            displayTable();
+        }
+
+        // Função para exibir a tabela com paginação
+        function displayTable() {
+            const tableBody = document.getElementById("dados-tabela-corpo");
+            tableBody.innerHTML = "";
+
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedData = data.slice(start, end);
+
+            paginatedData.forEach(item => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.date}</td>
+                    <td>${item.location}</td>
+                    <td>${item.temperature}</td>
+                    <td>${item.humidity}</td>
+                    <td>${item.airQuality}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            document.getElementById("page-info").innerText = `Página ${currentPage} de ${Math.ceil(data.length / rowsPerPage)}`;
+        }
+
+        // Funções de navegação de página
+        function nextPage() {
+            if ((currentPage * rowsPerPage) < data.length) {
+                currentPage++;
+                displayTable();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayTable();
+            }
+        }
+
+        // Inicializa a tabela ao carregar a página
+        document.addEventListener("DOMContentLoaded", carregarDados);
+
+        // Função de exportação para PDF
         document.getElementById('export-pdf').addEventListener('click', () => {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
@@ -87,9 +148,7 @@
             doc.autoTable({
                 startY: 20,
                 head: [['Data', 'Localização', 'Temperatura (°C)', 'Umidade (%)', 'Qualidade do Ar']],
-                body: Array.from(document.querySelectorAll('#dados-tabela-corpo tr')).map(row => 
-                    Array.from(row.querySelectorAll('td')).map(cell => cell.textContent)
-                )
+                body: data.map(item => [item.date, item.location, item.temperature, item.humidity, item.airQuality])
             });
 
             doc.save('dados_ambientais.pdf');

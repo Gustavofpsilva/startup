@@ -182,6 +182,45 @@ td, th {
     border-bottom: 1px solid #EDEDED;
 }
 
+/* Estilos para os botões de paginação */
+#pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.pagination-button {
+    background-color: #007bff;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+.pagination-button:hover {
+    background-color: #0056b3;
+}
+
+.pagination-button:focus {
+    outline: none;
+}
+
+/* Removendo as setas dos botões */
+.previous-button::before,
+.next-button::after {
+    content: "";
+}
+
 /* Estilos para formulários de autenticação */
 .auth-forms {
     background-color: #fff;
