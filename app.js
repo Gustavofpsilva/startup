@@ -1,14 +1,12 @@
 // Configuração do Supabase
 const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
-
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Variáveis de controle de paginação (certifique-se de declarar apenas uma vez)
-let rowsPerPage = 50;
+// Variáveis de controle de paginação
+const rowsPerPage = 50;
 let currentPage = 1;
-let totalData = []; // Armazena todos os dados carregados do Supabase
-let currentUser = null; // Variável para armazenar o usuário autenticado
+let totalData = [];
 
 // Função para exibir o nome do usuário
 async function exibirNomeUsuario() {
@@ -17,15 +15,11 @@ async function exibirNomeUsuario() {
         console.error("Erro ao obter usuário:", error);
         return;
     }
-    currentUser = user; // Armazena o usuário atual
     const userNameElem = document.getElementById("user-name");
     if (userNameElem) {
-        userNameElem.innerText = user.email; // Exibe o e-mail do usuário logado
+        userNameElem.innerText = user.email;
     }
 }
-
-// Chama a função para exibir o nome do usuário na dashboard ou na página de cadastro de dados
-document.addEventListener("DOMContentLoaded", exibirNomeUsuario);
 
 // Função para atualizar os valores dos cartões de estatísticas
 function atualizarEstatisticas(dados) {
@@ -43,29 +37,14 @@ function atualizarEstatisticas(dados) {
     localizacaoValue.innerText = ultimoDado.localizacao || '--';
 }
 
-// Função para verificar e recuperar o usuário autenticado
-async function obterUsuarioAutenticado() {
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error || !user) {
-        console.log("Usuário não autenticado ou erro ao obter usuário:", error);
-        const statusElem = document.getElementById("status");
-        if (statusElem) statusElem.innerText = "Por favor, faça login para continuar.";
-        return null;
-    }
-    return user;
-}
-
-// Função para carregar e exibir os dados ambientais do cliente associado
+// Função para carregar dados ambientais associados ao usuário
 async function carregarDadosAmbientais() {
-    const user = await obterUsuarioAutenticado();
-    if (!user) return;
-
+    const { data: { user } } = await supabase.auth.getUser();
     console.log("Carregando dados ambientais para o usuário:", user.id);
-
     const { data, error } = await supabase
         .from('dados_ambientais')
         .select('*')
-        .eq('user_id', user.id) // Filtra para o cliente específico
+        .eq('user_id', user.id)
         .order('data_hora', { ascending: false });
 
     if (error) {
@@ -78,24 +57,20 @@ async function carregarDadosAmbientais() {
     if (!data || data.length === 0) {
         const statusElem = document.getElementById("status");
         if (statusElem) statusElem.innerText = "Nenhum dado ambiental disponível.";
-        console.log("Nenhum dado encontrado para exibir.");
         return;
     }
 
-    totalData = data; // Armazena todos os dados carregados
-    atualizarEstatisticas(totalData); // Atualiza os cartões de estatísticas
-    displayTable(); // Exibe a tabela com a página atual
+    totalData = data;
+    atualizarEstatisticas(totalData);
+    displayTable();
 }
 
 // Função para exibir a tabela com paginação
 function displayTable() {
     const tableBody = document.getElementById("dados-tabela-corpo");
-    if (!tableBody) {
-        console.error("Elemento de corpo da tabela não encontrado.");
-        return;
-    }
-    tableBody.innerHTML = "";
+    if (!tableBody) return;
 
+    tableBody.innerHTML = "";
     const start = (currentPage - 1) * rowsPerPage;
     const end = start + rowsPerPage;
     const paginatedData = totalData.slice(start, end);
@@ -130,78 +105,50 @@ function prevPage() {
     }
 }
 
-// Função para carregar dados de um arquivo CSV
-document.addEventListener("DOMContentLoaded", () => {
-    const uploadButton = document.getElementById("uploadCsvButton");
-    if (uploadButton) {
-        uploadButton.addEventListener("click", () => {
-            const fileInput = document.getElementById("csvFileInput");
-            const csvStatus = document.getElementById("csvStatus");
+// Função para exportar dados para PDF
+function exportToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-            if (fileInput.files.length === 0) {
-                csvStatus.textContent = "Por favor, selecione um arquivo CSV.";
-                return;
-            }
+    doc.text('Dados Ambientais', 14, 10);
+    doc.autoTable({
+        startY: 20,
+        head: [['Data', 'Localização', 'Temperatura (°C)', 'Umidade (%)', 'Qualidade do Ar']],
+        body: totalData.map(item => [
+            new Date(item.data_hora).toLocaleString(),
+            item.localizacao,
+            item.temperatura,
+            item.umidade,
+            item.qualidade_ar
+        ])
+    });
 
-            const file = fileInput.files[0];
-            Papa.parse(file, {
-                header: true,
-                skipEmptyLines: true,
-                complete: async function(results) {
-                    csvStatus.textContent = "Carregando dados...";
-                    const data = results.data;
-
-                    if (!currentUser) {
-                        csvStatus.textContent = "Erro: Usuário não autenticado.";
-                        return;
-                    }
-                    
-                    // Validação e envio de cada linha do CSV
-                    for (const row of data) {
-                        const { localizacao, temperatura, umidade, qualidade_ar } = row;
-                        
-                        // Adiciona a data e hora atuais se não estiver presente
-                        const data_hora = row.data_hora || new Date().toISOString();
-
-                        // Verifica se todos os campos estão presentes na linha
-                        if (localizacao && temperatura && umidade && qualidade_ar) {
-                            const { error } = await supabase
-                                .from("dados_ambientais")
-                                .insert([{ localizacao, temperatura: parseFloat(temperatura), umidade: parseInt(umidade), qualidade_ar, data_hora, user_id: currentUser.id }]);
-
-                            if (error) {
-                                csvStatus.textContent = `Erro ao carregar dados: ${error.message}`;
-                                return;
-                            }
-                        } else {
-                            csvStatus.textContent = "Erro: Algumas linhas estão com dados incompletos.";
-                            return;
-                        }
-                    }
-
-                    csvStatus.textContent = "Dados carregados com sucesso!";
-                    carregarDadosAmbientais(); // Recarrega os dados após a inserção
-                },
-                error: function(error) {
-                    csvStatus.textContent = `Erro ao processar o arquivo CSV: ${error.message}`;
-                }
-            });
-        });
-    }
-});
-
-// Chama a função para carregar os dados quando a página da dashboard é carregada
-document.addEventListener("DOMContentLoaded", carregarDadosAmbientais);
+    doc.save('dados_ambientais.pdf');
+}
 
 // Função de logout
-const logoutButton = document.getElementById("logout-button");
-if (logoutButton) {
-    logoutButton.addEventListener("click", async () => {
-        const { error } = await supabase.auth.signOut();
-        if (error) {
-            console.error("Erro ao fazer logout:", error);
-        } else {
-            window.location.href = "index.html"; // Redireciona para a página de login após o logout
-        }
-    });
+async function logoutUser() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+        console.error("Erro ao fazer logout:", error);
+    } else {
+        window.location.href = "index.html";
+    }
 }
+
+// Inicializa o código apenas após o carregamento do DOM
+document.addEventListener("DOMContentLoaded", () => {
+    exibirNomeUsuario();
+    carregarDadosAmbientais();
+
+    const exportButton = document.getElementById("export-pdf");
+    const logoutButton = document.getElementById("logout-button");
+
+    if (exportButton) {
+        exportButton.addEventListener("click", exportToPDF);
+    }
+
+    if (logoutButton) {
+        logoutButton.addEventListener("click", logoutUser);
+    }
+});
