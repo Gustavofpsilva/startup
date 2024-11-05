@@ -10,24 +10,30 @@
     <div class="container">
         <!-- Barra lateral -->
         <aside class="sidebar">
-            <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" style="width: 100%; height: auto; margin-bottom: 20px;">
+            <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
+
+            <div class="user-info">
+                <h3 id="sidebar-user-name">Usuário</h3> <!-- Nome do usuário logado -->
+                <p id="sidebar-user-email">email@exemplo.com</p> <!-- E-mail do usuário logado -->
+            </div>
+
             <nav>
                 <a href="dashboard.html">Dashboard</a>
                 <a href="cadastrar_dados.html" class="active">Cadastrar Dados</a>
                 <a href="analises.html">Análises</a>
                 <a href="#">Configurações</a>
             </nav>
+
+            <div class="bottom-section">
+                <a href="#" class="logout" id="logout-button"><i class="icon-logout"></i> <span>Logout</span></a>
+            </div>
         </aside>
 
         <!-- Conteúdo principal -->
         <main>
             <!-- Cabeçalho -->
             <header>
-                <input type="text" placeholder="Buscar...">
-                <div class="user-info">
-                    <span id="user-name">Usuário</span>
-                    <button id="logout-button">Logout</button>
-                </div>
+                <!-- Campo de busca removido -->
             </header>
 
             <!-- Formulário de Cadastro de Dados Ambientais -->

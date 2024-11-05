@@ -8,16 +8,20 @@ const rowsPerPage = 50;
 let currentPage = 1;
 let totalData = [];
 
-// Função para exibir o nome do usuário
+// Função para exibir o nome e o e-mail do usuário na sidebar
 async function exibirNomeUsuario() {
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error || !user) {
         console.error("Erro ao obter usuário:", error);
         return;
     }
-    const userNameElem = document.getElementById("user-name");
-    if (userNameElem) {
-        userNameElem.innerText = user.email;
+
+    const userNameElem = document.getElementById("sidebar-user-name");
+    const userEmailElem = document.getElementById("sidebar-user-email");
+
+    if (userNameElem && userEmailElem) {
+        userNameElem.innerText = user.user_metadata.full_name || "Usuário"; // Exibe o nome completo, se disponível
+        userEmailElem.innerText = user.email; // Exibe o e-mail do usuário
     }
 }
 

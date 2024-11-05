@@ -11,33 +11,87 @@
     height: 100vh;
 }
 
+/* Estilos da Sidebar */
 .sidebar {
     width: 250px;
-    background-color: #E4E0E0; /* Cor atualizada */
-    color: #040404;
+    background-color: #3B82F6;
+    color: #fff;
     padding: 20px;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.sidebar img {
+.profile-img {
     width: 100%;
     height: auto;
     margin-bottom: 20px;
 }
 
-.sidebar nav a {
-    display: block;
-    color: #070707;
-    margin: 10px 0;
-    text-decoration: none;
+.user-info {
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-.sidebar nav a.active, .sidebar nav a:hover {
-    color: #000000;
+.user-info h3 {
+    margin: 0;
+    font-size: 16px;
     font-weight: bold;
 }
 
+.user-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #bbb;
+}
+
+/* Estilos para o botão de logout */
+.bottom-section {
+    margin-top: auto;
+}
+
+.logout {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.logout i {
+    margin-right: 10px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+}
+
+nav a {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 5px 0;
+    transition: background 0.3s;
+}
+
+nav a i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+nav a:hover, nav a.active {
+    background-color: #000000;
+}
+
+/* Estilos para o conteúdo principal */
 main {
     flex: 1;
     padding: 20px;
@@ -45,44 +99,22 @@ main {
     overflow-y: auto;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-header input[type="text"] {
-    padding: 8px;
-    width: 200px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Espaço entre os elementos */
-}
-
-.user-info #user-name {
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-/* Estilos para os botões de exportação e logout */
-#export-pdf, #logout-button {
-    padding: 8px 12px;
+/* Estilos para o botão de exportar como PDF no cabeçalho */
+header #export-pdf {
+    padding: 10px 20px;
     background-color: #3B82F6;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Espaçamento abaixo do botão */
 }
 
-#export-pdf:hover, #logout-button:hover {
+header #export-pdf:hover {
     background-color: #2563EB;
 }
 
@@ -98,27 +130,26 @@ header input[type="text"] {
     flex: 1;
     background-color: #3B82F6;
     color: #fff;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     min-width: 150px;
 }
 
 .card h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #D1E3FF;
+    font-size: 16px;
+    margin-bottom: 5px;
 }
 
 .card p {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     margin: 0;
 }
 
 .card span {
-    font-size: 22px;
+    font-size: 18px;
 }
 
 /* Estilos para a seção da tabela de dados */
@@ -132,19 +163,10 @@ header input[type="text"] {
 }
 
 .dados-tabela h2 {
-    display: flex;
-    align-items: center;
     font-size: 18px;
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
-}
-
-.dados-tabela h2::before {
-    content: "📅";
-    font-size: 20px;
-    margin-right: 8px;
-    color: #4A90E2;
 }
 
 table {
@@ -221,38 +243,6 @@ td, th {
     content: "";
 }
 
-/* Estilos para formulários de autenticação */
-.auth-forms {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.auth-forms input[type="email"],
-.auth-forms input[type="password"] {
-    padding: 8px;
-    width: 100%;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.auth-forms button {
-    width: 100%;
-    padding: 10px;
-    background-color: #3B82F6;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.auth-forms button:hover {
-    background-color: #2563EB;
-}
-
 /* Estilos responsivos */
 @media (max-width: 768px) {
     .container {
@@ -267,11 +257,6 @@ td, th {
 
     main {
         padding: 10px;
-    }
-
-    header input[type="text"] {
-        width: 100%;
-        margin-bottom: 10px;
     }
 
     .stats-cards {

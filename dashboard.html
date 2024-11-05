@@ -10,24 +10,31 @@
     <div class="container">
         <!-- Barra lateral -->
         <aside class="sidebar">
-            <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" style="width: 100%; height: auto; margin-bottom: 20px;">
+            <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
+
+            <div class="user-info">
+                <h3 id="sidebar-user-name">Usuário</h3> <!-- Nome do usuário logado -->
+                <p id="sidebar-user-email">email@exemplo.com</p> <!-- E-mail do usuário logado -->
+            </div>
+
             <nav>
-                <a href="dashboard.html" class="active">Dashboard</a>
+                <a href="dashboard.html" class="active"><i class="icon-dashboard"></i> <span>Dashboard</span></a>
                 <a href="cadastrar_dados.html">Cadastrar Dados</a>
                 <a href="analises.html">Análises</a>
                 <a href="#">Configurações</a>
             </nav>
+
+            <div class="bottom-section">
+                <a href="#" class="logout" id="logout-button"><i class="icon-logout"></i> <span>Logout</span></a>
+            </div>
         </aside>
 
         <!-- Conteúdo principal -->
         <main>
             <!-- Cabeçalho -->
             <header>
-                <input type="text" placeholder="Buscar...">
                 <div class="user-info">
-                    <span id="user-name">Usuário</span>
                     <button id="export-pdf">Exportar como PDF</button>
-                    <button id="logout-button">Logout</button>
                 </div>
             </header>
 
@@ -54,7 +61,7 @@
             <!-- Tabela de Dados Ambientais -->
             <section class="dados-tabela">
                 <h2>Dados Ambientais</h2>
-                <p id="ultima-atualizacao">Última Atualização: --</p> <!-- Seção de última atualização -->
+                <p id="ultima-atualizacao">Última Atualização: --</p>
                 <table>
                     <thead>
                         <tr>
@@ -85,20 +92,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
     <script src="app.js"></script>
-
-    <script>
-        function atualizarUltimaAtualizacao() {
-            const agora = new Date();
-            const dataFormatada = agora.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
-            document.getElementById('ultima-atualizacao').textContent = `Última Atualização: ${dataFormatada}`;
-        }
-
-        // Chama a função correta após o carregamento dos dados
-        document.addEventListener('DOMContentLoaded', () => {
-            // Chama a função de carregar dados e depois atualiza a última atualização
-            carregarDadosAmbientais(); // Função correta para carregar dados
-            atualizarUltimaAtualizacao();
-        });
-    </script>
 </body>
 </html>
