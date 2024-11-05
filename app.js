@@ -37,6 +37,16 @@ function atualizarEstatisticas(dados) {
     localizacaoValue.innerText = ultimoDado.localizacao || '--';
 }
 
+// Função para atualizar a última atualização dos dados
+function atualizarUltimaAtualizacao() {
+    const agora = new Date();
+    const dataFormatada = agora.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+    const ultimaAtualizacaoElem = document.getElementById("ultima-atualizacao");
+    if (ultimaAtualizacaoElem) {
+        ultimaAtualizacaoElem.textContent = `Última Atualização: ${dataFormatada}`;
+    }
+}
+
 // Função para carregar dados ambientais associados ao usuário
 async function carregarDadosAmbientais() {
     const { data: { user } } = await supabase.auth.getUser();
@@ -63,6 +73,7 @@ async function carregarDadosAmbientais() {
     totalData = data;
     atualizarEstatisticas(totalData);
     displayTable();
+    atualizarUltimaAtualizacao(); // Atualiza a última atualização após carregar os dados
 }
 
 // Função para exibir a tabela com paginação
@@ -136,6 +147,57 @@ async function logoutUser() {
     }
 }
 
+// Função para carregar e processar o arquivo CSV
+function processarCSV() {
+    const fileInput = document.getElementById("csvFileInput");
+    const file = fileInput.files[0];
+    const statusElem = document.getElementById("csvStatus");
+
+    if (!file) {
+        statusElem.innerText = "Por favor, selecione um arquivo CSV.";
+        return;
+    }
+
+    Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+            const dadosCSV = results.data;
+            salvarDadosNoSupabase(dadosCSV);
+        },
+        error: function(error) {
+            console.error("Erro ao processar CSV:", error);
+            statusElem.innerText = "Erro ao processar o arquivo CSV.";
+        }
+    });
+}
+
+// Função para salvar os dados no Supabase
+async function salvarDadosNoSupabase(dados) {
+    const { data: { user } } = await supabase.auth.getUser();
+    const statusElem = document.getElementById("csvStatus");
+
+    // Adiciona o ID do usuário a cada dado carregado
+    const dadosComUsuario = dados.map(dado => ({
+        ...dado,
+        user_id: user.id,
+        data_hora: new Date().toISOString() // Adiciona a data/hora atual se necessário
+    }));
+
+    const { error } = await supabase
+        .from('dados_ambientais')
+        .insert(dadosComUsuario);
+
+    if (error) {
+        console.error("Erro ao salvar dados no Supabase:", error);
+        statusElem.innerText = "Erro ao carregar dados no Supabase.";
+    } else {
+        statusElem.innerText = "Dados carregados com sucesso!";
+        fileInput.value = ""; // Limpa o campo de arquivo após o upload
+        carregarDadosAmbientais(); // Atualiza os dados na interface
+    }
+}
+
 // Inicializa o código apenas após o carregamento do DOM
 document.addEventListener("DOMContentLoaded", () => {
     exibirNomeUsuario();
@@ -143,6 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const exportButton = document.getElementById("export-pdf");
     const logoutButton = document.getElementById("logout-button");
+    const uploadCsvButton = document.getElementById("uploadCsvButton");
 
     if (exportButton) {
         exportButton.addEventListener("click", exportToPDF);
@@ -150,5 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (logoutButton) {
         logoutButton.addEventListener("click", logoutUser);
+    }
+
+    if (uploadCsvButton) {
+        uploadCsvButton.addEventListener("click", processarCSV);
     }
 });

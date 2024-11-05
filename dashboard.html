@@ -54,6 +54,7 @@
             <!-- Tabela de Dados Ambientais -->
             <section class="dados-tabela">
                 <h2>Dados Ambientais</h2>
+                <p id="ultima-atualizacao">Última Atualização: --</p> <!-- Seção de última atualização -->
                 <table>
                     <thead>
                         <tr>
@@ -84,5 +85,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
     <script src="app.js"></script>
+
+    <script>
+        function atualizarUltimaAtualizacao() {
+            const agora = new Date();
+            const dataFormatada = agora.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+            document.getElementById('ultima-atualizacao').textContent = `Última Atualização: ${dataFormatada}`;
+        }
+
+        // Chama a função correta após o carregamento dos dados
+        document.addEventListener('DOMContentLoaded', () => {
+            // Chama a função de carregar dados e depois atualiza a última atualização
+            carregarDadosAmbientais(); // Função correta para carregar dados
+            atualizarUltimaAtualizacao();
+        });
+    </script>
 </body>
 </html>
