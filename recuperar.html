@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperar Senha | AmbIn</title>
+  <link rel="shortcut icon" href="assets/images/logo/LogoIcon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="assets/css/animate.css" />
+  <link rel="stylesheet" href="assets/css/tailwind.css" />
+
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Verifique se o Supabase foi carregado corretamente
+      if (typeof supabase === 'undefined') {
+        console.error("Erro: a biblioteca do Supabase não foi carregada.");
+        return;
+      }
+
+      // Configuração do Supabase
+      const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE"; // Substitua pelo valor completo da sua API Key
+
+      // Inicialização do cliente Supabase
+      window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      console.log('Supabase inicializado com sucesso.');
+    });
+  </script>
+
+  <!-- ==== WOW JS ==== -->
+  <script src="assets/js/wow.min.js"></script>
+  <script>
+    new WOW().init();
+  </script>
+</head>
+
+<body>
+  <div class="ud-header left-0 top-0 z-40 flex w-full items-center bg-transparent lg:mb-32 mb-20">
+    <div class="container">
+      <div class="relative -mx-4 flex items-center justify-between">
+        <div class="w-60 max-w-full px-4">
+          <a href="index.html" class="navbar-logo block w-full py-5">
+            <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="header-logo w-full" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Forms Section Start -->
+  <section class="bg-[#F4F7FF] py-14 lg:py-20 dark:bg-dark lg:mt-20 mt-10">
+    <div class="container">
+      <div class="flex flex-wrap -mx-4">
+        <div class="w-full px-4">
+          <div
+            class="wow fadeInUp relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white dark:bg-dark-2 py-14 px-8 text-center sm:px-12 md:px-[60px]"
+            data-wow-delay=".15s">
+            <div class="mb-10 text-center">
+              <a href="javascript:void(0)" class="mx-auto inline-block max-w-[160px]">
+                <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="dark:hidden" />
+                <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="hidden dark:block" />
+              </a>
+            </div>
+            <form id="resetPasswordForm">
+              <div class="mb-[22px]">
+                <input type="email" id="resetEmail" placeholder="Digite seu email"
+                  class="w-full px-5 py-3 text-base transition bg-transparent border rounded-md outline-none border-stroke dark:border-dark-3 text-body-color dark:text-dark-6 placeholder:text-dark-6 focus:border-primary dark:focus:border-primary focus-visible:shadow-none" />
+              </div>
+              <div class="mb-9">
+                <button type="button" onclick="resetPassword()"
+                  class="w-full px-5 py-3 text-base text-white transition duration-300 ease-in-out border rounded-md cursor-pointer border-primary bg-primary hover:bg-blue-dark">
+                  Enviar Link de Recuperação
+                </button>
+              </div>
+            </form>
+            <p class="text-base text-body-secondary">
+              Lembrou sua senha?
+              <a href="signin.html" class="text-primary hover:underline">
+                Entrar
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ====== Forms Section End -->
+
+  <!-- Script de recuperação de senha com Supabase -->
+  <script>
+    async function resetPassword() {
+      const email = document.getElementById('resetEmail').value;
+
+      if (!email) {
+        alert('Por favor, insira seu email.');
+        return;
+      }
+
+      // Verifica se o Supabase está inicializado antes de tentar o envio do link de recuperação
+      if (typeof supabase === 'undefined') {
+        console.error("Erro: Supabase não foi inicializado.");
+        alert("Erro: O Supabase não está disponível.");
+        return;
+      }
+
+      // Envia o link de redefinição de senha com o Supabase
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+
+      if (error) {
+        alert('Erro: ' + error.message);
+      } else {
+        alert('Um link de recuperação de senha foi enviado para o seu email.');
+      }
+    }
+  </script>
+
+  <!-- Scripts adicionais -->
+  <script src="assets/js/main.js"></script>
+</body>
+
+</html>
