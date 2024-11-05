@@ -14,12 +14,6 @@
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async function () {
-      // Verifique se o Supabase foi carregado corretamente
-      if (typeof supabase === 'undefined') {
-        console.error("Erro: a biblioteca do Supabase não foi carregada.");
-        return;
-      }
-
       // Configuração do Supabase
       const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE"; // Substitua pelo valor completo da sua API Key
@@ -31,10 +25,14 @@
       // Captura o token da URL
       const urlParams = new URLSearchParams(window.location.hash.substring(1));
       const accessToken = urlParams.get('access_token');
+      const refreshToken = urlParams.get('refresh_token');
 
-      // Se o token de acesso existir, configura a sessão
-      if (accessToken) {
-        const { error } = await supabase.auth.setSession({ access_token: accessToken });
+      // Configura a sessão se os tokens estiverem presentes
+      if (accessToken && refreshToken) {
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken
+        });
 
         if (error) {
           console.error("Erro ao configurar a sessão:", error);
