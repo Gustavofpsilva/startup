@@ -27,6 +27,17 @@
       // Inicialização do cliente Supabase
       window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       console.log('Supabase inicializado com sucesso.');
+      
+      // Captura o token da URL
+      const urlParams = new URLSearchParams(window.location.hash.substring(1));
+      const accessToken = urlParams.get('access_token');
+
+      // Se o token existir, atualiza o usuário autenticado
+      if (accessToken) {
+        supabase.auth.setSession({ access_token: accessToken });
+      } else {
+        alert("Token de recuperação inválido ou ausente.");
+      }
     });
   </script>
 
@@ -100,13 +111,6 @@
 
       if (newPassword !== confirmPassword) {
         alert('As senhas não coincidem.');
-        return;
-      }
-
-      // Verifica se o Supabase está inicializado antes de tentar a atualização da senha
-      if (typeof supabase === 'undefined') {
-        console.error("Erro: Supabase não foi inicializado.");
-        alert("Erro: O Supabase não está disponível.");
         return;
       }
 
