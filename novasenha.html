@@ -13,7 +13,7 @@
   <!-- Supabase -->
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', async function () {
       // Verifique se o Supabase foi carregado corretamente
       if (typeof supabase === 'undefined') {
         console.error("Erro: a biblioteca do Supabase não foi carregada.");
@@ -32,9 +32,16 @@
       const urlParams = new URLSearchParams(window.location.hash.substring(1));
       const accessToken = urlParams.get('access_token');
 
-      // Se o token existir, atualiza o usuário autenticado
+      // Se o token de acesso existir, configura a sessão
       if (accessToken) {
-        supabase.auth.setSession({ access_token: accessToken });
+        const { error } = await supabase.auth.setSession({ access_token: accessToken });
+
+        if (error) {
+          console.error("Erro ao configurar a sessão:", error);
+          alert("Erro ao configurar a sessão de recuperação de senha.");
+        } else {
+          console.log("Sessão de recuperação configurada com sucesso.");
+        }
       } else {
         alert("Token de recuperação inválido ou ausente.");
       }
