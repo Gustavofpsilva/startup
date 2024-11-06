@@ -5,25 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ambin - Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <!-- Barra lateral -->
         <aside class="sidebar">
             <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
-
             <div class="user-info">
-                <h3 id="sidebar-user-name">Usuário</h3> <!-- Nome do usuário logado -->
-                <p id="sidebar-user-email">email@exemplo.com</p> <!-- E-mail do usuário logado -->
+                <h3 id="sidebar-user-name">Usuário</h3>
+                <p id="sidebar-user-email">email@exemplo.com</p>
             </div>
-
             <nav>
                 <a href="dashboard.html" class="active"><i class="icon-dashboard"></i> <span>Dashboard</span></a>
                 <a href="cadastrar_dados.html">Cadastrar Dados</a>
                 <a href="analises.html">Análises</a>
                 <a href="#">Configurações</a>
             </nav>
-
             <div class="bottom-section">
                 <a href="#" class="logout" id="logout-button"><i class="icon-logout"></i> <span>Logout</span></a>
             </div>
@@ -55,6 +53,26 @@
                 <div class="card">
                     <h3>Localização</h3>
                     <p><span id="localizacao-value">--</span></p>
+                </div>
+            </section>
+
+            <!-- Seção de Gráficos -->
+            <section class="charts">
+                <div class="chart-row">
+                    <div class="chart">
+                        <canvas id="combinedChart"></canvas>
+                    </div>
+                    <div class="chart">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-row">
+                    <div class="chart">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    <div class="chart">
+                        <canvas id="pieChart"></canvas>
+                    </div>
                 </div>
             </section>
 
