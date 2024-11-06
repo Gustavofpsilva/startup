@@ -141,20 +141,31 @@ header .user-info {
 
 /* Estilos específicos para gráficos de barras */
 #barChart {
-    width: 120%;
+    width: 100%;
     height: 500px; /* Altura dos gráficos */
     border-radius: 5px;
     background-color: transparent; /* Remove o fundo */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
+/* Estilos específicos para gráficos de radar */
 #radarChart {
     width: 100%;
-    height: 600px; /* Aumenta a altura do gráfico de radar */
+    height: 500px; /* Altura dos gráficos */
     border-radius: 5px;
     background-color: transparent; /* Remove o fundo */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
+
+/* Estilos específicos para gráficos de bolha */
+#bubbleChart {
+    width: 100%;
+    height: 500px; /* Altura dos gráficos */
+    border-radius: 5px;
+    background-color: transparent; /* Remove o fundo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
 /* Tabela de Dados Ambientais */
 .dados-tabela {
     margin-top: 20px;

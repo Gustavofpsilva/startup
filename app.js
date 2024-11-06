@@ -83,6 +83,7 @@ async function carregarDadosAmbientais() {
     renderCombinedChart(totalData);
     renderBarChart(totalData);
     renderRadarChart(totalData);
+    renderBubbleChart(totalData); // Chama a função para renderizar o gráfico de bolha
 }
 
 // Função para exibir a tabela com paginação
@@ -212,7 +213,7 @@ function renderCombinedChart(data) {
     });
 }
 
-// Função para renderizar o novo gráfico de barras
+// Função para renderizar o gráfico de barras
 function renderBarChart(data) {
     if (data.length === 0) return; // Verifica se há dados
     new Chart(document.getElementById("barChart"), {
@@ -288,6 +289,49 @@ function renderRadarChart(data) {
                     suggestedMin: 0,
                     suggestedMax: 100
                 }
+            }
+        }
+    });
+}
+
+// Função para renderizar o gráfico de bolha
+function renderBubbleChart(data) {
+    if (data.length === 0) return; // Verifica se há dados
+
+    const bubbleChartCtx = document.getElementById("bubbleChart").getContext("2d");
+    const bubbleData = data.map(d => ({
+        x: d.umidade, // Eixo X
+        y: d.temperatura, // Eixo Y
+        r: parseInt(d.qualidade_ar) / 10 // Tamanho da bolha
+    }));
+
+    new Chart(bubbleChartCtx, {
+        type: "bubble",
+        data: {
+            datasets: [{
+                label: "Dados Ambientais",
+                data: bubbleData,
+                backgroundColor: "rgba(75, 192, 192, 0.6)",
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: "Umidade (%)"
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: "Temperatura (°C)"
+                    }
+                }
+            },
+            plugins: {
+                legend: { position: 'top' }
             }
         }
     });
