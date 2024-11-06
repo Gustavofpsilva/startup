@@ -148,6 +148,13 @@ header .user-info {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
+#radarChart {
+    width: 100%;
+    height: 600px; /* Aumenta a altura do gráfico de radar */
+    border-radius: 5px;
+    background-color: transparent; /* Remove o fundo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
 /* Tabela de Dados Ambientais */
 .dados-tabela {
     margin-top: 20px;
