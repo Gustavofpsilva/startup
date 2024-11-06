@@ -15,7 +15,7 @@
 .sidebar {
     width: 250px;
     background-color: #FFFFFF;
-    color: #fff;
+    color: #000000;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -42,7 +42,7 @@
 .user-info p {
     margin: 0;
     font-size: 14px;
-    color: #bbb;
+    color: #000000;
 }
 
 /* Estilos para o botão de logout */
@@ -51,7 +51,7 @@
 }
 
 .logout {
-    color: #fff;
+    color: #000000;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -68,13 +68,13 @@
     border-radius: 5px;
     border: none;
     background-color: #333;
-    color: #fff;
+    color: #cfd8e5;
 }
 
 nav a {
     display: flex;
     align-items: center;
-    color: #fff;
+    color: #000000;
     padding: 10px;
     text-decoration: none;
     border-radius: 5px;
@@ -85,10 +85,11 @@ nav a {
 nav a i {
     font-size: 18px;
     margin-right: 10px;
+    color: #ffffff;
 }
 
 nav a:hover, nav a.active {
-    background-color: #000000;
+    background-color: #760d33;
 }
 
 /* Estilos para o conteúdo principal */
@@ -102,7 +103,7 @@ main {
 /* Estilos para o botão de exportar como PDF no cabeçalho */
 header #export-pdf {
     padding: 10px 20px;
-    background-color: #3B82F6;
+    background-color: #eb9c20;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -115,7 +116,7 @@ header #export-pdf {
 }
 
 header #export-pdf:hover {
-    background-color: #2563EB;
+    background-color: #0c154f;
 }
 
 /* Estilos para os cartões de estatísticas */
@@ -128,7 +129,7 @@ header #export-pdf:hover {
 
 .card {
     flex: 1;
-    background-color: #3B82F6;
+    background-color: #0c154f;
     color: #fff;
     padding: 15px;
     text-align: center;
@@ -214,7 +215,7 @@ td, th {
 }
 
 .pagination-button {
-    background-color: #007bff;
+    background-color: #0c154f;
     color: white;
     padding: 6px 12px;
     border: none;
@@ -230,7 +231,7 @@ td, th {
 }
 
 .pagination-button:hover {
-    background-color: #0056b3;
+    background-color: #0c154f;
 }
 
 .pagination-button:focus {
