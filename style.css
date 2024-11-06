@@ -95,7 +95,7 @@ nav a:hover, nav a.active {
 main {
     flex: 1;
     padding: 20px;
-    background-color: #F5F7FA;
+    background-color: #cfd8e5;
     overflow-y: auto;
 }
 
