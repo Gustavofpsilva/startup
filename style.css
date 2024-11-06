@@ -79,7 +79,7 @@ nav a {
     text-decoration: none;
     border-radius: 5px;
     margin: 5px 0;
-    transition: background 0.3s;
+    transition: background 0.3s, color 0.3s;
 }
 
 nav a i {
@@ -90,6 +90,7 @@ nav a i {
 
 nav a:hover, nav a.active {
     background-color: #760d33;
+    color: #ffffff; /* Texto branco ao passar o mouse */
 }
 
 /* Estilos para o conteúdo principal */
