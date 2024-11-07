@@ -153,44 +153,56 @@ async function logoutUser() {
 async function carregarCSV() {
     const input = document.getElementById("csv");
     const file = input.files[0];
+    const loadingIndicator = document.getElementById("loading-indicator");
 
     if (!file) {
         alert("Por favor, selecione um arquivo CSV.");
         return;
     }
 
+    // Mostra o indicador de carregamento
+    loadingIndicator.style.display = "block";
+
     const reader = new FileReader();
     reader.onload = async (event) => {
         const text = event.target.result;
         const rows = text.split("\n").map(row => row.split(","));
 
-        for (let i = 1; i < rows.length; i++) {
-            const [data_hora, localizacao, temperatura, umidade, qualidade_ar] = rows[i].map(item => item.trim());
-            const dataValida = new Date(data_hora);
-            if (isNaN(dataValida.getTime())) {
-                console.error("Data inválida:", data_hora);
-                continue;
+        try {
+            for (let i = 1; i < rows.length; i++) {
+                const [data_hora, localizacao, temperatura, umidade, qualidade_ar] = rows[i].map(item => item.trim());
+                const dataValida = new Date(data_hora);
+                if (isNaN(dataValida.getTime())) {
+                    console.error("Data inválida:", data_hora);
+                    continue;
+                }
+
+                const { error } = await supabase
+                    .from('dados_ambientais')
+                    .insert([{ 
+                        user_id: (await supabase.auth.getUser()).data.user.id,
+                        data_hora: dataValida.toISOString(),
+                        localizacao,
+                        temperatura: parseFloat(temperatura),
+                        umidade: parseFloat(umidade),
+                        qualidade_ar: parseInt(qualidade_ar)
+                    }]);
+
+                if (error) {
+                    console.error("Erro ao inserir dados:", error);
+                } else {
+                    console.log("Dados inseridos com sucesso:", { data_hora, localizacao, temperatura, umidade, qualidade_ar });
+                }
             }
 
-            const { error } = await supabase
-                .from('dados_ambientais')
-                .insert([{ 
-                    user_id: (await supabase.auth.getUser()).data.user.id,
-                    data_hora: dataValida.toISOString(),
-                    localizacao,
-                    temperatura: parseFloat(temperatura),
-                    umidade: parseFloat(umidade),
-                    qualidade_ar: parseInt(qualidade_ar)
-                }]);
+            await carregarDadosAmbientais();
 
-            if (error) {
-                console.error("Erro ao inserir dados:", error);
-            } else {
-                console.log("Dados inseridos com sucesso:", { data_hora, localizacao, temperatura, umidade, qualidade_ar });
-            }
+        } catch (error) {
+            console.error("Erro ao processar CSV:", error);
+        } finally {
+            // Esconde o indicador de carregamento, independentemente do sucesso ou falha
+            loadingIndicator.style.display = "none";
         }
-
-        await carregarDadosAmbientais();
     };
 
     reader.readAsText(file);

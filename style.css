@@ -226,7 +226,7 @@ button {
 }
 
 button:hover {
-    background-color: #eb9c20;
+    background-color: #36454f;
 }
 
 /* Seção de Gráficos */
@@ -334,4 +334,24 @@ button:hover {
 #page-info {
     font-size: 0.9em;
     color: #777;
+}
+
+/* Indicador de Carregamento */
+#loading-indicator {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid #32448B;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Fica acima de outros elementos */
+}
+
+#loading-indicator p {
+    font-weight: bold;
+    color: #32448B;
 }

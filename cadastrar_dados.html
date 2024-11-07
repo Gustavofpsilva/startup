@@ -7,6 +7,22 @@
     <link rel="stylesheet" href="style.css">
     <!-- Incluindo a biblioteca do Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <style>
+        /* Estilo para o indicador de carregamento */
+        #loading-indicator {
+            display: none; /* Esconde o indicador por padrão */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            text-align: center; /* Centraliza o texto */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -30,31 +46,32 @@
 
         <!-- Conteúdo principal -->
         <main>
-
-
             <form id="data-form">
                 <div class="form-group">
                     <label for="localizacao">Localização:</label>
-                    <input type="text" id="localizacao" placeholder="Ex: Latitude, Longitude">
+                    <input type="text" id="localizacao" placeholder="Ex: Latitude, Longitude" required>
                 </div>
                 <div class="form-group">
                     <label for="temperatura">Temperatura (°C):</label>
-                    <input type="number" id="temperatura" placeholder="Temperatura">
+                    <input type="number" id="temperatura" placeholder="Temperatura" required>
                 </div>
                 <div class="form-group">
                     <label for="umidade">Umidade (%):</label>
-                    <input type="number" id="umidade" placeholder="Umidade">
+                    <input type="number" id="umidade" placeholder="Umidade" required>
                 </div>
                 <div class="form-group">
                     <label for="qualidade-ar">Qualidade do Ar:</label>
-                    <input type="text" id="qualidade-ar" placeholder="Qualidade do ar">
+                    <input type="text" id="qualidade-ar" placeholder="Qualidade do ar" required>
                 </div>
                 <div class="form-group">
                     <label for="csv">Carregar dados via CSV:</label>
-                    <input type="file" id="csv" accept=".csv">
+                    <input type="file" id="csv" accept=".csv" required>
                 </div>
                 <button type="button" id="carregar-csv">Carregar CSV</button>
             </form>
+
+            <!-- Indicador de carregamento -->
+            <div id="loading-indicator" aria-live="polite">Carregando...</div>
         </main>
     </div>
     <script src="app.js"></script> <!-- Certifique-se de que este script é carregado após a biblioteca do Supabase -->
