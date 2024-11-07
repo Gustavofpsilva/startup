@@ -3,72 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ambin - Cadastro de dados</title>
+    <title>Ambin - Cadastro de Dados</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Incluindo a biblioteca do Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
     <div class="container">
         <!-- Barra lateral -->
         <aside class="sidebar">
-            <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
-
-            <div class="user-info">
-                <h3 id="sidebar-user-name">Usuário</h3> <!-- Nome do usuário logado -->
-                <p id="sidebar-user-email">email@exemplo.com</p> <!-- E-mail do usuário logado -->
+            <div class="sidebar-header">
+                <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
+                <div class="user-info">
+                    <h3 id="sidebar-user-name">Usuário</h3>
+                    <p id="sidebar-user-email">email@exemplo.com</p>
+                </div>
             </div>
-
             <nav>
                 <a href="dashboard.html">Dashboard</a>
                 <a href="cadastrar_dados.html" class="active">Cadastrar Dados</a>
-                <a href="analises.html">Análises</a>
-                <a href="#">Configurações</a>
             </nav>
-
             <div class="bottom-section">
-                <a href="#" class="logout" id="logout-button"><i class="icon-logout"></i> <span>Logout</span></a>
+                <a href="#" class="logout" id="logout-button">Logout</a>
             </div>
         </aside>
 
         <!-- Conteúdo principal -->
         <main>
-            <!-- Cabeçalho -->
-            <header>
-                <!-- Campo de busca removido -->
-            </header>
 
-            <!-- Formulário de Cadastro de Dados Ambientais -->
-            <section class="dados-ambientais">
-                <h2>Cadastro de Dados</h2>
-                <form id="dadosAmbientaisForm">
+
+            <form id="data-form">
+                <div class="form-group">
                     <label for="localizacao">Localização:</label>
-                    <input type="text" id="localizacao" placeholder="Ex: Latitude, Longitude" required>
-                    
+                    <input type="text" id="localizacao" placeholder="Ex: Latitude, Longitude">
+                </div>
+                <div class="form-group">
                     <label for="temperatura">Temperatura (°C):</label>
-                    <input type="number" id="temperatura" placeholder="Temperatura" required>
-                    
+                    <input type="number" id="temperatura" placeholder="Temperatura">
+                </div>
+                <div class="form-group">
                     <label for="umidade">Umidade (%):</label>
-                    <input type="number" id="umidade" placeholder="Umidade" required>
-                    
-                    <label for="qualidade_ar">Qualidade do Ar:</label>
-                    <input type="text" id="qualidade_ar" placeholder="Qualidade do ar" required>
-                    
-                    <button type="submit">Enviar Dados</button>
-                </form>
-                
-                <!-- Seção para upload de CSV -->
-                <h3>Carregar dados via CSV</h3>
-                <input type="file" id="csvFileInput" accept=".csv">
-                <button id="uploadCsvButton">Carregar CSV</button>
-                <p id="csvStatus"></p>
-                
-                <p id="status"></p>
-            </section>
+                    <input type="number" id="umidade" placeholder="Umidade">
+                </div>
+                <div class="form-group">
+                    <label for="qualidade-ar">Qualidade do Ar:</label>
+                    <input type="text" id="qualidade-ar" placeholder="Qualidade do ar">
+                </div>
+                <div class="form-group">
+                    <label for="csv">Carregar dados via CSV:</label>
+                    <input type="file" id="csv" accept=".csv">
+                </div>
+                <button type="button" id="carregar-csv">Carregar CSV</button>
+            </form>
         </main>
     </div>
-
-    <!-- Scripts -->
-    <script src="https://unpkg.com/@supabase/supabase-js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js"></script> <!-- Certifique-se de que este script é carregado após a biblioteca do Supabase -->
 </body>
 </html>

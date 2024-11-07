@@ -19,30 +19,48 @@ body {
 /* Barra lateral */
 .sidebar {
     width: 250px;
-    background-color: #fafdff;
+    background-color: #fff; /* Mudei para branco para um visual mais limpo */
     color: rgb(160, 160, 160);
     padding: 20px;
+    border-right: 1px solid #ddd; /* Adicionando uma borda direita */
+}
+
+/* Estilos do cabeçalho da sidebar */
+.sidebar-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .profile-img {
     width: 100%;
-    max-width: 150px;
-    margin-bottom: 20px;
+    max-width: 80px; /* Ajuste no tamanho da imagem */
+    border-radius: 50%; /* Estilo circular para a imagem do perfil */
 }
 
-.user-info h3, .user-info p {
-    margin: 5px 0;
+.user-info h3 {
+    margin: 10px 0 5px;
+    font-size: 1.2em; /* Aumentando o tamanho da fonte */
 }
 
 nav a {
     display: block;
     color: rgb(0, 0, 0);
-    padding: 10px 0;
+    padding: 10px 15px; /* Ajuste de padding para mais espaço */
+    border-radius: 5px; /* Bordas arredondadas */
+    margin-bottom: 5px; /* Espaço entre os links */
     text-decoration: none;
+    transition: background-color 0.3s; /* Suave transição de cor */
 }
 
-nav a.active, nav a:hover {
-    background-color: #760d33;
+nav a:hover {
+    background-color: #32448B; /* Cor de fundo ao passar o mouse */
+    color: white;
+}
+
+nav a.active {
+    background-color: #1c37a8; /* Cor de fundo do link ativo */
     color: white;
 }
 
@@ -50,9 +68,18 @@ nav a.active, nav a:hover {
     margin-top: auto;
 }
 
+/* Logout estilizado */
 .logout {
     color: #ff6b6b;
     text-decoration: none;
+    padding: 10px 15px; /* Ajuste de padding */
+    border-radius: 5px;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.logout:hover {
+    background-color: rgba(255, 107, 107, 0.1); /* Efeito de hover para logout */
 }
 
 /* Conteúdo principal */
@@ -115,6 +142,46 @@ header .user-info {
     font-weight: bold;
 }
 
+/* Estilos do Formulário de Cadastro */
+#data-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Espaço inferior do formulário */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #32448B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #5c0a27;
+}
+
 /* Seção de Gráficos */
 .charts {
     display: flex;
@@ -131,34 +198,12 @@ header .user-info {
 }
 
 /* Estilos específicos para gráficos de linha */
-#combinedChart {
-    width: 100%;
-    height: 500px; /* Altura dos gráficos */
-    border-radius: 5px;
-    background-color: transparent; /* Remove o fundo */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
-/* Estilos específicos para gráficos de barras */
-#barChart {
-    width: 100%;
-    height: 500px; /* Altura dos gráficos */
-    border-radius: 5px;
-    background-color: transparent; /* Remove o fundo */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
-/* Estilos específicos para gráficos de radar */
-#radarChart {
-    width: 100%;
-    height: 500px; /* Altura dos gráficos */
-    border-radius: 5px;
-    background-color: transparent; /* Remove o fundo */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
-/* Estilos específicos para gráficos de bolha */
-#bubbleChart {
+#combinedChart,
+#barChart,
+#radarChart,
+#bubbleChart,
+#pieChart,
+#donutChart {
     width: 100%;
     height: 500px; /* Altura dos gráficos */
     border-radius: 5px;
@@ -177,7 +222,7 @@ header .user-info {
     color: #333;
 }
 
-#ultima-atualizacao {
+#ultima_atualizacao {
     font-size: 0.9em;
     color: #777;
     margin-bottom: 10px;
@@ -189,10 +234,11 @@ header .user-info {
     background-color: #ffffff;
     border-radius: 5px;
     overflow: hidden;
-    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
-.dados-tabela th, .dados-tabela td {
+.dados-tabela th,
+.dados-tabela td {
     padding: 10px;
     border: 1px solid #ddd;
     text-align: left;
@@ -209,16 +255,9 @@ header .user-info {
     color: #555;
 }
 
-/* Controles de Paginação */
-#pagination-controls {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    margin-top: 10px;
-}
-
+/* Estilo dos botões de paginação */
 .pagination-button {
-    background-color: #760d33;
+    background-color: #1c37a8;
     color: white;
     border: none;
     padding: 5px 10px;
@@ -227,7 +266,7 @@ header .user-info {
 }
 
 .pagination-button:hover {
-    background-color: #5c0a27;
+    background-color: #32448B;
 }
 
 #page-info {

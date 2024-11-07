@@ -11,20 +11,15 @@
     <div class="container">
         <!-- Barra lateral -->
         <aside class="sidebar">
-            <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
-            <div class="user-info">
+            <div class="sidebar-header">
+                <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
                 <h3 id="sidebar-user-name">Usuário</h3>
-                <p id="sidebar-user-email">email@exemplo.com</p>
             </div>
             <nav>
-                <a href="dashboard.html" class="active"><i class="icon-dashboard"></i> <span>Dashboard</span></a>
+                <a href="dashboard.html" class="active"><i class="icon-dashboard"></i> Dashboard</a>
                 <a href="cadastrar_dados.html">Cadastrar Dados</a>
-                <a href="analises.html">Análises</a>
-                <a href="#">Configurações</a>
+                <a href="#" class="logout" id="logout-button">Logout</a>
             </nav>
-            <div class="bottom-section">
-                <a href="#" class="logout" id="logout-button"><i class="icon-logout"></i> <span>Logout</span></a>
-            </div>
         </aside>
 
         <!-- Conteúdo principal -->
@@ -78,8 +73,8 @@
 
             <!-- Tabela de Dados Ambientais -->
             <section class="dados-tabela">
-                <h2></h2>
-                <p id="ultima_atualizacao">Última Atualização: --</p>
+                <h2>Dados Ambientais</h2>
+                <p id="ultima-atualizacao">Última Atualização: --</p>
                 <table>
                     <thead>
                         <tr>
@@ -98,7 +93,7 @@
                 <!-- Controles de Paginação -->
                 <div id="pagination-controls">
                     <button class="pagination-button previous-button" onclick="prevPage()">&#8592; Anterior</button>
-                    <span id="page-info"></span>
+                    <span id="page-info">Página 1 de 1</span>
                     <button class="pagination-button next-button" onclick="nextPage()">Próximo &#8594;</button>
                 </div>
             </section>
