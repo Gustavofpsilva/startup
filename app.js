@@ -32,6 +32,12 @@ function atualizarEstatisticas(dados) {
     const qualidadeArValue = document.getElementById("qualidade-ar-value");
     const localizacaoValue = document.getElementById("localizacao-value");
 
+    // Verifica se todos os elementos de estatísticas estão presentes
+    if (!tempValue || !humidadeValue || !qualidadeArValue || !localizacaoValue) {
+        console.warn("Elementos de estatísticas não encontrados na página.");
+        return;
+    }
+
     if (dados.length > 0) {
         const ultimoDado = dados[0];
         tempValue.innerText = `${ultimoDado.temperatura}`;

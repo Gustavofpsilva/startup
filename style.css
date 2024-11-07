@@ -46,13 +46,13 @@ body {
 .sidebar-header {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
     margin-bottom: 20px;
 }
 
 .profile-img {
     width: 100%;
-    max-width: 140px;
+    max-width: 180px;
     border-radius: 50%;
     margin-bottom: 10px;
 }
@@ -77,12 +77,12 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #32448B;
+    background-color: #5c7bb1;
     color: #fff;
 }
 
 nav a.active {
-    background-color: #1c37a8;
+    background-color: #5c7bb1;
     color: white;
     font-weight: bold;
 }
@@ -318,7 +318,7 @@ button:hover {
 }
 
 .pagination-button {
-    background-color: #1c37a8;
+    background-color: #5c7bb1;
     color: white;
     border: none;
     padding: 5px 10px;
