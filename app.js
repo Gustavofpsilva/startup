@@ -34,8 +34,8 @@ function atualizarEstatisticas(dados) {
 
     if (dados.length > 0) {
         const ultimoDado = dados[0];
-        tempValue.innerText = `${ultimoDado.temperatura} °C`;
-        humidadeValue.innerText = `${ultimoDado.umidade} %`;
+        tempValue.innerText = `${ultimoDado.temperatura} `;
+        humidadeValue.innerText = `${ultimoDado.umidade} `;
         qualidadeArValue.innerText = ultimoDado.qualidade_ar;
         localizacaoValue.innerText = ultimoDado.localizacao;
     }
@@ -207,8 +207,10 @@ function renderCharts() {
 
 // Função para renderizar o gráfico combinado de linhas (temperatura, umidade e qualidade do ar)
 function renderCombinedChart(data) {
-    if (data.length === 0) return; // Verifica se há dados
+    if (data.length === 0) return;
     const ctx = document.getElementById("combinedChart").getContext("2d");
+    ctx.canvas.style.backgroundColor = "white"; // Fundo branco
+
     new Chart(ctx, {
         type: "line",
         data: {
@@ -218,7 +220,7 @@ function renderCombinedChart(data) {
                     label: "Temperatura",
                     data: data.map(d => d.temperatura),
                     borderColor: "rgba(255, 99, 132, 1)",
-                    backgroundColor: "transparent", // Alterado para transparente
+                    backgroundColor: "rgba(255, 255, 255, 1)",
                     fill: true,
                     tension: 0.4,
                 },
@@ -226,7 +228,7 @@ function renderCombinedChart(data) {
                     label: "Umidade",
                     data: data.map(d => d.umidade),
                     borderColor: "rgba(54, 162, 235, 1)",
-                    backgroundColor: "transparent", // Alterado para transparente
+                    backgroundColor: "transparent",
                     fill: true,
                     tension: 0.4,
                 },
@@ -234,7 +236,7 @@ function renderCombinedChart(data) {
                     label: "Qualidade do Ar",
                     data: data.map(d => parseInt(d.qualidade_ar)),
                     borderColor: "rgba(75, 192, 192, 1)",
-                    backgroundColor: "transparent", // Alterado para transparente
+                    backgroundColor: "transparent",
                     fill: true,
                     tension: 0.4,
                 }
@@ -244,102 +246,69 @@ function renderCombinedChart(data) {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: {
-                    ticks: {
-                        maxTicksLimit: 10
-                    }
-                },
-                y: {
-                    suggestedMin: 0,
-                    suggestedMax: 100,
-                    beginAtZero: true
-                }
+                x: { ticks: { maxTicksLimit: 10 } },
+                y: { suggestedMin: 0, suggestedMax: 100, beginAtZero: true }
             },
-            plugins: {
-                legend: { position: 'top' }
-            }
+            plugins: { legend: { position: 'top' } }
         }
     });
 }
 
 // Função para renderizar o gráfico de barras
 function renderBarChart(data) {
-    if (data.length === 0) return; // Verifica se há dados
+    if (data.length === 0) return;
     const ctx = document.getElementById("barChart").getContext("2d");
+    ctx.canvas.style.backgroundColor = "white"; // Fundo branco
+
     new Chart(ctx, {
         type: "bar",
         data: {
             labels: data.map(d => new Date(d.data_hora).toLocaleDateString()),
             datasets: [
-                {
-                    label: "Temperatura",
-                    data: data.map(d => d.temperatura),
-                    backgroundColor: "rgba(255, 99, 132, 0.6)",
-                },
-                {
-                    label: "Umidade",
-                    data: data.map(d => d.umidade),
-                    backgroundColor: "rgba(54, 162, 235, 0.6)",
-                },
-                {
-                    label: "Qualidade do Ar",
-                    data: data.map(d => parseInt(d.qualidade_ar)),
-                    backgroundColor: "rgba(75, 192, 192, 0.6)",
-                }
+                { label: "Temperatura", data: data.map(d => d.temperatura), backgroundColor: "rgba(255, 99, 132, 0.6)" },
+                { label: "Umidade", data: data.map(d => d.umidade), backgroundColor: "rgba(54, 162, 235, 0.6)" },
+                { label: "Qualidade do Ar", data: data.map(d => parseInt(d.qualidade_ar)), backgroundColor: "rgba(75, 192, 192, 0.6)" }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: {
-                    ticks: {
-                        maxTicksLimit: 10
-                    }
-                },
-                y: {
-                    suggestedMin: 0,
-                    suggestedMax: 100,
-                    beginAtZero: true
-                }
+                x: { ticks: { maxTicksLimit: 10 } },
+                y: { suggestedMin: 0, suggestedMax: 100, beginAtZero: true }
             },
-            plugins: {
-                legend: { position: 'top' }
-            }
+            plugins: { legend: { position: 'top' } }
         }
     });
 }
 
 // Função para renderizar o gráfico de radar
 function renderRadarChart(data) {
-    if (data.length === 0) return; // Verifica se há dados
+    if (data.length === 0) return;
     const ctx = document.getElementById("radarChart").getContext("2d");
+    ctx.canvas.style.backgroundColor = "white"; // Fundo branco
+
     new Chart(ctx, {
         type: "radar",
         data: {
             labels: ["Temperatura", "Umidade", "Qualidade do Ar"],
-            datasets: [
-                {
-                    label: "Média dos Dados",
-                    data: [
-                        data.reduce((acc, d) => acc + d.temperatura, 0) / data.length,
-                        data.reduce((acc, d) => acc + d.umidade, 0) / data.length,
-                        data.reduce((acc, d) => acc + parseInt(d.qualidade_ar), 0) / data.length
-                    ],
-                    backgroundColor: "rgba(54, 162, 235, 0.3)",
-                    borderColor: "rgba(54, 162, 235, 1)",
-                    borderWidth: 2
-                }
-            ]
+            datasets: [{
+                label: "Média dos Dados",
+                data: [
+                    data.reduce((acc, d) => acc + d.temperatura, 0) / data.length,
+                    data.reduce((acc, d) => acc + d.umidade, 0) / data.length,
+                    data.reduce((acc, d) => acc + parseInt(d.qualidade_ar), 0) / data.length
+                ],
+                backgroundColor: "rgba(54, 162, 235, 0.3)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 2
+            }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                r: {
-                    suggestedMin: 0,
-                    suggestedMax: 100
-                }
+                r: { suggestedMin: 0, suggestedMax: 100 }
             }
         }
     });
@@ -347,13 +316,14 @@ function renderRadarChart(data) {
 
 // Função para renderizar o gráfico de bolha
 function renderBubbleChart(data) {
-    if (data.length === 0) return; // Verifica se há dados
-
+    if (data.length === 0) return;
     const bubbleChartCtx = document.getElementById("bubbleChart").getContext("2d");
+    bubbleChartCtx.canvas.style.backgroundColor = "white"; // Fundo branco
+
     const bubbleData = data.map(d => ({
-        x: d.umidade, // Eixo X
-        y: d.temperatura, // Eixo Y
-        r: parseInt(d.qualidade_ar) / 60 // Tamanho da bolha
+        x: d.umidade,
+        y: d.temperatura,
+        r: parseInt(d.qualidade_ar) / 60
     }));
 
     new Chart(bubbleChartCtx, {
@@ -368,45 +338,24 @@ function renderBubbleChart(data) {
         options: {
             responsive: true,
             scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: "Umidade (%)"
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: "Temperatura (°C)"
-                    }
-                }
+                x: { title: { display: true, text: "Umidade (%)" } },
+                y: { title: { display: true, text: "Temperatura (°C)" } }
             },
-            plugins: {
-                legend: { position: 'top' }
-            }
+            plugins: { legend: { position: 'top' } }
         }
     });
 }
 
 // Inicializa o código apenas após o carregamento do DOM
 document.addEventListener("DOMContentLoaded", () => {
-    exibirNomeUsuario(); // Chama a função para mostrar o nome do usuário
-    carregarDadosAmbientais(); // Carrega dados ao iniciar
+    exibirNomeUsuario();
+    carregarDadosAmbientais();
 
     const exportButton = document.getElementById("export-pdf");
     const logoutButton = document.getElementById("logout-button");
-    const csvInput = document.getElementById("csv"); // Adicionando o input CSV
+    const csvInput = document.getElementById("csv");
 
-    if (exportButton) {
-        exportButton.addEventListener("click", exportToPDF);
-    }
-
-    if (logoutButton) {
-        logoutButton.addEventListener("click", logoutUser);
-    }
-
-    if (csvInput) {
-        // Adicionando o evento ao input de arquivo CSV
-        csvInput.addEventListener("change", carregarCSV);
-    }
+    if (exportButton) exportButton.addEventListener("click", exportToPDF);
+    if (logoutButton) logoutButton.addEventListener("click", logoutUser);
+    if (csvInput) csvInput.addEventListener("change", carregarCSV);
 });
