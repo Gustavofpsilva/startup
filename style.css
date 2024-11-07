@@ -7,22 +7,39 @@
 }
 
 body {
-    background-color: #ffffff; /* Cinza claro */
+    background-color: #ffffff;
     color: #333;
 }
 
 .container {
     display: flex;
     height: 100vh;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+    }
 }
 
 /* Barra lateral */
 .sidebar {
-    width: 250px;
+    width: 100%;
     background-color: #fff;
-    color: rgb(160, 160, 160);
+    color: #333;
     padding: 20px;
     border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+    }
 }
 
 /* Estilos do cabeçalho da sidebar */
@@ -35,51 +52,64 @@ body {
 
 .profile-img {
     width: 100%;
-    max-width: 200px;
+    max-width: 140px;
     border-radius: 50%;
+    margin-bottom: 10px;
 }
 
 .user-info h3 {
-    margin: 10px 0 5px;
+    color: #333;
     font-size: 1.2em;
+    margin-top: 10px;
 }
 
+/* Links de navegação */
 nav a {
     display: block;
-    color: rgb(0, 0, 0);
+    color: #333;
     padding: 10px 15px;
     border-radius: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     text-decoration: none;
     transition: background-color 0.3s;
+    font-weight: 500;
+    font-size: 1em;
 }
 
 nav a:hover {
     background-color: #32448B;
-    color: white;
+    color: #fff;
 }
 
 nav a.active {
     background-color: #1c37a8;
     color: white;
-}
-
-.bottom-section {
-    margin-top: auto;
+    font-weight: bold;
 }
 
 /* Logout estilizado */
+.bottom-section {
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .logout {
     color: #ff6b6b;
     text-decoration: none;
     padding: 10px 15px;
     border-radius: 5px;
-    display: block;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: center;
     transition: background-color 0.3s;
+    font-weight: bold;
 }
 
 .logout:hover {
-    background-color: rgba(255, 107, 107, 0.1);
+    background-color: rgba(255, 107, 107, 0.2);
 }
 
 /* Conteúdo principal */
@@ -89,37 +119,47 @@ main {
     overflow-y: auto;
 }
 
-/* Cabeçalho */
+@media (min-width: 1440px) {
+    main {
+        padding: 40px; /* Aumenta o padding para grandes telas */
+        max-width: 1600px;
+        margin: 0 auto; /* Centraliza o conteúdo */
+    }
+}
+
+/* Estilos do cabeçalho */
 header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-direction: column;
 }
 
-header .user-info {
-    display: flex;
-    align-items: center;
-}
-
-#export-pdf {
-    padding: 8px 15px;
-    background-color: #eb9c20;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#export-pdf:hover {
-    background-color: #36454f;
+@media (min-width: 768px) {
+    header {
+        flex-direction: row;
+    }
 }
 
 /* Cartões de Estatísticas */
 .stats-cards {
     display: flex;
+    flex-direction: column;
     gap: 20px;
     margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .stats-cards {
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1440px) {
+    .stats-cards {
+        gap: 40px; /* Mais espaço entre os cartões em telas grandes */
+    }
 }
 
 .card {
@@ -194,8 +234,21 @@ button:hover {
 
 .chart-row {
     display: flex;
+    flex-direction: column;
     gap: 20px;
     justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+    .chart-row {
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1440px) {
+    .chart-row {
+        gap: 40px; /* Mais espaço entre gráficos em telas grandes */
+    }
 }
 
 #combinedChart,
@@ -203,36 +256,41 @@ button:hover {
 #radarChart,
 #bubbleChart {
     width: 100%;
-    height: 500px;
+    height: 300px;
     border-radius: 5px;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+@media (min-width: 768px) {
+    #combinedChart,
+    #barChart,
+    #radarChart,
+    #bubbleChart {
+        height: 500px;
+    }
+}
+
 /* Tabela de Dados Ambientais */
 .dados-tabela {
     margin-top: 20px;
-}
-
-.dados-tabela h2 {
-    margin-bottom: 10px;
-    font-size: 1.5em;
-    color: #333;
-}
-
-#ultima_atualizacao {
-    font-size: 0.9em;
-    color: #777;
-    margin-bottom: 10px;
+    overflow-x: auto;
 }
 
 .dados-tabela table {
     width: 100%;
+    min-width: 600px;
     border-collapse: collapse;
     background-color: #ffffff;
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 1440px) {
+    .dados-tabela table {
+        min-width: 800px; /* Expande a tabela em telas grandes */
+    }
 }
 
 .dados-tabela th,
@@ -260,6 +318,7 @@ button:hover {
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
+    margin: 5px;
 }
 
 .pagination-button:hover {
