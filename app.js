@@ -1,6 +1,6 @@
 // Configuração do Supabase
 const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE"; // Substitua pela sua chave
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Variáveis de controle de paginação
@@ -34,8 +34,8 @@ function atualizarEstatisticas(dados) {
 
     if (dados.length > 0) {
         const ultimoDado = dados[0];
-        tempValue.innerText = `${ultimoDado.temperatura} `;
-        humidadeValue.innerText = `${ultimoDado.umidade} `;
+        tempValue.innerText = `${ultimoDado.temperatura}`;
+        humidadeValue.innerText = `${ultimoDado.umidade}`;
         qualidadeArValue.innerText = ultimoDado.qualidade_ar;
         localizacaoValue.innerText = ultimoDado.localizacao;
     }
@@ -76,7 +76,7 @@ async function carregarDadosAmbientais() {
     atualizarEstatisticas(totalData);
     displayTable();
     atualizarUltimaAtualizacao();
-    renderCharts(); // Atualizado para chamar renderCharts após carregar dados
+    renderCharts();
 }
 
 // Função para exibir a tabela com paginação
@@ -164,19 +164,19 @@ async function carregarCSV() {
         const text = event.target.result;
         const rows = text.split("\n").map(row => row.split(","));
 
-        for (let i = 1; i < rows.length; i++) { // Começar do 1 para ignorar o cabeçalho
+        for (let i = 1; i < rows.length; i++) {
             const [data_hora, localizacao, temperatura, umidade, qualidade_ar] = rows[i].map(item => item.trim());
             const dataValida = new Date(data_hora);
             if (isNaN(dataValida.getTime())) {
                 console.error("Data inválida:", data_hora);
-                continue; // Pula para a próxima linha se a data não for válida
+                continue;
             }
 
             const { error } = await supabase
                 .from('dados_ambientais')
                 .insert([{ 
                     user_id: (await supabase.auth.getUser()).data.user.id,
-                    data_hora: dataValida.toISOString(), // Formata a data para ISO
+                    data_hora: dataValida.toISOString(),
                     localizacao,
                     temperatura: parseFloat(temperatura),
                     umidade: parseFloat(umidade),
@@ -190,7 +190,6 @@ async function carregarCSV() {
             }
         }
 
-        // Recarregar os dados após o upload
         await carregarDadosAmbientais();
     };
 
@@ -205,11 +204,23 @@ function renderCharts() {
     renderBubbleChart(totalData);
 }
 
-// Função para renderizar o gráfico combinado de linhas (temperatura, umidade e qualidade do ar)
+// Função para renderizar o gráfico combinado de linhas com gradientes
 function renderCombinedChart(data) {
     if (data.length === 0) return;
     const ctx = document.getElementById("combinedChart").getContext("2d");
-    ctx.canvas.style.backgroundColor = "white"; // Fundo branco
+
+    // Criação de gradientes
+    const gradientTemperatura = ctx.createLinearGradient(0, 0, 0, 400);
+    gradientTemperatura.addColorStop(0, "rgba(255, 99, 132, 0.8)");
+    gradientTemperatura.addColorStop(1, "rgba(255, 99, 132, 0)");
+
+    const gradientUmidade = ctx.createLinearGradient(0, 0, 0, 400);
+    gradientUmidade.addColorStop(0, "rgba(54, 162, 235, 0.8)");
+    gradientUmidade.addColorStop(1, "rgba(54, 162, 235, 0)");
+
+    const gradientQualidadeAr = ctx.createLinearGradient(0, 0, 0, 400);
+    gradientQualidadeAr.addColorStop(0, "rgba(75, 192, 192, 0.8)");
+    gradientQualidadeAr.addColorStop(1, "rgba(75, 192, 192, 0)");
 
     new Chart(ctx, {
         type: "line",
@@ -220,25 +231,25 @@ function renderCombinedChart(data) {
                     label: "Temperatura",
                     data: data.map(d => d.temperatura),
                     borderColor: "rgba(255, 99, 132, 1)",
-                    backgroundColor: "rgba(255, 255, 255, 1)",
+                    backgroundColor: gradientTemperatura,
                     fill: true,
-                    tension: 0.4,
+                    tension: 0.8,
                 },
                 {
                     label: "Umidade",
                     data: data.map(d => d.umidade),
                     borderColor: "rgba(54, 162, 235, 1)",
-                    backgroundColor: "transparent",
+                    backgroundColor: gradientUmidade,
                     fill: true,
-                    tension: 0.4,
+                    tension: 0.8,
                 },
                 {
                     label: "Qualidade do Ar",
                     data: data.map(d => parseInt(d.qualidade_ar)),
                     borderColor: "rgba(75, 192, 192, 1)",
-                    backgroundColor: "transparent",
+                    backgroundColor: gradientQualidadeAr,
                     fill: true,
-                    tension: 0.4,
+                    tension: 0.8,
                 }
             ]
         },
@@ -258,7 +269,7 @@ function renderCombinedChart(data) {
 function renderBarChart(data) {
     if (data.length === 0) return;
     const ctx = document.getElementById("barChart").getContext("2d");
-    ctx.canvas.style.backgroundColor = "white"; // Fundo branco
+    ctx.canvas.style.backgroundColor = "white";
 
     new Chart(ctx, {
         type: "bar",
@@ -286,7 +297,7 @@ function renderBarChart(data) {
 function renderRadarChart(data) {
     if (data.length === 0) return;
     const ctx = document.getElementById("radarChart").getContext("2d");
-    ctx.canvas.style.backgroundColor = "white"; // Fundo branco
+    ctx.canvas.style.backgroundColor = "white";
 
     new Chart(ctx, {
         type: "radar",
@@ -318,7 +329,7 @@ function renderRadarChart(data) {
 function renderBubbleChart(data) {
     if (data.length === 0) return;
     const bubbleChartCtx = document.getElementById("bubbleChart").getContext("2d");
-    bubbleChartCtx.canvas.style.backgroundColor = "white"; // Fundo branco
+    bubbleChartCtx.canvas.style.backgroundColor = "white";
 
     const bubbleData = data.map(d => ({
         x: d.umidade,
