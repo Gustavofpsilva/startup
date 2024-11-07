@@ -35,7 +35,7 @@ body {
 
 .profile-img {
     width: 100%;
-    max-width: 80px; /* Ajuste no tamanho da imagem */
+    max-width: 200px; /* Ajuste no tamanho da imagem */
     border-radius: 50%; /* Estilo circular para a imagem do perfil */
 }
 

@@ -34,8 +34,8 @@ function atualizarEstatisticas(dados) {
 
     if (dados.length > 0) {
         const ultimoDado = dados[0];
-        tempValue.innerText = `${ultimoDado.temperatura} `;
-        humidadeValue.innerText = `${ultimoDado.umidade} `;
+        tempValue.innerText = `${ultimoDado.temperatura} °C`;
+        humidadeValue.innerText = `${ultimoDado.umidade} %`;
         qualidadeArValue.innerText = ultimoDado.qualidade_ar;
         localizacaoValue.innerText = ultimoDado.localizacao;
     }
@@ -93,8 +93,8 @@ function displayTable() {
         row.innerHTML = `
             <td>${new Date(item.data_hora).toLocaleString()}</td>
             <td>${item.localizacao}</td>
-            <td>${item.temperatura} </td>
-            <td>${item.umidade} </td>
+            <td>${item.temperatura} °C</td>
+            <td>${item.umidade} %</td>
             <td>${item.qualidade_ar}</td>
         `;
         tableBody.appendChild(row);
@@ -218,7 +218,7 @@ function renderCombinedChart(data) {
                     label: "Temperatura",
                     data: data.map(d => d.temperatura),
                     borderColor: "rgba(255, 99, 132, 1)",
-                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    backgroundColor: "transparent", // Alterado para transparente
                     fill: true,
                     tension: 0.4,
                 },
@@ -226,7 +226,7 @@ function renderCombinedChart(data) {
                     label: "Umidade",
                     data: data.map(d => d.umidade),
                     borderColor: "rgba(54, 162, 235, 1)",
-                    backgroundColor: "rgba(54, 162, 235, 0.2)",
+                    backgroundColor: "transparent", // Alterado para transparente
                     fill: true,
                     tension: 0.4,
                 },
@@ -234,7 +234,7 @@ function renderCombinedChart(data) {
                     label: "Qualidade do Ar",
                     data: data.map(d => parseInt(d.qualidade_ar)),
                     borderColor: "rgba(75, 192, 192, 1)",
-                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    backgroundColor: "transparent", // Alterado para transparente
                     fill: true,
                     tension: 0.4,
                 }
@@ -353,7 +353,7 @@ function renderBubbleChart(data) {
     const bubbleData = data.map(d => ({
         x: d.umidade, // Eixo X
         y: d.temperatura, // Eixo Y
-        r: parseInt(d.qualidade_ar) / 10 // Tamanho da bolha
+        r: parseInt(d.qualidade_ar) / 60 // Tamanho da bolha
     }));
 
     new Chart(bubbleChartCtx, {
@@ -390,8 +390,8 @@ function renderBubbleChart(data) {
 
 // Inicializa o código apenas após o carregamento do DOM
 document.addEventListener("DOMContentLoaded", () => {
-    exibirNomeUsuario();
-    carregarDadosAmbientais();
+    exibirNomeUsuario(); // Chama a função para mostrar o nome do usuário
+    carregarDadosAmbientais(); // Carrega dados ao iniciar
 
     const exportButton = document.getElementById("export-pdf");
     const logoutButton = document.getElementById("logout-button");
