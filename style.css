@@ -165,12 +165,18 @@ header {
 .card {
     flex: 1;
     padding: 20px;
-    background: linear-gradient(135deg, #32448B 0%, #5c7bb1 100%);
+    background: linear-gradient(135deg, #5c7bb1 0%, #5c7bb1 100%);
     border: 1px solid #ddd;
     border-radius: 8px;
     text-align: center;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.card:hover {
+    background: linear-gradient(135deg, #5c7bb1 0%, #32448B 100%);
+    transform: scale(1.02);
 }
 
 .card h3 {
@@ -212,7 +218,7 @@ input[type="file"] {
 
 button {
     padding: 10px 15px;
-    background-color: #32448B;
+    background-color: #eb9c20;
     color: white;
     border: none;
     border-radius: 5px;
@@ -220,7 +226,7 @@ button {
 }
 
 button:hover {
-    background-color: #5c0a27;
+    background-color: #eb9c20;
 }
 
 /* Seção de Gráficos */
