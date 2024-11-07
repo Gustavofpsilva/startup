@@ -204,23 +204,12 @@ function renderCharts() {
     renderBubbleChart(totalData);
 }
 
-// Função para renderizar o gráfico combinado de linhas com gradientes
+// Função para renderizar o gráfico combinado de linhas
 function renderCombinedChart(data) {
     if (data.length === 0) return;
     const ctx = document.getElementById("combinedChart").getContext("2d");
 
-    // Criação de gradientes
-    const gradientTemperatura = ctx.createLinearGradient(0, 0, 0, 400);
-    gradientTemperatura.addColorStop(0, "rgba(255, 99, 132, 0.8)");
-    gradientTemperatura.addColorStop(1, "rgba(255, 99, 132, 0)");
-
-    const gradientUmidade = ctx.createLinearGradient(0, 0, 0, 400);
-    gradientUmidade.addColorStop(0, "rgba(54, 162, 235, 0.8)");
-    gradientUmidade.addColorStop(1, "rgba(54, 162, 235, 0)");
-
-    const gradientQualidadeAr = ctx.createLinearGradient(0, 0, 0, 400);
-    gradientQualidadeAr.addColorStop(0, "rgba(75, 192, 192, 0.8)");
-    gradientQualidadeAr.addColorStop(1, "rgba(75, 192, 192, 0)");
+    ctx.canvas.style.backgroundColor = "white";
 
     new Chart(ctx, {
         type: "line",
@@ -230,26 +219,26 @@ function renderCombinedChart(data) {
                 {
                     label: "Temperatura",
                     data: data.map(d => d.temperatura),
-                    borderColor: "rgba(255, 99, 132, 1)",
-                    backgroundColor: gradientTemperatura,
+                    borderColor: "rgba(50,68,139, 1)",
+                    backgroundColor: "rgba(50,68,139, 0.1)",
                     fill: true,
-                    tension: 0.8,
+                    tension: 0.4,
                 },
                 {
                     label: "Umidade",
                     data: data.map(d => d.umidade),
-                    borderColor: "rgba(54, 162, 235, 1)",
-                    backgroundColor: gradientUmidade,
+                    borderColor: "rgba(92,10,39, 1)",
+                    backgroundColor: "rgba(92,10,39, 0.1)",
                     fill: true,
-                    tension: 0.8,
+                    tension: 0.4,
                 },
                 {
                     label: "Qualidade do Ar",
                     data: data.map(d => parseInt(d.qualidade_ar)),
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    backgroundColor: gradientQualidadeAr,
+                    borderColor: "rgba(235,156,32, 1)",
+                    backgroundColor: "rgba(235,156,32, 0.1)",
                     fill: true,
-                    tension: 0.8,
+                    tension: 0.4,
                 }
             ]
         },
@@ -257,8 +246,16 @@ function renderCombinedChart(data) {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { ticks: { maxTicksLimit: 10 } },
-                y: { suggestedMin: 0, suggestedMax: 100, beginAtZero: true }
+                x: { 
+                    ticks: { maxTicksLimit: 10 },
+                    grid: { display: false } // Remove as linhas de grade horizontais
+                },
+                y: { 
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                    beginAtZero: true,
+                    grid: { display: false } // Remove as linhas de grade verticais
+                }
             },
             plugins: { legend: { position: 'top' } }
         }
@@ -276,17 +273,25 @@ function renderBarChart(data) {
         data: {
             labels: data.map(d => new Date(d.data_hora).toLocaleDateString()),
             datasets: [
-                { label: "Temperatura", data: data.map(d => d.temperatura), backgroundColor: "rgba(255, 99, 132, 0.6)" },
-                { label: "Umidade", data: data.map(d => d.umidade), backgroundColor: "rgba(54, 162, 235, 0.6)" },
-                { label: "Qualidade do Ar", data: data.map(d => parseInt(d.qualidade_ar)), backgroundColor: "rgba(75, 192, 192, 0.6)" }
+                { label: "Temperatura", data: data.map(d => d.temperatura), backgroundColor: "rgba(50,68,139, 0.6)" },
+                { label: "Umidade", data: data.map(d => d.umidade), backgroundColor: "rgba(92,10,39, 0.6)" },
+                { label: "Qualidade do Ar", data: data.map(d => parseInt(d.qualidade_ar)), backgroundColor: "rgba(235,156,32, 0.6)" }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { ticks: { maxTicksLimit: 10 } },
-                y: { suggestedMin: 0, suggestedMax: 100, beginAtZero: true }
+                x: { 
+                    ticks: { maxTicksLimit: 10 },
+                    grid: { display: false } // Remove as linhas de grade horizontais
+                },
+                y: { 
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                    beginAtZero: true,
+                    grid: { display: false } // Remove as linhas de grade verticais
+                }
             },
             plugins: { legend: { position: 'top' } }
         }
@@ -310,8 +315,8 @@ function renderRadarChart(data) {
                     data.reduce((acc, d) => acc + d.umidade, 0) / data.length,
                     data.reduce((acc, d) => acc + parseInt(d.qualidade_ar), 0) / data.length
                 ],
-                backgroundColor: "rgba(54, 162, 235, 0.3)",
-                borderColor: "rgba(54, 162, 235, 1)",
+                backgroundColor: "rgba(92,10,39, 0.6)",
+                borderColor: "rgba(92,10,39, 1)",
                 borderWidth: 2
             }]
         },
@@ -319,7 +324,11 @@ function renderRadarChart(data) {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                r: { suggestedMin: 0, suggestedMax: 100 }
+                r: { 
+                    suggestedMin: 0, 
+                    suggestedMax: 100,
+                    grid: { display: false } // Remove as linhas de grade do gráfico de radar
+                }
             }
         }
     });
@@ -343,14 +352,20 @@ function renderBubbleChart(data) {
             datasets: [{
                 label: "Dados Ambientais",
                 data: bubbleData,
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
+                backgroundColor: "rgba(235,156,32, 0.6)",
             }]
         },
         options: {
             responsive: true,
             scales: {
-                x: { title: { display: true, text: "Umidade (%)" } },
-                y: { title: { display: true, text: "Temperatura (°C)" } }
+                x: { 
+                    title: { display: true, text: "Umidade (%)" },
+                    grid: { display: false } // Remove as linhas de grade horizontais
+                },
+                y: { 
+                    title: { display: true, text: "Temperatura (°C)" },
+                    grid: { display: false } // Remove as linhas de grade verticais
+                }
             },
             plugins: { legend: { position: 'top' } }
         }

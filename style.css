@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #f4f6f8;
+    background-color: #ffffff; /* Cinza claro */
     color: #333;
 }
 
@@ -19,10 +19,10 @@ body {
 /* Barra lateral */
 .sidebar {
     width: 250px;
-    background-color: #fff; /* Mudei para branco para um visual mais limpo */
+    background-color: #fff;
     color: rgb(160, 160, 160);
     padding: 20px;
-    border-right: 1px solid #ddd; /* Adicionando uma borda direita */
+    border-right: 1px solid #ddd;
 }
 
 /* Estilos do cabeçalho da sidebar */
@@ -35,32 +35,32 @@ body {
 
 .profile-img {
     width: 100%;
-    max-width: 200px; /* Ajuste no tamanho da imagem */
-    border-radius: 50%; /* Estilo circular para a imagem do perfil */
+    max-width: 200px;
+    border-radius: 50%;
 }
 
 .user-info h3 {
     margin: 10px 0 5px;
-    font-size: 1.2em; /* Aumentando o tamanho da fonte */
+    font-size: 1.2em;
 }
 
 nav a {
     display: block;
     color: rgb(0, 0, 0);
-    padding: 10px 15px; /* Ajuste de padding para mais espaço */
-    border-radius: 5px; /* Bordas arredondadas */
-    margin-bottom: 5px; /* Espaço entre os links */
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 5px;
     text-decoration: none;
-    transition: background-color 0.3s; /* Suave transição de cor */
+    transition: background-color 0.3s;
 }
 
 nav a:hover {
-    background-color: #32448B; /* Cor de fundo ao passar o mouse */
+    background-color: #32448B;
     color: white;
 }
 
 nav a.active {
-    background-color: #1c37a8; /* Cor de fundo do link ativo */
+    background-color: #1c37a8;
     color: white;
 }
 
@@ -72,14 +72,14 @@ nav a.active {
 .logout {
     color: #ff6b6b;
     text-decoration: none;
-    padding: 10px 15px; /* Ajuste de padding */
+    padding: 10px 15px;
     border-radius: 5px;
     display: block;
     transition: background-color 0.3s;
 }
 
 .logout:hover {
-    background-color: rgba(255, 107, 107, 0.1); /* Efeito de hover para logout */
+    background-color: rgba(255, 107, 107, 0.1);
 }
 
 /* Conteúdo principal */
@@ -125,44 +125,31 @@ header .user-info {
 .card {
     flex: 1;
     padding: 20px;
-    background: linear-gradient(135deg, #32448B 0%, #2575fc 100%); /* Gradiente azul-púrpura */
+    background: linear-gradient(135deg, #32448B 0%, #5c7bb1 100%);
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 8px;
     text-align: center;
-    color: white; /* Texto branco para contraste */
-}
-
-.card:nth-child(2) {
-    background: linear-gradient(135deg, #32448B 0%, #2575fc 100%); /* Gradiente laranja */
-}
-
-.card:nth-child(3) {
-    background: linear-gradient(135deg, #32448B 0%, #2575fc 100%); /* Gradiente verde-azul */
-}
-
-.card:nth-child(4) {
-    background: linear-gradient(135deg, #32448B 0%, #2575fc 100%); /* Gradiente vermelho-laranja */
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .card h3 {
     margin-bottom: 10px;
     font-size: 1.2em;
-    color: #ffffff; /* Texto branco */
 }
 
 .card p {
-    font-size: 1.5em;
+    font-size: 1.6em;
     font-weight: bold;
-    color: #ffffff; /* Texto branco */
 }
 
 /* Estilos do Formulário de Cadastro */
 #data-form {
     background-color: #ffffff;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; /* Espaço inferior do formulário */
+    margin-bottom: 20px;
 }
 
 .form-group {
@@ -211,18 +198,15 @@ button:hover {
     justify-content: space-between;
 }
 
-/* Estilos específicos para gráficos de linha */
 #combinedChart,
 #barChart,
 #radarChart,
-#bubbleChart,
-#pieChart,
-#donutChart {
+#bubbleChart {
     width: 100%;
-    height: 500px; /* Altura dos gráficos */
+    height: 500px;
     border-radius: 5px;
-    background-color: transparent; /* Remove o fundo */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Tabela de Dados Ambientais */
@@ -248,7 +232,7 @@ button:hover {
     background-color: #ffffff;
     border-radius: 5px;
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .dados-tabela th,
@@ -269,7 +253,6 @@ button:hover {
     color: #555;
 }
 
-/* Estilo dos botões de paginação */
 .pagination-button {
     background-color: #1c37a8;
     color: white;
