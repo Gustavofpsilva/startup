@@ -16,11 +16,11 @@
   <p id="mensagemStatus"></p>
 
   <script>
-    // Inicialize o Supabase e o accessToken ao carregar a página
     document.addEventListener('DOMContentLoaded', () => {
+      // Inicialize o Supabase corretamente
       const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
-      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
       // Captura o token da URL
       const urlParams = new URLSearchParams(window.location.search);
