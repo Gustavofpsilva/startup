@@ -63,7 +63,7 @@ window.addEventListener("load", async function () {
                 mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
                 setTimeout(() => {
                     window.location.href = "signin.html";
-                }, 3000);
+                }, 3600);
             }
         } catch (error) {
             console.error("Erro inesperado ao redefinir a senha:", error);
