@@ -38,21 +38,10 @@
       const formRedefinirSenha = document.getElementById("form-redefinir-senha");
       const mensagemStatus = document.getElementById("mensagemStatus");
 
-      // Extrai o token da URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const accessToken = urlParams.get("access_token");
-
-      if (!accessToken) {
-        mensagemStatus.textContent = "Token de redefinição de senha não encontrado!";
-        console.log("Token de redefinição de senha não encontrado na URL");
-        return;
-      } else {
-        console.log("Token de redefinição encontrado:", accessToken);
-      }
-
       formRedefinirSenha.addEventListener("submit", async function (event) {
         event.preventDefault();
-        
+        console.log("Evento submit acionado");
+
         const novaSenha = document.getElementById("nova-senha").value;
         const confirmarSenha = document.getElementById("confirmar-senha").value;
 
