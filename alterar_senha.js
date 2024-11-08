@@ -5,7 +5,7 @@ window.addEventListener("load", function () {
 
     // Verifica se o objeto `supabase` e `createClient` estão disponíveis
     if (typeof supabase !== "undefined" && supabase.createClient) {
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // Seleciona o formulário e os campos de entrada
         const formRedefinirSenha = document.getElementById("form-redefinir-senha");

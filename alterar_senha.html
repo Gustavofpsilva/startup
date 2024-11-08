@@ -32,7 +32,9 @@
 
       const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
       const SUPABASE_ANON_KEY = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
-      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      
+      // Corrigido: Use window.supabase para acessar o método createClient
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       if (!supabase) {
         console.error("Supabase não foi inicializado corretamente");
