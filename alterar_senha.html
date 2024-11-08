@@ -28,9 +28,18 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      console.log("Script carregado e DOMContentLoaded disparado");
+
       const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
       const SUPABASE_ANON_KEY = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      if (!supabase) {
+        console.error("Supabase não foi inicializado corretamente");
+        return;
+      } else {
+        console.log("Supabase inicializado com sucesso");
+      }
 
       const formRedefinirSenha = document.getElementById("form-redefinir-senha");
       const mensagemStatus = document.getElementById("mensagemStatus");
@@ -41,7 +50,10 @@
 
       if (!accessToken) {
         mensagemStatus.textContent = "Token de redefinição de senha não encontrado!";
+        console.log("Token de redefinição de senha não encontrado na URL");
         return;
+      } else {
+        console.log("Token de redefinição encontrado:", accessToken);
       }
 
       formRedefinirSenha.addEventListener("submit", async function (event) {
@@ -52,17 +64,20 @@
 
         if (novaSenha !== confirmarSenha) {
           mensagemStatus.textContent = "As senhas não correspondem!";
+          console.log("As senhas não correspondem");
           return;
         }
 
         try {
-          // Atualiza a senha usando o token de acesso
+          console.log("Tentando atualizar a senha...");
           const { error } = await supabase.auth.updateUser({ password: novaSenha });
 
           if (error) {
+            console.error("Erro ao alterar a senha:", error.message);
             mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
           } else {
             mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
+            console.log("Senha alterada com sucesso");
             setTimeout(() => {
               window.location.href = "signin.html";
             }, 3000);
