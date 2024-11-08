@@ -9,6 +9,26 @@
     <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
     <link rel="stylesheet" href="assets/css/animate.css" />
     <link rel="stylesheet" href="assets/css/tailwind.css" />
+    
+    <style>
+      .text-shadow {
+        color: white; /* Preenchimento do texto */
+        text-shadow: 
+          -1px -1px 0 black, /* sombra superior esquerda */
+          1px -1px 0 black, /* sombra superior direita */
+          -1px  1px 0 black, /* sombra inferior esquerda */
+          1px  1px 0 black; /* sombra inferior direita */
+      }
+
+      .text-shadow-light {
+        color: white; /* Preenchimento do texto */
+        text-shadow: 
+          -0.5px -0.5px 0 black,
+          0.5px -0.5px 0 black,
+          -0.5px  0.5px 0 black,
+          0.5px  0.5px 0 black;
+      }
+    </style>
 
     <!-- ==== WOW JS ==== -->
     <script src="assets/js/wow.min.js"></script>
@@ -22,11 +42,14 @@
     <div class="ud-header absolute left-0 top-0 z-40 flex w-full items-center bg-transparent">
       <div class="container">
         <div class="relative -mx-4 flex items-center justify-between">
+          <!-- Logo -->
           <div class="w-60 max-w-full px-4">
             <a href="index.html" class="navbar-logo block w-full py-5">
               <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="header-logo w-full" />
             </a>
           </div>
+
+          <!-- Menu Principal -->
           <div class="flex w-full items-center justify-center px-4">
             <div class="flex-grow">
               <nav id="navbarCollapse" class="absolute right-4 top-full hidden w-full max-w-[250px] rounded-lg bg-white py-5 shadow-lg dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:px-4 lg:py-0 lg:shadow-none dark:lg:bg-transparent xl:px-6">
@@ -59,47 +82,39 @@
                 </ul>
               </nav>
             </div>
-            <div class="flex items-center justify-end">
-              <label for="themeSwitcher" class="inline-flex cursor-pointer items-center" aria-label="themeSwitcher" name="themeSwitcher">
-                <input type="checkbox" name="themeSwitcher" id="themeSwitcher" class="sr-only" />
-              </label>
-              <div class="flex items-center justify-end space-x-2 mt-4">
-                <a href="signin.html" class="loginBtn px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md hover:bg-gray-100">Entrar</a>
-                <a href="signup.html" class="signUpBtn px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md hover:bg-gray-100">
-                  Cadastrar-se
-                </a>
-              </div>
+          </div>
+
+          <!-- Botões "Entrar" e "Cadastre-se" -->
+          <div class="flex items-center ml-auto">
+            <div class="flex space-x-4">
+              <a href="signin.html" class="loginBtn px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md hover:bg-gray-100">
+                Entrar
+              </a>
+              <a href="signup.html" class="signUpBtn px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md hover:bg-gray-100" style="white-space: nowrap;">
+                Cadastre-se
+              </a>
             </div>
           </div>
+
         </div>
       </div>
     </div>
     <!-- ====== Navbar Section End -->
 
     <!-- ====== Hero Section Start -->
-    <div
-    id="home"
-    class="relative overflow-hidden bg-primary pt-[120px] md:pt-[130px] lg:pt-[160px] bg-cover bg-center"
-    style="background-image: url('assets/images/hero/Usina1.jpeg'); position: relative;"
-  >
+  <div id="home" class="hero-section relative overflow-hidden bg-primary pt-[120px] md:pt-[130px] lg:pt-[160px] bg-cover bg-center" style="background-image: url('assets/images/hero/Usina1.jpeg');">
     <div class="container">
       <div class="-mx-4 flex flex-wrap items-center">
         <div class="w-full px-4">
-          <div
-            class="hero-content wow fadeInUp mx-auto max-w-[780px] text-center"
-            data-wow-delay=".2s"
-            style="position: relative; z-index: 10; padding-top: 100px;"
-          >
-            <h1
-              class="mb-6 text-3xl font-bold leading-snug text-white sm:text-4xl sm:leading-snug lg:text-5xl lg:leading-[1.2]"
-            >
+          <div class="hero-content wow fadeInUp mx-auto max-w-[780px] text-center"
+            data-wow-delay=".2s" style="position: relative; z-index: 10; padding-top: 100px;">
+            <h1 class="mb-6 text-3xl font-bold leading-snug text-white sm:text-4xl sm:leading-snug lg:text-5xl lg:leading-[1.2] text-shadow">
               Transforme o Impacto Ambiental da Sua Empresa
             </h1>
-            <p
-              class="mx-auto mb-9 max-w-[600px] text-base font-medium text-white sm:text-lg sm:leading-[1.44]"
-            >
+            <p class="mx-auto mb-9 max-w-[600px] text-base font-medium text-white sm:text-lg sm:leading-[1.44] text-shadow-light">
               Plataforma multidisciplinar construída para facilitar a gestão de biodigestores, emissões de gases e cursos sobre ESG e Sustentabilidade
             </p>
+
             <ul class="mb-10 flex flex-wrap items-center justify-center gap-5">
             </ul>
           </div>
@@ -108,7 +123,7 @@
     </div>
   </div>
   <!-- ====== Hero Section End -->
-  
+
     <section id="features" class="pb-8 pt-20 dark:bg-dark lg:pb-[70px] lg:pt-[120px]">
       <div class="container">
         <div class="flex flex-wrap justify-center">
