@@ -56,11 +56,10 @@
         }
 
         try {
-          // Redefine a senha usando o token
-          const { data, error } = await supabase.auth.api.updateUser(accessToken, { password: novaSenha });
+          // Atualiza a senha usando o token de acesso
+          const { error } = await supabase.auth.updateUser({ password: novaSenha });
 
           if (error) {
-            console.error("Erro:", error);
             mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
           } else {
             mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
@@ -70,7 +69,7 @@
           }
         } catch (error) {
           console.error("Erro inesperado:", error);
-          mensagemStatus.textContent = "Ocorreu um erro inesperado. Tente novamente: " + error.message;
+          mensagemStatus.textContent = "Ocorreu um erro inesperado. Tente novamente.";
         }
       });
     });
