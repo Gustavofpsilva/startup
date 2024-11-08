@@ -20,8 +20,8 @@ async function exibirNomeUsuario() {
     const userEmailElem = document.getElementById("sidebar-user-email");
 
     if (userNameElem && userEmailElem) {
-        userNameElem.innerText = user.user_metadata.full_name || "Usuário"; // Exibe o nome completo, se disponível
-        userEmailElem.innerText = user.email; // Exibe o e-mail do usuário
+        userNameElem.innerText = user.user_metadata.full_name || "Usuário";
+        userEmailElem.innerText = user.email;
     }
 }
 
@@ -32,13 +32,19 @@ function atualizarEstatisticas(dados) {
     const qualidadeArValue = document.getElementById("qualidade-ar-value");
     const localizacaoValue = document.getElementById("localizacao-value");
 
-    if (!tempValue || !humidadeValue || !qualidadeArValue || !localizacaoValue) return;
+    // Verifica se todos os elementos de estatísticas estão presentes
+    if (!tempValue || !humidadeValue || !qualidadeArValue || !localizacaoValue) {
+        console.warn("Elementos de estatísticas não encontrados na página.");
+        return;
+    }
 
-    const ultimoDado = dados[0]; // Utiliza o dado mais recente
-    tempValue.innerText = ultimoDado.temperatura || '--';
-    humidadeValue.innerText = ultimoDado.umidade || '--';
-    qualidadeArValue.innerText = ultimoDado.qualidade_ar || '--';
-    localizacaoValue.innerText = ultimoDado.localizacao || '--';
+    if (dados.length > 0) {
+        const ultimoDado = dados[0];
+        tempValue.innerText = `${ultimoDado.temperatura}`;
+        humidadeValue.innerText = `${ultimoDado.umidade}`;
+        qualidadeArValue.innerText = ultimoDado.qualidade_ar;
+        localizacaoValue.innerText = ultimoDado.localizacao;
+    }
 }
 
 // Função para atualizar a última atualização dos dados
@@ -63,21 +69,20 @@ async function carregarDadosAmbientais() {
 
     if (error) {
         console.error("Erro ao carregar dados:", error);
-        const statusElem = document.getElementById("status");
-        if (statusElem) statusElem.innerText = "Erro ao carregar dados ambientais.";
         return;
     }
 
     if (!data || data.length === 0) {
-        const statusElem = document.getElementById("status");
-        if (statusElem) statusElem.innerText = "Nenhum dado ambiental disponível.";
+        console.log("Nenhum dado ambiental disponível.");
         return;
     }
 
+    console.log("Dados carregados:", data);
     totalData = data;
     atualizarEstatisticas(totalData);
     displayTable();
-    atualizarUltimaAtualizacao(); // Atualiza a última atualização após carregar os dados
+    atualizarUltimaAtualizacao();
+    renderCharts();
 }
 
 // Função para exibir a tabela com paginação
@@ -87,16 +92,15 @@ function displayTable() {
 
     tableBody.innerHTML = "";
     const start = (currentPage - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    const paginatedData = totalData.slice(start, end);
+    const end = Math.min(start + rowsPerPage, totalData.length);
 
-    paginatedData.forEach((item) => {
+    totalData.slice(start, end).forEach(item => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${new Date(item.data_hora).toLocaleString()}</td>
             <td>${item.localizacao}</td>
-            <td>${item.temperatura}°C</td>
-            <td>${item.umidade}%</td>
+            <td>${item.temperatura} °C</td>
+            <td>${item.umidade} %</td>
             <td>${item.qualidade_ar}</td>
         `;
         tableBody.appendChild(row);
@@ -151,55 +155,239 @@ async function logoutUser() {
     }
 }
 
-// Função para carregar e processar o arquivo CSV
-function processarCSV() {
-    const fileInput = document.getElementById("csvFileInput");
-    const file = fileInput.files[0];
-    const statusElem = document.getElementById("csvStatus");
+// Função para carregar dados do CSV
+async function carregarCSV() {
+    const input = document.getElementById("csv");
+    const file = input.files[0];
+    const loadingIndicator = document.getElementById("loading-indicator");
 
     if (!file) {
-        statusElem.innerText = "Por favor, selecione um arquivo CSV.";
+        alert("Por favor, selecione um arquivo CSV.");
         return;
     }
 
-    Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-            const dadosCSV = results.data;
-            salvarDadosNoSupabase(dadosCSV);
-        },
-        error: function(error) {
+    // Mostra o indicador de carregamento
+    loadingIndicator.style.display = "block";
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+        const text = event.target.result;
+        const rows = text.split("\n").map(row => row.split(","));
+
+        try {
+            for (let i = 1; i < rows.length; i++) {
+                const [data_hora, localizacao, temperatura, umidade, qualidade_ar] = rows[i].map(item => item.trim());
+                const dataValida = new Date(data_hora);
+                if (isNaN(dataValida.getTime())) {
+                    console.error("Data inválida:", data_hora);
+                    continue;
+                }
+
+                const { error } = await supabase
+                    .from('dados_ambientais')
+                    .insert([{ 
+                        user_id: (await supabase.auth.getUser()).data.user.id,
+                        data_hora: dataValida.toISOString(),
+                        localizacao,
+                        temperatura: parseFloat(temperatura),
+                        umidade: parseFloat(umidade),
+                        qualidade_ar: parseInt(qualidade_ar)
+                    }]);
+
+                if (error) {
+                    console.error("Erro ao inserir dados:", error);
+                } else {
+                    console.log("Dados inseridos com sucesso:", { data_hora, localizacao, temperatura, umidade, qualidade_ar });
+                }
+            }
+
+            await carregarDadosAmbientais();
+
+        } catch (error) {
             console.error("Erro ao processar CSV:", error);
-            statusElem.innerText = "Erro ao processar o arquivo CSV.";
+        } finally {
+            // Esconde o indicador de carregamento, independentemente do sucesso ou falha
+            loadingIndicator.style.display = "none";
+        }
+    };
+
+    reader.readAsText(file);
+}
+
+// Função para renderizar os gráficos
+function renderCharts() {
+    renderCombinedChart(totalData);
+    renderBarChart(totalData);
+    renderRadarChart(totalData);
+    renderBubbleChart(totalData);
+}
+
+// Função para renderizar o gráfico combinado de linhas
+function renderCombinedChart(data) {
+    if (data.length === 0) return;
+    const ctx = document.getElementById("combinedChart").getContext("2d");
+
+    ctx.canvas.style.backgroundColor = "white";
+
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: data.map(d => new Date(d.data_hora).toLocaleDateString()),
+            datasets: [
+                {
+                    label: "Temperatura",
+                    data: data.map(d => d.temperatura),
+                    borderColor: "rgba(50,68,139, 1)",
+                    backgroundColor: "rgba(50,68,139, 0.1)",
+                    fill: true,
+                    tension: 0.4,
+                },
+                {
+                    label: "Umidade",
+                    data: data.map(d => d.umidade),
+                    borderColor: "rgba(92,10,39, 1)",
+                    backgroundColor: "rgba(92,10,39, 0.1)",
+                    fill: true,
+                    tension: 0.4,
+                },
+                {
+                    label: "Qualidade do Ar",
+                    data: data.map(d => parseInt(d.qualidade_ar)),
+                    borderColor: "rgba(235,156,32, 1)",
+                    backgroundColor: "rgba(235,156,32, 0.1)",
+                    fill: true,
+                    tension: 0.4,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { 
+                    ticks: { maxTicksLimit: 10 },
+                    grid: { display: false } // Remove as linhas de grade horizontais
+                },
+                y: { 
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                    beginAtZero: true,
+                    grid: { display: false } // Remove as linhas de grade verticais
+                }
+            },
+            plugins: { legend: { position: 'top' } }
         }
     });
 }
 
-// Função para salvar os dados no Supabase
-async function salvarDadosNoSupabase(dados) {
-    const { data: { user } } = await supabase.auth.getUser();
-    const statusElem = document.getElementById("csvStatus");
+// Função para renderizar o gráfico de barras
+function renderBarChart(data) {
+    if (data.length === 0) return;
+    const ctx = document.getElementById("barChart").getContext("2d");
+    ctx.canvas.style.backgroundColor = "white";
 
-    // Adiciona o ID do usuário a cada dado carregado
-    const dadosComUsuario = dados.map(dado => ({
-        ...dado,
-        user_id: user.id,
-        data_hora: new Date().toISOString() // Adiciona a data/hora atual se necessário
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: data.map(d => new Date(d.data_hora).toLocaleDateString()),
+            datasets: [
+                { label: "Temperatura", data: data.map(d => d.temperatura), backgroundColor: "rgba(50,68,139, 0.6)" },
+                { label: "Umidade", data: data.map(d => d.umidade), backgroundColor: "rgba(92,10,39, 0.6)" },
+                { label: "Qualidade do Ar", data: data.map(d => parseInt(d.qualidade_ar)), backgroundColor: "rgba(235,156,32, 0.6)" }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { 
+                    ticks: { maxTicksLimit: 10 },
+                    grid: { display: false } // Remove as linhas de grade horizontais
+                },
+                y: { 
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                    beginAtZero: true,
+                    grid: { display: false } // Remove as linhas de grade verticais
+                }
+            },
+            plugins: { legend: { position: 'top' } }
+        }
+    });
+}
+
+// Função para renderizar o gráfico de radar
+function renderRadarChart(data) {
+    if (data.length === 0) return;
+    const ctx = document.getElementById("radarChart").getContext("2d");
+    ctx.canvas.style.backgroundColor = "white";
+
+    new Chart(ctx, {
+        type: "radar",
+        data: {
+            labels: ["Temperatura", "Umidade", "Qualidade do Ar"],
+            datasets: [{
+                label: "Média dos Dados",
+                data: [
+                    data.reduce((acc, d) => acc + d.temperatura, 0) / data.length,
+                    data.reduce((acc, d) => acc + d.umidade, 0) / data.length,
+                    data.reduce((acc, d) => acc + parseInt(d.qualidade_ar), 0) / data.length
+                ],
+                backgroundColor: "rgba(92,10,39, 0.6)",
+                borderColor: "rgba(92,10,39, 1)",
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: { 
+                    suggestedMin: 0, 
+                    suggestedMax: 100,
+                    grid: { display: false } // Remove as linhas de grade do gráfico de radar
+                }
+            }
+        }
+    });
+}
+
+// Função para renderizar o gráfico de bolha
+function renderBubbleChart(data) {
+    if (data.length === 0) return;
+    const bubbleChartCtx = document.getElementById("bubbleChart").getContext("2d");
+    bubbleChartCtx.canvas.style.backgroundColor = "white";
+
+    const bubbleData = data.map(d => ({
+        x: d.umidade,
+        y: d.temperatura,
+        r: parseInt(d.qualidade_ar) / 60
     }));
 
-    const { error } = await supabase
-        .from('dados_ambientais')
-        .insert(dadosComUsuario);
-
-    if (error) {
-        console.error("Erro ao salvar dados no Supabase:", error);
-        statusElem.innerText = "Erro ao carregar dados no Supabase.";
-    } else {
-        statusElem.innerText = "Dados carregados com sucesso!";
-        fileInput.value = ""; // Limpa o campo de arquivo após o upload
-        carregarDadosAmbientais(); // Atualiza os dados na interface
-    }
+    new Chart(bubbleChartCtx, {
+        type: "bubble",
+        data: {
+            datasets: [{
+                label: "Dados Ambientais",
+                data: bubbleData,
+                backgroundColor: "rgba(235,156,32, 0.6)",
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: { 
+                    title: { display: true, text: "Umidade (%)" },
+                    grid: { display: false } // Remove as linhas de grade horizontais
+                },
+                y: { 
+                    title: { display: true, text: "Temperatura (°C)" },
+                    grid: { display: false } // Remove as linhas de grade verticais
+                }
+            },
+            plugins: { legend: { position: 'top' } }
+        }
+    });
 }
 
 // Inicializa o código apenas após o carregamento do DOM
@@ -209,17 +397,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const exportButton = document.getElementById("export-pdf");
     const logoutButton = document.getElementById("logout-button");
-    const uploadCsvButton = document.getElementById("uploadCsvButton");
+    const csvInput = document.getElementById("csv");
 
-    if (exportButton) {
-        exportButton.addEventListener("click", exportToPDF);
-    }
-
-    if (logoutButton) {
-        logoutButton.addEventListener("click", logoutUser);
-    }
-
-    if (uploadCsvButton) {
-        uploadCsvButton.addEventListener("click", processarCSV);
-    }
+    if (exportButton) exportButton.addEventListener("click", exportToPDF);
+    if (logoutButton) logoutButton.addEventListener("click", logoutUser);
+    if (csvInput) csvInput.addEventListener("change", carregarCSV);
 });

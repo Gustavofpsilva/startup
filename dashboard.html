@@ -5,27 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ambin - Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <!-- Barra lateral -->
         <aside class="sidebar">
-            <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
-
-            <div class="user-info">
-                <h3 id="sidebar-user-name">Usuário</h3> <!-- Nome do usuário logado -->
-                <p id="sidebar-user-email">email@exemplo.com</p> <!-- E-mail do usuário logado -->
+            <div class="sidebar-header">
+                <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
             </div>
-
             <nav>
-                <a href="dashboard.html" class="active"><i class="icon-dashboard"></i> <span>Dashboard</span></a>
-                <a href="cadastrar_dados.html">Cadastrar Dados</a>
-                <a href="analises.html">Análises</a>
-                <a href="#">Configurações</a>
+                <a href="dashboard.html" class="active" ><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="cadastrar_dados.html"><i class="fas fa-plus-circle"></i> Cadastrar Dados</a>
+                <a href="usuario.html"><i class="fas fa-user"></i> Usuário</a>
             </nav>
-
+            <!-- Informações do usuário e botão de logout -->
+            <div class="user-info">
+            </div>
             <div class="bottom-section">
-                <a href="#" class="logout" id="logout-button"><i class="icon-logout"></i> <span>Logout</span></a>
+                <a href="#" class="logout" id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </aside>
 
@@ -58,9 +57,28 @@
                 </div>
             </section>
 
+            <!-- Seção de Gráficos -->
+            <section class="charts">
+                <div class="chart-row">
+                    <div class="chart">
+                        <canvas id="combinedChart"></canvas>
+                    </div>
+                    <div class="chart">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-row">
+                    <div class="chart">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    <div class="chart">
+                        <canvas id="bubbleChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
             <!-- Tabela de Dados Ambientais -->
             <section class="dados-tabela">
-                <h2>Dados Ambientais</h2>
                 <p id="ultima-atualizacao">Última Atualização: --</p>
                 <table>
                     <thead>
@@ -80,7 +98,7 @@
                 <!-- Controles de Paginação -->
                 <div id="pagination-controls">
                     <button class="pagination-button previous-button" onclick="prevPage()">&#8592; Anterior</button>
-                    <span id="page-info"></span>
+                    <span id="page-info">Página 1 de 1</span>
                     <button class="pagination-button next-button" onclick="nextPage()">Próximo &#8594;</button>
                 </div>
             </section>
