@@ -15,7 +15,7 @@ form.addEventListener('submit', async (event) => {
 
     // Envia o e-mail de recuperação de senha
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'https://startup-rho-lilac.vercel.app/altera_senha.html' // URL para a página de redefinição de senha
+        redirectTo: 'https://startup-rho-lilac.vercel.app/alterar_senha.html' // URL para a página de redefinição de senha
     });
 
     if (error) {
