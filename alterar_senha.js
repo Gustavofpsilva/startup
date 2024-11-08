@@ -27,6 +27,7 @@ window.onload = function () {
         }
 
         try {
+            // Atualiza a senha usando o token de redefinição
             const { error } = await supabase.auth.api.updateUser(access_token, { password: novaSenha });
 
             if (error) {
