@@ -50,17 +50,6 @@
         console.log("Token de redefinição encontrado:", accessToken);
       }
 
-      // Autentica temporariamente o usuário com o token de redefinição de senha
-      const { error: signInError } = await supabase.auth.signInWithOtp({ accessToken });
-
-      if (signInError) {
-        mensagemStatus.textContent = "Erro ao autenticar com o token de redefinição.";
-        console.error("Erro ao autenticar com o token:", signInError.message);
-        return;
-      } else {
-        console.log("Usuário autenticado temporariamente com sucesso.");
-      }
-
       formRedefinirSenha.addEventListener("submit", async function (event) {
         event.preventDefault();
         
@@ -75,6 +64,7 @@
 
         try {
           console.log("Tentando atualizar a senha...");
+          // Tenta redefinir a senha diretamente com o método updateUser
           const { error } = await supabase.auth.updateUser({ password: novaSenha });
 
           if (error) {
