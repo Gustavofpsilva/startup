@@ -17,12 +17,14 @@ window.addEventListener("load", async function () {
 
     // Seleciona o formulário e os campos de entrada
     const formRedefinirSenha = document.getElementById("form-redefinir-senha");
+    const emailInput = document.getElementById("email");
     const novaSenhaInput = document.getElementById("nova-senha");
     const confirmarSenhaInput = document.getElementById("confirmar-senha");
 
     formRedefinirSenha.addEventListener("submit", async function (event) {
         event.preventDefault();
         
+        const email = emailInput.value;
         const novaSenha = novaSenhaInput.value;
         const confirmarSenha = confirmarSenhaInput.value;
 
@@ -33,9 +35,9 @@ window.addEventListener("load", async function () {
         }
 
         try {
-            // Autentica temporariamente o usuário e redefine a senha usando o token
+            // Autentica temporariamente o usuário e redefine a senha usando o token e o e-mail fornecido
             const { error } = await supabase.auth.verifyOtp({
-                email: "usuario@example.com", // Substitua pelo e-mail do usuário
+                email: email,
                 token: accessToken,
                 type: "recovery",
                 newPassword: novaSenha
