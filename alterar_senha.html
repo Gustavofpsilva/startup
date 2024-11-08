@@ -27,21 +27,13 @@
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", async function () {
       console.log("Script carregado e DOMContentLoaded disparado");
 
       const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
       const SUPABASE_ANON_KEY = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
       
-      // Corrigido: Use window.supabase para acessar o método createClient
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-      if (!supabase) {
-        console.error("Supabase não foi inicializado corretamente");
-        return;
-      } else {
-        console.log("Supabase inicializado com sucesso");
-      }
 
       const formRedefinirSenha = document.getElementById("form-redefinir-senha");
       const mensagemStatus = document.getElementById("mensagemStatus");
@@ -56,6 +48,17 @@
         return;
       } else {
         console.log("Token de redefinição encontrado:", accessToken);
+      }
+
+      // Autentica temporariamente o usuário com o token de redefinição de senha
+      const { error: signInError } = await supabase.auth.signIn({ accessToken });
+
+      if (signInError) {
+        mensagemStatus.textContent = "Erro ao autenticar com o token de redefinição.";
+        console.error("Erro ao autenticar com o token:", signInError.message);
+        return;
+      } else {
+        console.log("Usuário autenticado temporariamente com sucesso.");
       }
 
       formRedefinirSenha.addEventListener("submit", async function (event) {
