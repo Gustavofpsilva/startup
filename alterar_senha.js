@@ -27,7 +27,7 @@ window.addEventListener("load", function () {
 
             try {
                 // Atualiza a senha do usuário autenticado com o link mágico
-                const { error } = await supabaseClient.auth.updateUser({ password: novaSenha });
+                const { error } = await supabase.auth.updateUser({ password: novaSenha });
 
                 if (error) {
                     mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
