@@ -16,18 +16,29 @@
   <p id="mensagemStatus"></p>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Inicialize o Supabase corretamente
+    document.addEventListener('DOMContentLoaded', async () => {
       const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      // Captura o token da URL
+      // Captura o token de recuperação da URL
       const urlParams = new URLSearchParams(window.location.search);
       const accessToken = urlParams.get('access_token');
 
       if (!accessToken) {
         document.getElementById('mensagemStatus').textContent = 'Token de recuperação não encontrado na URL.';
+        document.getElementById('mensagemStatus').style.color = 'red';
+        return;
+      }
+
+      // Define a sessão de autenticação usando o token de recuperação
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: accessToken // Usa o mesmo token como refresh_token temporariamente
+      });
+
+      if (sessionError) {
+        document.getElementById('mensagemStatus').textContent = 'Erro ao definir a sessão de autenticação: ' + sessionError.message;
         document.getElementById('mensagemStatus').style.color = 'red';
         return;
       }
@@ -46,8 +57,8 @@
         }
 
         try {
-          // Atualiza a senha usando o token de acesso
-          const { error } = await supabase.auth.updateUser({ password: novaSenha }, { accessToken });
+          // Atualiza a senha do usuário
+          const { error } = await supabase.auth.updateUser({ password: novaSenha });
 
           if (error) {
             mensagemStatus.textContent = 'Erro ao redefinir senha: ' + error.message;
@@ -66,7 +77,6 @@
         }
       }
 
-      // Adiciona o evento ao botão somente após a inicialização
       document.getElementById("alterarSenhaButton").addEventListener("click", alterarSenha);
     });
   </script>
