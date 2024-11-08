@@ -42,18 +42,25 @@
         }
 
         try {
-          // Usa o token diretamente para atualizar a senha
-          const { error } = await supabase.auth.api.updateUser(access_token, { password: novaSenha });
+          // Usa o token para redefinir a senha com um método alternativo
+          const { user, error } = await supabase.auth.signIn({ access_token });
 
           if (error) {
-            mensagemStatus.textContent = 'Erro ao redefinir senha: ' + error.message;
+            mensagemStatus.textContent = 'Erro ao autenticar: ' + error.message;
             mensagemStatus.style.color = 'red';
           } else {
-            mensagemStatus.textContent = 'Senha alterada com sucesso! Você será redirecionado para a página de login.';
-            mensagemStatus.style.color = 'green';
-            setTimeout(() => {
-              window.location.href = 'signin.html';
-            }, 3000);
+            // Após autenticar o usuário com o token, atualize a senha
+            const { error: updateError } = await supabase.auth.updateUser({ password: novaSenha });
+            if (updateError) {
+              mensagemStatus.textContent = 'Erro ao redefinir senha: ' + updateError.message;
+              mensagemStatus.style.color = 'red';
+            } else {
+              mensagemStatus.textContent = 'Senha alterada com sucesso! Você será redirecionado para a página de login.';
+              mensagemStatus.style.color = 'green';
+              setTimeout(() => {
+                window.location.href = 'signin.html';
+              }, 3000);
+            }
           }
         } catch (error) {
           console.error('Erro inesperado:', error);
