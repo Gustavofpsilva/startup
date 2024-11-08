@@ -1,67 +1,108 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redefinir Senha | AmbIn</title>
-  <link rel="shortcut icon" href="assets/images/logo/LogoIcon.png" type="image/x-icon" />
-  <link rel="stylesheet" href="assets/css/animate.css" />
-  <link rel="stylesheet" href="assets/css/tailwind.css" />
-
-  <!-- Supabase SDK carregado de forma assíncrona -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" async></script>
-  <!-- Script do JavaScript externo -->
-  <script src="alterar_senha.js" defer></script> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-<body>
-  <div class="ud-header left-0 top-0 z-40 flex w-full items-center bg-transparent lg:mb-32 mb-20">
-    <div class="container">
-      <div class="relative -mx-4 flex items-center justify-between">
-        <div class="w-60 max-w-full px-4">
-          <a href="index.html" class="navbar-logo block w-full py-5">
-            <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="header-logo w-full" />
-          </a>
-        </div>
-        <div class="flex items-center justify-end">
-          <a href="signin.html" class="loginBtn px-[22px] py-2 text-base font-medium text-black hover:opacity-70">Entrar</a>
-        </div>
-      </div>
-    </div>
+  <!-- Container -->
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h1 class="text-2xl font-bold text-center mb-4">Redefinir Senha</h1>
+
+    <!-- Formulário para solicitar redefinição de senha -->
+    <form id="form-solicitar-redefinicao" class="mb-4">
+      <label for="email-redefinicao" class="block text-gray-700 mb-2">Digite seu e-mail</label>
+      <input type="email" id="email-redefinicao" class="w-full px-4 py-2 mb-2 border rounded-lg" placeholder="Digite seu e-mail" required>
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Solicitar redefinição de senha</button>
+      <p id="mensagemSolicitacao" class="text-sm text-red-500 mt-2"></p>
+    </form>
+
+    <!-- Formulário para redefinir a senha -->
+    <form id="form-redefinir-senha" style="display: none;">
+      <label for="nova-senha" class="block text-gray-700 mb-2">Nova Senha</label>
+      <input type="password" id="nova-senha" class="w-full px-4 py-2 mb-2 border rounded-lg" placeholder="Nova Senha" required>
+      
+      <label for="confirmar-senha" class="block text-gray-700 mb-2">Confirmar Senha</label>
+      <input type="password" id="confirmar-senha" class="w-full px-4 py-2 mb-4 border rounded-lg" placeholder="Confirmar Senha" required>
+      
+      <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Alterar Senha</button>
+      <p id="mensagemStatus" class="text-sm text-red-500 mt-2"></p>
+    </form>
   </div>
 
-  <section class="bg-[#F4F7FF] py-14 lg:py-[90px] dark:bg-dark lg:mt-20 mt-10">
-    <div class="container">
-      <div class="flex flex-wrap -mx-4">
-        <div class="w-full px-4">
-          <div class="wow fadeInUp relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white dark:bg-dark-2 py-14 px-8 text-center sm:px-12 md:px-[60px]" data-wow-delay=".15s">
-            <div class="mb-10 text-center">
-              <a href="javascript:void(0)" class="mx-auto inline-block max-w-[160px]">
-                <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="dark:hidden" />
-                <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="hidden dark:block" />
-              </a>
-            </div>
-            <form id="form-redefinir-senha">
-              <div class="mb-[22px]">
-                <input type="password" id="nova-senha" placeholder="Nova Senha" class="w-full px-5 py-3" required />
-              </div>
-              <div class="mb-[22px]">
-                <input type="password" id="confirmar-senha" placeholder="Confirmar Senha" class="w-full px-5 py-3" required />
-              </div>
-              <div class="mb-9">
-                <button type="submit" class="w-full px-5 py-3 text-white bg-primary">
-                  Alterar Senha
-                </button>
-              </div>
-              <p id="mensagemStatus" class="text-red-500"></p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</body>
+  <script>
+    // Inicialize o Supabase com sua URL e chave anônima
+    const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
+    const SUPABASE_ANON_KEY = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    const formSolicitarRedefinicao = document.getElementById("form-solicitar-redefinicao");
+    const formRedefinirSenha = document.getElementById("form-redefinir-senha");
+    const mensagemSolicitacao = document.getElementById("mensagemSolicitacao");
+    const mensagemStatus = document.getElementById("mensagemStatus");
+
+    // Verifica se há parâmetros de redefinição de senha na URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get("access_token");
+
+    if (accessToken) {
+      // Oculta o formulário de solicitação e exibe o formulário de redefinição de senha
+      formSolicitarRedefinicao.style.display = "none";
+      formRedefinirSenha.style.display = "block";
+    }
+
+    // Evento para solicitar redefinição de senha
+    formSolicitarRedefinicao.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById("email-redefinicao").value;
+
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + window.location.pathname // Redireciona para esta página com o token na URL
+        });
+
+        if (error) {
+          mensagemSolicitacao.textContent = "Erro ao solicitar redefinição de senha: " + error.message;
+        } else {
+          mensagemSolicitacao.textContent = "E-mail de redefinição de senha enviado com sucesso! Verifique sua caixa de entrada.";
+        }
+      } catch (error) {
+        mensagemSolicitacao.textContent = "Ocorreu um erro inesperado. Tente novamente.";
+      }
+    });
+
+    // Evento para redefinir a senha usando o token
+    formRedefinirSenha.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      
+      const novaSenha = document.getElementById("nova-senha").value;
+      const confirmarSenha = document.getElementById("confirmar-senha").value;
+
+      if (novaSenha !== confirmarSenha) {
+        mensagemStatus.textContent = "As senhas não correspondem!";
+        return;
+      }
+
+      try {
+        const { error } = await supabase.auth.updateUser({ password: novaSenha });
+
+        if (error) {
+          mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
+        } else {
+          mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
+          setTimeout(() => {
+            window.location.href = "signin.html";
+          }, 3000);
+        }
+      } catch (error) {
+        mensagemStatus.textContent = "Ocorreu um erro inesperado. Tente novamente.";
+      }
+    });
+  </script>
+</body>
 </html>
