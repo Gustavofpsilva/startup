@@ -1,0 +1,27 @@
+<!-- Página B: digitar_codigo.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar Senha | Digitar Código</title>
+</head>
+<body>
+  <h1>Digite o Código OTP</h1>
+  <form id="otpForm">
+    <label for="otp">Código OTP:</label>
+    <input type="text" id="otp" maxlength="6" required>
+    <button type="submit">Verificar Código</button>
+  </form>
+  <p id="mensagemStatus"></p>
+
+  <script>
+    document.getElementById("otpForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const otp = document.getElementById("otp").value;
+      localStorage.setItem("otp", otp); // Armazena o OTP para ser usado na próxima página
+      window.location.href = "novasenha.html";
+    });
+  </script>
+</body>
+</html>

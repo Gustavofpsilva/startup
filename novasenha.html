@@ -1,141 +1,55 @@
+<!-- Página C: redefinir_senha.html -->
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Definir Nova Senha | AmbIn</title>
-  <link rel="shortcut icon" href="assets/images/logo/LogoIcon.png" type="image/x-icon" />
-  <link rel="stylesheet" href="assets/css/animate.css" />
-  <link rel="stylesheet" href="assets/css/tailwind.css" />
-
-  <!-- Supabase -->
-  <script src="https://unpkg.com/@supabase/supabase-js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', async function () {
-      // Configuração do Supabase
-      const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
-      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE"; // Substitua pelo valor completo da sua API Key
-
-      // Inicialização do cliente Supabase
-      window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      console.log('Supabase inicializado com sucesso.');
-      
-      // Captura o token da URL
-      const urlParams = new URLSearchParams(window.location.hash.substring(1));
-      const accessToken = urlParams.get('access_token');
-      const refreshToken = urlParams.get('refresh_token');
-
-      // Configura a sessão se os tokens estiverem presentes
-      if (accessToken && refreshToken) {
-        const { error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken
-        });
-
-        if (error) {
-          console.error("Erro ao configurar a sessão:", error);
-          alert("Erro ao configurar a sessão de recuperação de senha.");
-        } else {
-          console.log("Sessão de recuperação configurada com sucesso.");
-        }
-      } else {
-        alert("Token de recuperação inválido ou ausente.");
-      }
-    });
-  </script>
-
-  <!-- ==== WOW JS ==== -->
-  <script src="assets/js/wow.min.js"></script>
-  <script>
-    new WOW().init();
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar Senha | Redefinir Senha</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
-
 <body>
-  <div class="ud-header left-0 top-0 z-40 flex w-full items-center bg-transparent lg:mb-32 mb-20">
-    <div class="container">
-      <div class="relative -mx-4 flex items-center justify-between">
-        <div class="w-60 max-w-full px-4">
-          <a href="index.html" class="navbar-logo block w-full py-5">
-            <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="header-logo w-full" />
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+  <h1>Redefinir Senha</h1>
+  <form id="passwordForm">
+    <label for="novaSenha">Nova Senha:</label>
+    <input type="password" id="novaSenha" required>
+    <label for="confirmarSenha">Confirmar Nova Senha:</label>
+    <input type="password" id="confirmarSenha" required>
+    <button type="submit">Alterar Senha</button>
+  </form>
+  <p id="mensagemStatus"></p>
 
-  <!-- ====== Forms Section Start -->
-  <section class="bg-[#F4F7FF] py-14 lg:py-20 dark:bg-dark lg:mt-20 mt-10">
-    <div class="container">
-      <div class="flex flex-wrap -mx-4">
-        <div class="w-full px-4">
-          <div
-            class="wow fadeInUp relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white dark:bg-dark-2 py-14 px-8 text-center sm:px-12 md:px-[60px]"
-            data-wow-delay=".15s">
-            <div class="mb-10 text-center">
-              <a href="javascript:void(0)" class="mx-auto inline-block max-w-[160px]">
-                <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="dark:hidden" />
-                <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="hidden dark:block" />
-              </a>
-            </div>
-            <form id="newPasswordForm">
-              <div class="mb-[22px]">
-                <input type="password" id="newPassword" placeholder="Nova Senha"
-                  class="w-full px-5 py-3 text-base transition bg-transparent border rounded-md outline-none border-stroke dark:border-dark-3 text-body-color dark:text-dark-6 placeholder:text-dark-6 focus:border-primary dark:focus:border-primary focus-visible:shadow-none" />
-              </div>
-              <div class="mb-[22px]">
-                <input type="password" id="confirmPassword" placeholder="Confirmar Nova Senha"
-                  class="w-full px-5 py-3 text-base transition bg-transparent border rounded-md outline-none border-stroke dark:border-dark-3 text-body-color dark:text-dark-6 placeholder:text-dark-6 focus:border-primary dark:focus:border-primary focus-visible:shadow-none" />
-              </div>
-              <div class="mb-9">
-                <button type="button" onclick="updatePassword()"
-                  class="w-full px-5 py-3 text-base text-white transition duration-300 ease-in-out border rounded-md cursor-pointer border-primary bg-primary hover:bg-blue-dark">
-                  Atualizar Senha
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- ====== Forms Section End -->
-
-  <!-- Script de atualização de senha com Supabase -->
   <script>
-    async function updatePassword() {
-      const newPassword = document.getElementById('newPassword').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
+    const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      if (!newPassword || !confirmPassword) {
-        alert('Por favor, preencha todos os campos.');
+    document.getElementById("passwordForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const novaSenha = document.getElementById("novaSenha").value;
+      const confirmarSenha = document.getElementById("confirmarSenha").value;
+      const otp = localStorage.getItem("otp"); // Obtém o OTP armazenado
+
+      if (novaSenha !== confirmarSenha) {
+        document.getElementById("mensagemStatus").textContent = "As senhas não correspondem!";
         return;
       }
 
-      if (newPassword !== confirmPassword) {
-        alert('As senhas não coincidem.');
-        return;
-      }
-
-      // Atualiza a senha do usuário autenticado
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword
+      const { error } = await supabase.auth.verifyOtp({ 
+        token: otp, 
+        type: 'recovery', 
+        email: "usuario@example.com", // substitua pelo e-mail do usuário 
+        new_password: novaSenha 
       });
 
       if (error) {
-        alert('Erro ao atualizar a senha: ' + error.message);
+        document.getElementById("mensagemStatus").textContent = "Erro ao redefinir a senha: " + error.message;
       } else {
-        alert('Senha atualizada com sucesso!');
-        // Redireciona para a página de login
-        window.location.href = 'signin.html';
+        document.getElementById("mensagemStatus").textContent = "Senha redefinida com sucesso!";
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 2000);
       }
-    }
+    });
   </script>
-
-  <!-- Scripts adicionais -->
-  <script src="assets/js/main.js"></script>
 </body>
-
 </html>
