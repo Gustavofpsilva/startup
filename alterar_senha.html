@@ -1,77 +1,114 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Redefinir Senha | AmbIn</title>
-  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinir Senha</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        input[type="password"], button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+        }
+        .success {
+            color: green;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
 </head>
-
 <body>
-  <h2>Redefinir Senha</h2>
-  <input type="password" id="novaSenha" placeholder="Nova Senha" required />
-  <input type="password" id="confirmarSenha" placeholder="Confirmar Nova Senha" required />
-  <button id="alterarSenhaButton">Alterar Senha</button>
-  <p id="mensagemStatus"></p>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
-      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+<div class="container">
+    <h2>Redefinir Senha</h2>
+    <input type="password" id="novaSenha" placeholder="Nova Senha" required>
+    <input type="password" id="confirmarSenha" placeholder="Confirmar Nova Senha" required>
+    <button onclick="alterarSenha()">Alterar Senha</button>
+    <div id="mensagem" class="error"></div>
+</div>
 
-      // Captura o token de recuperação da URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const accessToken = urlParams.get('access_token');
+<script>
+    const supabaseUrl = "https://qlhbieemfchehmheqxip.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-      if (!accessToken) {
-        document.getElementById('mensagemStatus').textContent = 'Token de recuperação não encontrado na URL.';
-        document.getElementById('mensagemStatus').style.color = 'red';
-        return;
-      }
+    async function alterarSenha() {
+        const novaSenha = document.getElementById("novaSenha").value;
+        const confirmarSenha = document.getElementById("confirmarSenha").value;
+        const token = new URLSearchParams(window.location.search).get("token");
 
-      async function alterarSenha() {
-        const novaSenha = document.getElementById('novaSenha').value;
-        const confirmarSenha = document.getElementById('confirmarSenha').value;
-        const mensagemStatus = document.getElementById('mensagemStatus');
+        const mensagem = document.getElementById("mensagem");
+        mensagem.textContent = "";  // Limpa qualquer mensagem anterior
 
-        mensagemStatus.textContent = '';
+        if (!token) {
+            mensagem.textContent = "Token de recuperação não encontrado.";
+            return;
+        }
 
         if (novaSenha !== confirmarSenha) {
-          mensagemStatus.textContent = 'As senhas não coincidem.';
-          mensagemStatus.style.color = 'red';
-          return;
+            mensagem.textContent = "As senhas não coincidem.";
+            return;
         }
 
         try {
-          // Redefine a senha usando o token de recuperação
-          const { error } = await supabase.auth.verifyOtp({
-            token: accessToken,
-            type: 'recovery',
-            password: novaSenha
-          });
+            const { error } = await supabase.auth.verifyOtp({
+                token: token,
+                type: 'recovery',
+                password: novaSenha
+            });
 
-          if (error) {
-            mensagemStatus.textContent = 'Erro ao redefinir senha: ' + error.message;
-            mensagemStatus.style.color = 'red';
-          } else {
-            mensagemStatus.textContent = 'Senha alterada com sucesso! Redirecionando...';
-            mensagemStatus.style.color = 'green';
-            setTimeout(() => {
-              window.location.href = 'signin.html';
-            }, 3000);
-          }
-        } catch (error) {
-          console.error('Erro inesperado:', error);
-          mensagemStatus.textContent = 'Erro inesperado: ' + error.message;
-          mensagemStatus.style.color = 'red';
+            if (error) {
+                mensagem.textContent = `Erro ao redefinir senha: ${error.message}`;
+            } else {
+                mensagem.className = "success";
+                mensagem.textContent = "Senha redefinida com sucesso!";
+                setTimeout(() => {
+                    window.location.href = "/login";
+                }, 2000);
+            }
+        } catch (err) {
+            mensagem.textContent = `Erro: ${err.message}`;
         }
-      }
+    }
+</script>
 
-      document.getElementById("alterarSenhaButton").addEventListener("click", alterarSenha);
-    });
-  </script>
 </body>
-
 </html>
