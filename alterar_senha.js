@@ -47,7 +47,7 @@ window.addEventListener("load", async function () {
             console.log("Enviando solicitação de verificação OTP para redefinir senha...");
 
             // Autentica temporariamente o usuário e redefine a senha usando o TokenHash e o e-mail fornecido
-            const { error } = await supabase.auth.verifyOtp({
+            const { data, error } = await supabase.auth.verifyOtp({
                 email: email,
                 token: tokenHash,
                 type: "recovery",
@@ -58,6 +58,7 @@ window.addEventListener("load", async function () {
                 console.error("Erro ao redefinir a senha:", error);
                 mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
             } else {
+                console.log("Resposta do servidor:", data);
                 console.log("Senha alterada com sucesso!");
                 mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
                 setTimeout(() => {
