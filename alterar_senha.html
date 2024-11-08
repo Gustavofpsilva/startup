@@ -31,18 +31,6 @@
         return;
       }
 
-      // Define a sessão de autenticação usando o token de recuperação
-      const { error: sessionError } = await supabase.auth.setSession({
-        access_token: accessToken,
-        refresh_token: accessToken // Usa o mesmo token como refresh_token temporariamente
-      });
-
-      if (sessionError) {
-        document.getElementById('mensagemStatus').textContent = 'Erro ao definir a sessão de autenticação: ' + sessionError.message;
-        document.getElementById('mensagemStatus').style.color = 'red';
-        return;
-      }
-
       async function alterarSenha() {
         const novaSenha = document.getElementById('novaSenha').value;
         const confirmarSenha = document.getElementById('confirmarSenha').value;
@@ -57,8 +45,12 @@
         }
 
         try {
-          // Atualiza a senha do usuário
-          const { error } = await supabase.auth.updateUser({ password: novaSenha });
+          // Redefine a senha usando o token de recuperação
+          const { error } = await supabase.auth.verifyOtp({
+            token: accessToken,
+            type: 'recovery',
+            password: novaSenha
+          });
 
           if (error) {
             mensagemStatus.textContent = 'Erro ao redefinir senha: ' + error.message;
