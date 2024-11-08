@@ -51,7 +51,7 @@
       }
 
       // Autentica temporariamente o usuário com o token de redefinição de senha
-      const { error: signInError } = await supabase.auth.signIn({ accessToken });
+      const { error: signInError } = await supabase.auth.signInWithOtp({ accessToken });
 
       if (signInError) {
         mensagemStatus.textContent = "Erro ao autenticar com o token de redefinição.";
