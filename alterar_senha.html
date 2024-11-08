@@ -27,48 +27,50 @@
   </div>
 
   <script>
-    // Inicialize o Supabase com sua URL e chave anônima
-    const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
-    const SUPABASE_ANON_KEY = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    document.addEventListener("DOMContentLoaded", function () {
+      // Inicialize o Supabase com sua URL e chave anônima
+      const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
+      const SUPABASE_ANON_KEY = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const formRedefinirSenha = document.getElementById("form-redefinir-senha");
-    const mensagemStatus = document.getElementById("mensagemStatus");
+      const formRedefinirSenha = document.getElementById("form-redefinir-senha");
+      const mensagemStatus = document.getElementById("mensagemStatus");
 
-    // Extrai o token da URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const accessToken = urlParams.get("access_token");
+      // Extrai o token da URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const accessToken = urlParams.get("access_token");
 
-    if (!accessToken) {
-      mensagemStatus.textContent = "Token de redefinição de senha não encontrado!";
-    }
-
-    formRedefinirSenha.addEventListener("submit", async function (event) {
-      event.preventDefault();
-      
-      const novaSenha = document.getElementById("nova-senha").value;
-      const confirmarSenha = document.getElementById("confirmar-senha").value;
-
-      if (novaSenha !== confirmarSenha) {
-        mensagemStatus.textContent = "As senhas não correspondem!";
-        return;
+      if (!accessToken) {
+        mensagemStatus.textContent = "Token de redefinição de senha não encontrado!";
       }
 
-      try {
-        // Redefine a senha usando o token
-        const { error } = await supabase.auth.api.updateUser(accessToken, { password: novaSenha });
+      formRedefinirSenha.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        
+        const novaSenha = document.getElementById("nova-senha").value;
+        const confirmarSenha = document.getElementById("confirmar-senha").value;
 
-        if (error) {
-          mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
-        } else {
-          mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
-          setTimeout(() => {
-            window.location.href = "signin.html";
-          }, 3000);
+        if (novaSenha !== confirmarSenha) {
+          mensagemStatus.textContent = "As senhas não correspondem!";
+          return;
         }
-      } catch (error) {
-        mensagemStatus.textContent = "Ocorreu um erro inesperado. Tente novamente.";
-      }
+
+        try {
+          // Redefine a senha usando o token
+          const { error } = await supabase.auth.api.updateUser(accessToken, { password: novaSenha });
+
+          if (error) {
+            mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
+          } else {
+            mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
+            setTimeout(() => {
+              window.location.href = "signin.html";
+            }, 3000);
+          }
+        } catch (error) {
+          mensagemStatus.textContent = "Ocorreu um erro inesperado. Tente novamente.";
+        }
+      });
     });
   </script>
 </body>
