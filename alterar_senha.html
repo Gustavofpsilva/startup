@@ -28,7 +28,6 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Inicialize o Supabase com sua URL e chave anônima
       const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
       const SUPABASE_ANON_KEY = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -42,6 +41,7 @@
 
       if (!accessToken) {
         mensagemStatus.textContent = "Token de redefinição de senha não encontrado!";
+        return;
       }
 
       formRedefinirSenha.addEventListener("submit", async function (event) {
@@ -57,9 +57,10 @@
 
         try {
           // Redefine a senha usando o token
-          const { error } = await supabase.auth.api.updateUser(accessToken, { password: novaSenha });
+          const { data, error } = await supabase.auth.api.updateUser(accessToken, { password: novaSenha });
 
           if (error) {
+            console.error("Erro:", error);
             mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
           } else {
             mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
@@ -68,7 +69,8 @@
             }, 3000);
           }
         } catch (error) {
-          mensagemStatus.textContent = "Ocorreu um erro inesperado. Tente novamente.";
+          console.error("Erro inesperado:", error);
+          mensagemStatus.textContent = "Ocorreu um erro inesperado. Tente novamente: " + error.message;
         }
       });
     });
