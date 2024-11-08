@@ -1,6 +1,6 @@
 // Inicialize o Supabase com sua URL e chave anônima
-const SUPABASE_URL = "https://YOUR_SUPABASE_URL.supabase.co"; // Substitua pelo seu Supabase URL
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY"; // Substitua pela sua chave anônima do Supabase
+const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co"; // Substitua pelo seu Supabase URL
+const SUPABASE_ANON_KEY = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE"; // Substitua pela sua chave anônima do Supabase
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Seleciona o formulário e os campos de entrada
