@@ -20,7 +20,6 @@
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      // Função de alteração de senha
       window.alterarSenha = async function () {
         const novaSenha = document.getElementById('novaSenha').value;
         const confirmarSenha = document.getElementById('confirmarSenha').value;
@@ -32,7 +31,7 @@
           return;
         }
 
-        // Captura o token da URL
+        // Captura o token de redefinição da URL
         const urlParams = new URLSearchParams(window.location.search);
         const access_token = urlParams.get('access_token');
 
@@ -43,10 +42,8 @@
         }
 
         try {
-          // Usa o token da URL para atualizar a senha
-          const { error } = await supabase.auth.updateUser({
-            password: novaSenha
-          });
+          // Usa o token diretamente para redefinir a senha
+          const { error } = await supabase.auth.api.updateUser(access_token, { password: novaSenha });
 
           if (error) {
             mensagemStatus.textContent = 'Erro ao redefinir senha: ' + error.message;
