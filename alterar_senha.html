@@ -30,7 +30,7 @@
     // Inicialize o Supabase com sua URL e chave anônima
     const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
     const SUPABASE_ANON_KEY = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const formRedefinirSenha = document.getElementById("form-redefinir-senha");
     const mensagemStatus = document.getElementById("mensagemStatus");
@@ -55,11 +55,8 @@
       }
 
       try {
-        // Verifica o token e redefine a senha
-        const { error } = await supabase.auth.updateUser({
-          access_token: accessToken,
-          password: novaSenha
-        });
+        // Redefine a senha usando o token
+        const { error } = await supabase.auth.api.updateUser(accessToken, { password: novaSenha });
 
         if (error) {
           mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
