@@ -42,8 +42,8 @@
         }
 
         try {
-          // Usa o token diretamente para redefinir a senha
-          const { error } = await supabase.auth.api.updateUser(access_token, { password: novaSenha });
+          // Usa o token para autenticar e atualizar a senha
+          const { error } = await supabase.auth.update({ password: novaSenha });
 
           if (error) {
             mensagemStatus.textContent = 'Erro ao redefinir senha: ' + error.message;
