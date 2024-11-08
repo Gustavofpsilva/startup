@@ -5,15 +5,17 @@ window.addEventListener("load", async function () {
 
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Obtenha o token da URL
+    // Obtenha o TokenHash da URL
     const urlParams = new URLSearchParams(window.location.search);
-    const accessToken = urlParams.get("access_token");
+    const tokenHash = urlParams.get("access_token"); // O TokenHash deve estar na URL com o nome `access_token`
     const mensagemStatus = document.getElementById("mensagemStatus");
 
-    if (!accessToken) {
+    if (!tokenHash) {
         mensagemStatus.textContent = "Token de redefinição de senha não encontrado!";
         return;
     }
+
+    console.log("TokenHash capturado:", tokenHash);
 
     // Seleciona o formulário e os campos de entrada
     const formRedefinirSenha = document.getElementById("form-redefinir-senha");
@@ -28,6 +30,9 @@ window.addEventListener("load", async function () {
         const novaSenha = novaSenhaInput.value;
         const confirmarSenha = confirmarSenhaInput.value;
 
+        console.log("E-mail inserido:", email);
+        console.log("Tentando redefinir senha com o TokenHash:", tokenHash);
+
         // Verifique se as senhas correspondem
         if (novaSenha !== confirmarSenha) {
             mensagemStatus.textContent = "As senhas não correspondem!";
@@ -35,15 +40,16 @@ window.addEventListener("load", async function () {
         }
 
         try {
-            // Autentica temporariamente o usuário e redefine a senha usando o token e o e-mail fornecido
+            // Autentica temporariamente o usuário e redefine a senha usando o TokenHash e o e-mail fornecido
             const { error } = await supabase.auth.verifyOtp({
                 email: email,
-                token: accessToken,
+                token: tokenHash,
                 type: "recovery",
                 newPassword: novaSenha
             });
 
             if (error) {
+                console.error("Erro ao redefinir a senha:", error);
                 mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
             } else {
                 mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
@@ -52,6 +58,7 @@ window.addEventListener("load", async function () {
                 }, 3000);
             }
         } catch (error) {
+            console.error("Erro inesperado:", error);
             mensagemStatus.textContent = "Ocorreu um erro inesperado. Tente novamente.";
         }
     });
