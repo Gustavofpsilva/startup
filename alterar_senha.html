@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -25,7 +24,6 @@
     });
   </script>
 </head>
-
 <body>
   <div class="ud-header left-0 top-0 z-40 flex w-full items-center bg-transparent lg:mb-32 mb-20">
     <div class="container">
@@ -81,30 +79,35 @@
 
       if (novaSenha !== confirmarSenha) {
         mensagemStatus.textContent = 'As senhas não coincidem.';
+        mensagemStatus.style.color = 'red';
         return;
       }
 
-      try {
-        const { error } = await supabase.auth.updateUser({ password: novaSenha });
-        
-        if (error) {
-          console.error('Erro ao redefinir senha:', error);
-          mensagemStatus.textContent = 'Erro: ' + error.message;
-          mensagemStatus.style.color = 'red';
-        } else {
-          mensagemStatus.textContent = 'Senha alterada com sucesso! Você será redirecionado para a página de login.';
-          mensagemStatus.style.color = 'green';
-          setTimeout(() => {
-            window.location.href = 'signin.html';
-          }, 3000);
-        }
-      } catch (error) {
-        console.error('Erro inesperado:', error);
-        mensagemStatus.textContent = 'Erro inesperado: ' + error.message;
+      // Verifica se o token de redefinição de senha está presente na URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const accessToken = urlParams.get('access_token');
+
+      if (!accessToken) {
+        mensagemStatus.textContent = 'Token de redefinição de senha não encontrado.';
         mensagemStatus.style.color = 'red';
+        return;
+      }
+
+      // Usa o token para redefinir a senha
+      const { error } = await supabase.auth.updateUser({ password: novaSenha });
+
+      if (error) {
+        console.error('Erro ao redefinir senha:', error);
+        mensagemStatus.textContent = 'Erro: ' + error.message;
+        mensagemStatus.style.color = 'red';
+      } else {
+        mensagemStatus.textContent = 'Senha alterada com sucesso! Você será redirecionado para a página de login.';
+        mensagemStatus.style.color = 'green';
+        setTimeout(() => {
+          window.location.href = 'signin.html';
+        }, 3000);
       }
     }
   </script>
 </body>
-
 </html>
