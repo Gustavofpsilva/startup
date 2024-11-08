@@ -17,23 +17,25 @@
   <p id="mensagemStatus"></p>
 
   <script>
-    const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    document.addEventListener("DOMContentLoaded", function () {
+      const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
+      const SUPABASE_ANON_KEY = "SEU_ANON_KEY";
+      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    document.getElementById("emailForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const email = document.getElementById("email").value;
-      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      document.getElementById("emailForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const email = document.getElementById("email").value;
+        const { error } = await supabase.auth.resetPasswordForEmail(email);
 
-      if (error) {
-        document.getElementById("mensagemStatus").textContent = "Erro ao enviar código: " + error.message;
-      } else {
-        document.getElementById("mensagemStatus").textContent = "Código enviado para seu e-mail!";
-        setTimeout(() => {
-          window.location.href = "digitar_codigo.html";
-        }, 2000);
-      }
+        if (error) {
+          document.getElementById("mensagemStatus").textContent = "Erro ao enviar código: " + error.message;
+        } else {
+          document.getElementById("mensagemStatus").textContent = "Código enviado para seu e-mail!";
+          setTimeout(() => {
+            window.location.href = "digitar_codigo.html";
+          }, 2000);
+        }
+      });
     });
   </script>
 </body>
