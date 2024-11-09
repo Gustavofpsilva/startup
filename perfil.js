@@ -55,13 +55,13 @@ async function carregarLogins(userId, page) {
 document.getElementById("prev-page").addEventListener("click", () => {
     if (currentPage > 1) {
         currentPage--;
-        carregarPerfilUsuario();
+        carregarLogins(user.id, currentPage);
     }
 });
 
 document.getElementById("next-page").addEventListener("click", () => {
     currentPage++;
-    carregarPerfilUsuario();
+    carregarLogins(user.id, currentPage);
 });
 
 // Função de logout
@@ -75,8 +75,8 @@ async function logoutUser() {
 }
 
 // Inicializa o código apenas após o carregamento do DOM
-document.addEventListener("DOMContentLoaded", () => {
-    carregarPerfilUsuario();
+document.addEventListener("DOMContentLoaded", async () => {
+    await carregarPerfilUsuario();
 
     const logoutButton = document.getElementById("logout-button");
     if (logoutButton) logoutButton.addEventListener("click", logoutUser);
