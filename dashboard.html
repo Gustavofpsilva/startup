@@ -10,34 +10,29 @@
 </head>
 <body>
     <div class="container">
-        <!-- Barra lateral -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
             </div>
             <nav>
-                <a href="dashboard.html" class="active" ><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
                 <a href="cadastrar_dados.html"><i class="fas fa-plus-circle"></i> Cadastrar Dados</a>
                 <a href="usuario.html"><i class="fas fa-user"></i> Usuário</a>
             </nav>
-            <!-- Informações do usuário e botão de logout -->
-            <div class="user-info">
-            </div>
+            <div class="user-info"></div>
             <div class="bottom-section">
                 <a href="#" class="logout" id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </aside>
 
-        <!-- Conteúdo principal -->
         <main>
-            <!-- Cabeçalho -->
             <header>
                 <div class="user-info">
-                    <button id="export-pdf">Exportar como PDF</button>
+                    <button id="export-pdf">Exportar relatório padrão</button>
+                    <button id="custom-report">Exportar relatório Personalizado</button>
                 </div>
             </header>
 
-            <!-- Cartões de Estatísticas -->
             <section class="stats-cards">
                 <div class="card">
                     <h3>Temperatura</h3>
@@ -57,27 +52,17 @@
                 </div>
             </section>
 
-            <!-- Seção de Gráficos -->
             <section class="charts">
                 <div class="chart-row">
-                    <div class="chart">
-                        <canvas id="combinedChart"></canvas>
-                    </div>
-                    <div class="chart">
-                        <canvas id="barChart"></canvas>
-                    </div>
+                    <div class="chart"><canvas id="combinedChart"></canvas></div>
+                    <div class="chart"><canvas id="barChart"></canvas></div>
                 </div>
                 <div class="chart-row">
-                    <div class="chart">
-                        <canvas id="radarChart"></canvas>
-                    </div>
-                    <div class="chart">
-                        <canvas id="bubbleChart"></canvas>
-                    </div>
+                    <div class="chart"><canvas id="radarChart"></canvas></div>
+                    <div class="chart"><canvas id="bubbleChart"></canvas></div>
                 </div>
             </section>
 
-            <!-- Tabela de Dados Ambientais -->
             <section class="dados-tabela">
                 <p id="ultima-atualizacao">Última Atualização: --</p>
                 <table>
@@ -90,12 +75,9 @@
                             <th>Qualidade do Ar</th>
                         </tr>
                     </thead>
-                    <tbody id="dados-tabela-corpo">
-                        <!-- Dados serão carregados aqui -->
-                    </tbody>
+                    <tbody id="dados-tabela-corpo"></tbody>
                 </table>
 
-                <!-- Controles de Paginação -->
                 <div id="pagination-controls">
                     <button class="pagination-button previous-button" onclick="prevPage()">&#8592; Anterior</button>
                     <span id="page-info">Página 1 de 1</span>
@@ -105,7 +87,25 @@
         </main>
     </div>
 
-    <!-- Scripts -->
+    <!-- Modal para Relatório Personalizado -->
+    <div id="report-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Configurar Relatório Personalizado</h2>
+            <label for="start-date">Data Inicial:</label>
+            <input type="date" id="start-date">
+            <label for="end-date">Data Final:</label>
+            <input type="date" id="end-date">
+            <label for="metrics">Escolha as Métricas:</label>
+            <select id="metrics" multiple>
+                <option value="temperatura">Temperatura</option>
+                <option value="umidade">Umidade</option>
+                <option value="qualidade_ar">Qualidade do Ar</option>
+            </select>
+            <button id="generate-report">Gerar Relatório</button>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
