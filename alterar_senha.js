@@ -9,7 +9,7 @@ window.addEventListener("load", async function () {
 
     // Obtenha o TokenHash da URL
     const urlParams = new URLSearchParams(window.location.search);
-    const tokenHash = urlParams.get("access_token"); // O TokenHash deve estar na URL com o nome `access_token`
+    const tokenHash = urlParams.get("access_token");
     const mensagemStatus = document.getElementById("mensagemStatus");
 
     if (!tokenHash) {
@@ -57,10 +57,14 @@ window.addEventListener("load", async function () {
             if (error) {
                 console.error("Erro ao redefinir a senha:", error);
                 mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
-            } else {
-                console.log("Resposta do servidor:", data);
+            } else if (data && data.user) {
+                // Confirmação adicional: verifica se o objeto "user" foi retornado
                 console.log("Senha alterada com sucesso!");
+                console.log("Dados do usuário após a alteração:", data.user);
                 mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
+            } else {
+                console.log("A resposta do servidor não contém os dados esperados.");
+                mensagemStatus.textContent = "Ocorreu um problema inesperado ao alterar a senha.";
             }
         } catch (error) {
             console.error("Erro inesperado ao redefinir a senha:", error);
