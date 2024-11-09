@@ -425,13 +425,97 @@ function renderBubbleChart(data) {
 
 // Inicializa o código apenas após o carregamento do DOM
 document.addEventListener("DOMContentLoaded", () => {
+    // Exibir nome de usuário e carregar dados
     exibirNomeUsuario();
     carregarDadosAmbientais();
 
+    // Buscar botões e o modal
     const exportButton = document.getElementById("export-pdf");
     const logoutButton = document.getElementById("logout-button");
     const csvInput = document.getElementById("csv");
+    const customReportButton = document.getElementById("custom-report");
+    const reportModal = document.getElementById("report-modal");
+    const closeModal = document.querySelector(".close");
 
+    // Evento de clique no botão de relatório personalizado
+    if (customReportButton) {
+        customReportButton.addEventListener("click", () => {
+            reportModal.style.display = "block"; // Abre o modal
+        });
+    }
+
+    // Fechar o modal quando clicar no "x"
+    if (closeModal) {
+        closeModal.addEventListener("click", () => {
+            reportModal.style.display = "none"; // Fecha o modal
+        });
+    }
+
+    // Fechar o modal ao clicar fora dele
+    window.addEventListener("click", (event) => {
+        if (event.target === reportModal) {
+            reportModal.style.display = "none"; // Fecha o modal
+        }
+    });
+
+    // Função para gerar o relatório personalizado
+    const generateReportButton = document.getElementById("generate-report");
+    if (generateReportButton) {
+        generateReportButton.addEventListener("click", async () => {
+            const startDate = document.getElementById("start-date").value;
+            const endDate = document.getElementById("end-date").value + "T23:59:59"; // Inclui até o último segundo do dia final
+
+            const selectedMetrics = Array.from(document.getElementById("metrics").selectedOptions).map(opt => opt.value);
+
+            // Validação das entradas
+            if (!startDate || !endDate || selectedMetrics.length === 0) {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
+
+            // Consultar dados do banco de dados com base no intervalo de datas e métricas selecionadas
+            const { data, error } = await supabase
+                .from('dados_ambientais')
+                .select(['data_hora', 'localizacao', ...selectedMetrics].join(','))
+                .gte('data_hora', startDate)
+                .lte('data_hora', endDate)
+                .order('data_hora', { ascending: true });
+
+            if (error) {
+                console.error("Erro ao gerar relatório:", error);
+                alert("Erro ao carregar os dados para o relatório.");
+                return;
+            }
+
+            console.log("Dados carregados:", data);
+
+            if (data.length === 0) {
+                alert("Nenhum dado encontrado para o intervalo selecionado.");
+                return;
+            }
+
+            // Gerar o relatório em PDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("Relatório Personalizado", 14, 10);
+
+            doc.autoTable({
+                startY: 20,
+                head: [["Data", "Localização", ...selectedMetrics.map(m => m.charAt(0).toUpperCase() + m.slice(1))]],
+                body: data.map(d => [
+                    new Date(d.data_hora).toLocaleString(),
+                    d.localizacao,
+                    ...selectedMetrics.map(m => d[m])
+                ])
+            });
+
+            // Salvar o relatório gerado
+            doc.save(`relatorio_personalizado_${new Date().toLocaleDateString()}.pdf`);
+            reportModal.style.display = "none"; // Fechar o modal após gerar o relatório
+        });
+    }
+
+    // Funções de exportação
     if (exportButton) exportButton.addEventListener("click", exportToPDF);
     if (logoutButton) logoutButton.addEventListener("click", logoutUser);
     if (csvInput) csvInput.addEventListener("change", carregarCSV);
