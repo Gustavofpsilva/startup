@@ -38,7 +38,7 @@ window.addEventListener("load", async function () {
 
     formRedefinirSenha.addEventListener("submit", async function (event) {
         event.preventDefault();
-
+        
         const email = emailInput.value;
         const novaSenha = novaSenhaInput.value;
         const confirmarSenha = confirmarSenhaInput.value;
@@ -70,10 +70,18 @@ window.addEventListener("load", async function () {
             if (error) {
                 console.error("Erro ao redefinir a senha:", error);
                 mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
+                return;
             } else if (data && data.user) {
                 console.log("Senha alterada com sucesso!");
                 console.log("Dados do usuário após a alteração:", data.user);
                 mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
+
+                // Logout explícito após a redefinição da senha para garantir que a sessão está finalizada
+                await supabase.auth.signOut();
+
+                setTimeout(() => {
+                    window.location.href = "signin.html";
+                }, 3000);
             } else {
                 console.log("A resposta do servidor não contém os dados esperados.");
                 mensagemStatus.textContent = "Ocorreu um problema inesperado ao alterar a senha.";
