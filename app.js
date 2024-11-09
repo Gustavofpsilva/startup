@@ -8,6 +8,39 @@ const rowsPerPage = 50;
 let currentPage = 1;
 let totalData = [];
 
+// Função para registrar o login do usuário na tabela de logins
+async function registrarLogin(userId) {
+    const { error } = await supabase
+        .from('logins')
+        .insert([{ user_id: userId, data_hora: new Date().toISOString() }]);
+
+    if (error) {
+        console.error("Erro ao registrar o login:", error);
+    } else {
+        console.log("Login registrado com sucesso.");
+    }
+}
+
+// Função de autenticação do usuário e registro do login
+async function loginUser(email, password) {
+    const { data: { user }, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (error) {
+        console.error("Erro ao autenticar usuário:", error);
+        return;
+    }
+
+    if (user) {
+        // Registrar o login após autenticação bem-sucedida
+        registrarLogin(user.id);
+        // Redirecionar para a página principal do app
+        window.location.href = "dashboard.html"; // Ajuste o caminho conforme necessário
+    }
+}
+
 // Função para exibir o nome e o e-mail do usuário na sidebar
 async function exibirNomeUsuario() {
     const { data: { user }, error } = await supabase.auth.getUser();
