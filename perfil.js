@@ -7,6 +7,19 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let currentPage = 1;
 const pageSize = 50;
 
+// Função para registrar o login do usuário na tabela de logins
+async function registrarLogin(userId) {
+    const { error } = await supabase
+        .from('logins')
+        .insert([{ user_id: userId, data_hora: new Date().toISOString() }]);
+
+    if (error) {
+        console.error("Erro ao registrar o login:", error);
+    } else {
+        console.log("Login registrado com sucesso.");
+    }
+}
+
 // Função para exibir o e-mail do usuário na sidebar e no perfil
 async function carregarPerfilUsuario() {
     const { data: { user }, error } = await supabase.auth.getUser();
@@ -20,6 +33,9 @@ async function carregarPerfilUsuario() {
     if (userEmailElem) {
         userEmailElem.innerText = user.email;
     }
+
+    // Registrar o login do usuário
+    registrarLogin(user.id);
 
     // Carregar histórico de logins para a página atual
     carregarLogins(user.id, currentPage);
