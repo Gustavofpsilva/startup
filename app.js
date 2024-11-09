@@ -175,7 +175,7 @@ function exportToPDF() {
         ])
     });
 
-    doc.save('dados_ambientais.pdf');
+    doc.save('AmbIn_relatório.pdf');
 }
 
 // Função de logout
@@ -510,7 +510,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             // Salvar o relatório gerado
-            doc.save(`relatorio_personalizado_${new Date().toLocaleDateString()}.pdf`);
+            doc.save(`AmbIn_relatorio_personalizado_${new Date().toLocaleDateString()}.pdf`);
             reportModal.style.display = "none"; // Fechar o modal após gerar o relatório
         });
     }
