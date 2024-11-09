@@ -23,22 +23,22 @@ async function carregarPerfilUsuario() {
         sidebarUserEmailElem.innerText = user.email;
     }
 
-    // Carregar histórico de logins
-    const { data: logins, error: loginsError } = await supabase
-        .from('logins')
-        .select('data_hora')
-        .eq('user_id', user.id)
-        .order('data_hora', { ascending: false });
+// Carregar histórico de logins
+const { data: logins, error: loginsError } = await supabase
+    .from('logins')
+    .select('data_hora')
+    .eq('user_id', user.id)
+    .order('data_hora', { ascending: false })
+    .limit(null); // Desativa qualquer limite padrão
 
-    if (loginsError) {
-        console.error("Erro ao carregar histórico de logins:", loginsError);
-    } else {
-        const loginHistoryBody = document.getElementById("login-history-body");
-        if (loginHistoryBody) {
-            loginHistoryBody.innerHTML = logins.map(login => `
-                <tr><td>${new Date(login.data_hora).toLocaleString('pt-BR')}</td></tr>
-            `).join('');
-        }
+if (loginsError) {
+    console.error("Erro ao carregar histórico de logins:", loginsError);
+} else {
+    const loginHistoryBody = document.getElementById("login-history-body");
+    if (loginHistoryBody) {
+        loginHistoryBody.innerHTML = logins.map(login => `
+            <tr><td>${new Date(login.data_hora).toLocaleString('pt-BR')}</td></tr>
+        `).join('');
     }
 }
 
