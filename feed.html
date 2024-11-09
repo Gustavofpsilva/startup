@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambin - Análises e Recomendações</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Adicionando o DomPurify para sanitizar o conteúdo HTML -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.0.10/dist/purify.min.js"></script>
+    <!-- Adicionando o html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
+            </div>
+            <nav>
+                <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="cadastrar_dados.html"><i class="fas fa-plus-circle"></i> Cadastrar Dados</a>
+                <a href="feed.html"><i class="fas fa-plus-circle"></i> Leads</a>
+                <a href="usuario.html"><i class="fas fa-user"></i> Usuário</a>
+            </nav>
+            <div class="user-info"></div>
+            <div class="bottom-section">
+                <a href="#" class="logout" id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main>
+            <header>
+                <div class="user-info">
+                    <button id="exportar-recomendacoes">Exportar Recomendações</button>
+                </div>
+            </header>
+            </section>
+
+            <!-- Seção de Recomendações e Atualizações -->
+            <section class="recomendacoes">
+                <h2>Atualizações e Recomendações</h2>
+                <div id="feed-recomendacoes" class="feed-recomendacoes">
+                    <!-- Recomendações serão inseridas aqui -->
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js"></script>
+    <script src="feed.js"></script>
+</body>
+</html>
