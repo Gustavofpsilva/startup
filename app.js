@@ -35,7 +35,7 @@ async function loginUser(email, password) {
 
     if (user) {
         // Registrar o login após autenticação bem-sucedida
-        registrarLogin(user.id);
+        await registrarLogin(user.id);
         // Redirecionar para a página principal do app
         window.location.href = "dashboard.html"; // Ajuste o caminho conforme necessário
     }
