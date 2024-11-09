@@ -7,6 +7,16 @@ window.addEventListener("load", async function () {
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log("Supabase inicializado com sucesso!");
 
+    // Função para garantir que o usuário está deslogado
+    async function logout() {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error("Erro ao deslogar:", error);
+        } else {
+            console.log("Sessão anterior encerrada com sucesso.");
+        }
+    }
+
     // Obtenha o TokenHash da URL
     const urlParams = new URLSearchParams(window.location.search);
     const tokenHash = urlParams.get("access_token");
@@ -28,7 +38,7 @@ window.addEventListener("load", async function () {
 
     formRedefinirSenha.addEventListener("submit", async function (event) {
         event.preventDefault();
-        
+
         const email = emailInput.value;
         const novaSenha = novaSenhaInput.value;
         const confirmarSenha = confirmarSenhaInput.value;
@@ -44,6 +54,9 @@ window.addEventListener("load", async function () {
         }
 
         try {
+            // Garante que o usuário está deslogado
+            await logout();
+
             console.log("Enviando solicitação de verificação OTP para redefinir senha...");
 
             // Autentica temporariamente o usuário e redefine a senha usando o TokenHash e o e-mail fornecido
@@ -58,7 +71,6 @@ window.addEventListener("load", async function () {
                 console.error("Erro ao redefinir a senha:", error);
                 mensagemStatus.textContent = "Erro ao alterar a senha: " + error.message;
             } else if (data && data.user) {
-                // Confirmação adicional: verifica se o objeto "user" foi retornado
                 console.log("Senha alterada com sucesso!");
                 console.log("Dados do usuário após a alteração:", data.user);
                 mensagemStatus.textContent = "Senha alterada com sucesso! Agora você pode fazer login com sua nova senha.";
