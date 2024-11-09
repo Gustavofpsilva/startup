@@ -28,9 +28,12 @@
         <main>
             <h1>Perfil do Usuário</h1>
             <section class="user-info">
-                
+                <!-- Exibição do nome, e-mail e última autenticação do usuário -->
+                <p><strong>Nome:</strong> <span id="user-name">Carregando...</span></p>
                 <p><strong>Email:</strong> <span id="user-email">Carregando...</span></p>
-                
+                <p><strong>Último Login:</strong> <span id="last-login">Carregando...</span></p>
+
+                <!-- Tabela do histórico de logins -->
                 <div class="dados-tabela">
                     <table>
                         <thead>
@@ -50,7 +53,6 @@
                     <span id="page-number">Página 1</span>
                     <button id="next-page">Próxima</button>
                 </div>
-
             </section>
         </main>
     </div>
