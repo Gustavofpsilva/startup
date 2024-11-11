@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AmbIn - Blog</title>
+
+  <!-- favicon link -->
+  <link rel="shortcut icon" href="./assets/images/LogoIcon.png" type="image/svg+xml">
+
+  <!-- custom css link -->
+  <link rel="stylesheet" href="./assets/css/blog.css">
+
+  <!-- google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Ajusta o tamanho da logo */
+    .logo img {
+      width: 150px;
+      height: auto;
+    }
+
+    /* Estilo para a seção de blog */
+    #blog {
+      background-color: #ffffff;
+      padding: 40px 0;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #1f2937;
+    }
+
+    .section-text {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      color: #6b7280;
+      font-size: 1rem;
+    }
+
+    .blog-item {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+
+    .blog-item:hover {
+      transform: scale(1.02);
+    }
+
+    .blog-image img {
+      width: 100%;
+      height: auto;
+      transition: transform 0.3s;
+    }
+
+    .blog-item:hover .blog-image img {
+      transform: scale(1.1);
+    }
+
+    .blog-content {
+      padding: 20px;
+    }
+
+    .blog-date {
+      background-color: #1d4ed8;
+      color: #ffffff;
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .blog-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #1f2937;
+      margin-bottom: 10px;
+      text-decoration: none;
+    }
+
+    .blog-title:hover {
+      color: #1d4ed8;
+    }
+
+    .blog-description {
+      color: #6b7280;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    /* Flex layout para os itens de blog */
+    .blog-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .blog-item-container {
+      width: 100%;
+      max-width: 320px;
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <!-- #HEADER -->
+  <header>
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="./assets/images/AmbinLogo.png" alt="AmbIn logo">
+      </a>
+      <div class="navbar-wrapper">
+        <button class="navbar-menu-btn" data-navbar-toggle-btn>
+          <ion-icon name="menu-outline"></ion-icon>
+        </button>
+        <nav class="navbar" data-navbar>
+          <ul class="navbar-list">
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="produto.html" class="nav-link">Soluções</a></li>
+            <li class="nav-item"><a href="time.html" class="nav-link">Time</a></li>
+            <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+            <li class="nav-item"><a href="contato.html" class="nav-link">Contato</a></li>
+          </ul>
+          <button class="btn btn-primary">Entrar</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Blog Section -->
+  <main>
+    <section id="blog">
+      <div class="container">
+        <h2 class="section-title">Notícias Recentes</h2>
+        <p class="section-text">
+          Fique por dentro das últimas novidades e tendências em nosso blog, onde compartilhamos insights valiosos e atualizações importantes.
+        </p>
+
+        <div class="blog-container">
+          <div class="blog-item-container">
+            <div class="blog-item">
+              <div class="blog-image">
+                <img src="assets\images\blog-01.jpeg" alt="Transformações no Setor de Biogás">
+              </div>
+              <div class="blog-content">
+                <span class="blog-date">08 de nov, 2024</span>
+                <a href="blog1.html" class="blog-title">Transformações no Setor de Biogás: O Crescimento das Fusões e Aquisições</a>
+                <p class="blog-description">O Movimento Abril Verde busca conscientizar sobre a prevenção de acidentes e doenças no trabalho, envolvendo empregadores e trabalhadores.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="blog-item-container">
+            <div class="blog-item">
+              <div class="blog-image">
+                <img src="assets\images\blog-02.jpeg" alt="Abril Verde: Um Chamado à Segurança e Saúde no Trabalho">
+              </div>
+              <div class="blog-content">
+                <span class="blog-date">08 de nov, 2024</span>
+                <a href="blog2.html" class="blog-title">Abril Verde: Um Chamado à Segurança e Saúde no Trabalho</a>
+                <p class="blog-description">O Movimento Abril Verde busca conscientizar sobre a prevenção de acidentes e doenças no trabalho, envolvendo empregadores e trabalhadores.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="blog-item-container">
+            <div class="blog-item">
+              <div class="blog-image">
+                <img src="assets\images\blog-03.jpeg" alt="Biogás Reduz Custos e Gera Renda para Suinocultores em Pato Bragado">
+              </div>
+              <div class="blog-content">
+                <span class="blog-date">08 de nov, 2024</span>
+                <a href="blog3.html" class="blog-title">Biogás Reduz Custos e Gera Renda para Suinocultores em Pato Bragado</a>
+                <p class="blog-description">Na granja da família Fincke, em Pato Bragado, a instalação de um sistema de biogás, financiado pelo programa RenovaPR do Governo do Estado.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- #FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="container">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <img src="./assets/images/AmbinLogo.png" alt="AmbIn logo">
+          </a>
+          <p class="footer-text">Nos siga nas redes sociais</p>
+          <ul class="social-list">
+            <li><a href="https://github.com/codewithsadee" class="social-link"><ion-icon name="logo-github"></ion-icon></a></li>
+            <li><a href="https://instagram.com/codewithsadee" class="social-link"><ion-icon name="logo-instagram"></ion-icon></a></li>
+            <li><a href="https://youtube.com/c/codewithsadee" class="social-link"><ion-icon name="logo-youtube"></ion-icon></a></li>
+            <li><a href="#" class="social-link"><ion-icon name="logo-facebook"></ion-icon></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#top" class="go-top active" data-go-top>
+    <ion-icon name="chevron-up-outline"></ion-icon>
+  </a>
+
+  <script src="./assets/js/script.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

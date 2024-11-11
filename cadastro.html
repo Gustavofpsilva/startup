@@ -5,13 +5,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recuperar Senha - AmbIn</title>
+  <title>Cadastro - AmbIn</title>
 
   <!-- Favicon -->
   <link rel="shortcut icon" href="./assets/images/LogoIcon.png" type="image/svg+xml">
 
   <!-- CSS personalizado -->
-  <link rel="stylesheet" href="./assets/css/recuperar_senha.css">
+  <link rel="stylesheet" href="./assets/css/cadastro.css">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,23 +25,37 @@
     <div class="logo">
       <img src="./assets/images/AmbinLogo.png" alt="AmbIn logo">
     </div>
-    <h2>Recuperar Senha</h2>
-    <p class="instruction-text">Insira seu e-mail para receber um link de redefinição de senha.</p>
-    <form action="process_password_recovery.php" method="POST">
-      
+    <h2>Cadastro</h2>
+    <form id="register-form">
+      <div class="input-wrapper">
+        <label for="name">Nome *</label>
+        <input type="text" name="name" id="name" required placeholder="Digite seu nome">
+      </div>
+
       <div class="input-wrapper">
         <label for="email">E-mail *</label>
         <input type="email" name="email" id="email" required placeholder="Digite seu e-mail">
       </div>
 
-      <button type="submit" class="btn btn-primary">Enviar</button>
+      <div class="input-wrapper">
+        <label for="password">Senha *</label>
+        <input type="password" name="password" id="password" required placeholder="Digite sua senha">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
       
       <div class="login-link">
-        Lembrou a senha? <a href="login.html">Entrar</a>
+        Já possui uma conta? <a href="login.html">Entrar</a>
       </div>
 
     </form>
   </div>
+
+  <!-- Link do SDK do Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <!-- Script de cadastro -->
+  <script src="./assets/js/cadastro.js"></script>
 
 </body>
 

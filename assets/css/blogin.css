@@ -1,0 +1,154 @@
+/* Global Styles */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+body {
+  background-color: #f4f4f9;
+  color: #333;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Navbar Styles */
+.navbar {
+  background-color: transparent;
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+.logo img {
+  width: 150px;
+}
+.menu-list {
+  display: flex;
+  gap: 20px;
+}
+.menu-list li a {
+  color: #333;
+  text-decoration: none;
+  padding: 10px;
+  transition: color 0.3s;
+}
+.menu-list li a:hover {
+  color: #1d4ed8;
+}
+.btn.login {
+  background-color: #1d4ed8;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+.btn.login:hover {
+  background-color: #163a9c;
+}
+
+/* Banner Styles */
+.banner {
+  padding: 100px 0;
+  text-align: center;
+  background-color: #e5efff;
+}
+.banner h1 {
+  font-size: 2.5rem;
+  color: #1f2937;
+  margin-bottom: 10px;
+}
+.banner p {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+/* Blog Details Styles */
+.blog-details {
+  padding: 40px 0;
+}
+.blog-post {
+  background-color: #fff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.blog-image {
+  width: 100%;
+  height: auto;
+}
+.blog-content {
+  padding: 20px;
+}
+.blog-content h2 {
+  font-size: 1.5rem;
+  color: #1f2937;
+  margin-bottom: 10px;
+}
+.blog-content p {
+  font-size: 1rem;
+  color: #6b7280;
+  line-height: 1.6;
+}
+.blog-footer {
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+/* Footer Styles */
+.footer {
+  background-color: #1f2937;
+  color: #ffffff;
+  text-align: center;
+  padding: 20px 0;
+}
+.footer-logo img {
+  width: 150px;
+  margin-bottom: 10px;
+}
+.social-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+.social-links a {
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.social-links a:hover {
+  color: #ffffff;
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #1d4ed8;
+  color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  display: none; /* Hidden initially */
+  transition: background-color 0.3s;
+}
+.back-to-top:hover {
+  background-color: #163a9c;
+}
