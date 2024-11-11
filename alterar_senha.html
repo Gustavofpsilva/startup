@@ -7,8 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Redefinir Senha | AmbIn</title>
   <link rel="shortcut icon" href="assets/images/logo/LogoIcon.png" type="image/x-icon" />
+
+  <!-- CSS personalizado e Tailwind -->
   <link rel="stylesheet" href="assets/css/animate.css" />
   <link rel="stylesheet" href="assets/css/tailwind.css" />
+  <link rel="stylesheet" href="assets/css/alterar.css" /> <!-- CSS de estilo da página de cadastro -->
 
   <!-- Supabase -->
   <script src="https://unpkg.com/@supabase/supabase-js"></script>
@@ -16,54 +19,30 @@
 </head>
 
 <body>
-  <div class="ud-header left-0 top-0 z-40 flex w-full items-center bg-transparent lg:mb-32 mb-20">
-    <div class="container">
-      <div class="relative -mx-4 flex items-center justify-between">
-        <div class="w-60 max-w-full px-4">
-          <a href="index.html" class="navbar-logo block w-full py-5">
-            <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="header-logo w-full" />
-          </a>
-        </div>
-        <div class="flex items-center justify-end">
-          <a href="signin.html" class="loginBtn px-[22px] py-2 text-base font-medium text-black hover:opacity-70">Entrar</a>
-        </div>
+  <div class="container-center">
+    <div class="redefinir-senha-section">
+      <div class="redefinir-senha-logo">
+        <img src="assets/images/logo/AmbinLogo.png" alt="AmbIn logo">
       </div>
+      <h2 class="redefinir-senha-title">Redefinir Senha</h2>
+      <form class="redefinir-senha-form" id="form-redefinir-senha">
+        <div class="input-wrapper">
+          <label class="input-label" for="email">E-mail *</label>
+          <input type="email" id="email" placeholder="Digite seu e-mail" class="input-field" required>
+        </div>
+        <div class="input-wrapper">
+          <label class="input-label" for="nova-senha">Nova Senha *</label>
+          <input type="password" id="nova-senha" placeholder="Nova Senha" class="input-field" required>
+        </div>
+        <div class="input-wrapper">
+          <label class="input-label" for="confirmar-senha">Confirmar Senha *</label>
+          <input type="password" id="confirmar-senha" placeholder="Confirmar Senha" class="input-field" required>
+        </div>
+        <button type="submit" class="btn-primary">Alterar Senha</button>
+        <p id="mensagemStatus" class="status-message">Token de redefinição de senha não encontrado!</p>
+      </form>
     </div>
   </div>
-
-  <section class="bg-[#F4F7FF] py-14 lg:py-[90px] dark:bg-dark lg:mt-20 mt-10">
-    <div class="container">
-      <div class="flex flex-wrap -mx-4">
-        <div class="w-full px-4">
-          <div class="wow fadeInUp relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white dark:bg-dark-2 py-14 px-8 text-center sm:px-12 md:px-[60px]" data-wow-delay=".15s">
-            <div class="mb-10 text-center">
-              <a href="javascript:void(0)" class="mx-auto inline-block max-w-[160px]">
-                <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="dark:hidden" />
-                <img src="assets/images/logo/AmbinLogo.png" alt="logo" class="hidden dark:block" />
-              </a>
-            </div>
-            <form id="form-redefinir-senha">
-              <div class="mb-[22px]">
-                <input type="email" id="email" placeholder="Digite seu e-mail" class="w-full px-5 py-3" required />
-              </div>
-              <div class="mb-[22px]">
-                <input type="password" id="nova-senha" placeholder="Nova Senha" class="w-full px-5 py-3" required />
-              </div>
-              <div class="mb-[22px]">
-                <input type="password" id="confirmar-senha" placeholder="Confirmar Senha" class="w-full px-5 py-3" required />
-              </div>
-              <div class="mb-9">
-                <button type="submit" class="w-full px-5 py-3 text-white bg-primary">
-                  Alterar Senha
-                </button>
-              </div>
-              <p id="mensagemStatus" class="text-red-500"></p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 </body>
 
 </html>
