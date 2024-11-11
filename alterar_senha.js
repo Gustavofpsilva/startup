@@ -80,7 +80,7 @@ window.addEventListener("load", async function () {
                 await supabase.auth.signOut();
 
                 setTimeout(() => {
-                    window.location.href = "signin.html";
+                    window.location.href = "login.html";
                 }, 3000);
             } else {
                 console.log("A resposta do servidor não contém os dados esperados.");
