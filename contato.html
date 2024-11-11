@@ -7,26 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AmbIn</title>
 
-  <!-- 
-    - favicon link
-  -->
+  <!-- favicon link -->
   <link rel="shortcut icon" href="./assets/images/LogoIcon.png" type="image/svg+xml">
 
-  <!-- 
-    - custom css link
-  -->
+  <!-- custom css link -->
   <link rel="stylesheet" href="./assets/css/contato.css">
 
-  <!-- 
-    - google font link
-  -->
+  <!-- google font link -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* Ajusta o tamanho da logo */
     .logo img {
-      width: 150px; /* Altere o valor conforme necessário */
+      width: 150px;
       height: auto;
     }
   </style>
@@ -34,129 +28,65 @@
 
 <body id="top">
 
-  <!-- 
-    - #HEADER
-  -->
-
+  <!-- HEADER -->
   <header>
-
     <div class="container">
-
       <a href="index.html" class="logo">
         <img src="./assets/images/AmbinLogo.png" alt="Funel logo">
       </a>
-
       <div class="navbar-wrapper">
-
         <button class="navbar-menu-btn" data-navbar-toggle-btn>
           <ion-icon name="menu-outline"></ion-icon>
         </button>
-
         <nav class="navbar" data-navbar>
-
           <ul class="navbar-list">
-
-            <li class="nav-item">
-              <a href="index.html" class="nav-link">Home</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="#about" class="nav-link">Soluções</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="time.html" class="nav-link">Time</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="blog.html" class="nav-link">Blog</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="contato.html" class="nav-link">Contato</a>
-            </li>
-
+            <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="#about" class="nav-link">Soluções</a></li>
+            <li class="nav-item"><a href="time.html" class="nav-link">Time</a></li>
+            <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+            <li class="nav-item"><a href="contato.html" class="nav-link">Contato</a></li>
           </ul>
-
           <button class="btn btn-primary">Entrar</button>
-
         </nav>
-
       </div>
-
     </div>
-
   </header>
 
-
-
-
-
   <main>
-
     <article>
-
-
-      <!-- 
-        - #CONTACT
-      -->
-
+      <!-- CONTACT -->
       <section class="contact" id="contact">
         <div class="container">
-
           <div class="contact-content">
-
             <figure class="contact-banner">
-                <h3 class="h3 contact-title">Conectando sustentabilidade e tecnologia para transformar empresas</h3>
+              <h3 class="h3 contact-title">Conectando sustentabilidade e tecnologia para transformar empresas</h3>
             </figure>
           </div>
-
-          <form action="" class="contact-form">
-
+          <form id="contact-form" class="contact-form">
             <div class="input-wrapper">
               <label for="name" class="input-label">Nome *</label>
-
               <input type="text" name="name" id="name" required placeholder="Type Name" class="input-field">
             </div>
-
             <div class="input-wrapper">
               <label for="phone" class="input-label">Telefone</label>
-
               <input type="tel" name="phone" id="phone" placeholder="Type Phone Number" class="input-field">
             </div>
-
             <div class="input-wrapper">
               <label for="email" class="input-label">E-mail *</label>
-
               <input type="email" name="email" id="email" required placeholder="Type Email Address" class="input-field">
             </div>
-
             <div class="input-wrapper">
               <label for="message" class="input-label">Como podemos te ajudar? *</label>
-
-              <textarea name="message" id="message" placeholder="Type Description" required
-                class="input-field"></textarea>
+              <textarea name="message" id="message" placeholder="Type Description" required class="input-field"></textarea>
             </div>
-
             <button type="submit" class="btn btn-primary">Enviar</button>
-
           </form>
-
         </div>
       </section>
-
     </article>
-
   </main>
 
-
-
-
-
-  <!-- 
-    - #FOOTER
-  -->
-
+  <!-- FOOTER -->
   <footer>
     <div class="footer-top">
       <div class="container">
@@ -175,32 +105,44 @@
     </div>
   </footer>
 
-
-
-
-
-  <!-- 
-    - #GO TO TOP
-  -->
-
+  <!-- GO TO TOP -->
   <a href="#top" class="go-top active" data-go-top>
     <ion-icon name="chevron-up-outline"></ion-icon>
   </a>
 
-
-
-
-
-  <!-- 
-    - custom js link
-  -->
+  <!-- custom js link -->
   <script src="./assets/js/script.js"></script>
 
-  <!-- 
-    - ionicon link
-  -->
+  <!-- ionicon link -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <!-- EmailJS script -->
+  <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    // Inicialize o EmailJS com sua Public Key
+    (function() {
+      emailjs.init("gEggpAKFy2W0RhQMx");
+    })();
+
+    // JavaScript para enviar o formulário via EmailJS usando sendForm
+    document.getElementById("contact-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      console.log("Enviando o formulário..."); // Log inicial para indicar o início do envio
+
+      // Envia o e-mail utilizando EmailJS
+      emailjs.sendForm("service_p30x7d8", "template_bqm8ks9", "#contact-form")
+        .then(function(response) {
+          console.log("SUCESSO:", response.status, response.text); // Log de sucesso
+          alert("Mensagem enviada com sucesso!");
+          document.getElementById("contact-form").reset();
+        }, function(error) {
+          console.error("ERRO:", error); // Log de erro
+          alert("Ocorreu um erro ao enviar a mensagem. Tente novamente.");
+        });
+    });
+  </script>
 
 </body>
 
