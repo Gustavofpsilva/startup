@@ -1,11 +1,13 @@
 // Configuração do Supabase
 const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
+
+// Cria o cliente Supabase usando `window.supabase.createClient`
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Seleciona o formulário e o campo de mensagem de status
-const form = document.getElementById('recuperar-senha-form');
-const mensagemStatus = document.getElementById('mensagem-status');
+const form = document.getElementById('recuperarSenhaForm');
+const mensagemStatus = document.getElementById('status');
 
 // Adiciona um evento ao formulário para lidar com o envio
 form.addEventListener('submit', async (event) => {

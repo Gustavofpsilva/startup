@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,8 +16,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
 
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
 <body>
 
   <div class="container">
@@ -27,8 +28,8 @@
     </div>
     <h2>Recuperar Senha</h2>
     <p class="instruction-text">Insira seu e-mail para receber um link de redefinição de senha.</p>
-    <form action="process_password_recovery.php" method="POST">
-      
+    
+    <form id="recuperarSenhaForm">
       <div class="input-wrapper">
         <label for="email">E-mail *</label>
         <input type="email" name="email" id="email" required placeholder="Digite seu e-mail">
@@ -39,10 +40,14 @@
       <div class="login-link">
         Lembrou a senha? <a href="login.html">Entrar</a>
       </div>
-
     </form>
+
+    <!-- Texto de status para feedback ao usuário -->
+    <p id="status"></p>
   </div>
 
-</body>
+  <!-- Script de recuperação de senha -->
+  <script src="./assets/js/recuperar_senha.js"></script>
 
+</body>
 </html>
