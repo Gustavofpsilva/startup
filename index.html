@@ -7,19 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AmbIn</title>
 
-  <!-- 
-    - favicon link
-  -->
+  <!-- favicon link -->
   <link rel="shortcut icon" href="./assets/images/LogoIcon.png" type="image/svg+xml">
 
-  <!-- 
-    - custom css link
-  -->
+  <!-- custom css link -->
   <link rel="stylesheet" href="./assets/css/home.css">
 
-  <!-- 
-    - google font link
-  -->
+  <!-- google font link -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -34,233 +28,129 @@
 
 <body id="top">
 
-  <!-- 
-    - #HEADER
-  -->
-
+  <!-- HEADER -->
   <header>
-
     <div class="container">
-
       <a href="#" class="logo">
         <img src="./assets/images/AmbinLogo.png" alt="Funel logo">
       </a>
-
       <div class="navbar-wrapper">
-
         <button class="navbar-menu-btn" data-navbar-toggle-btn>
           <ion-icon name="menu-outline"></ion-icon>
         </button>
-
         <nav class="navbar" data-navbar>
-
           <ul class="navbar-list">
-
-            <li class="nav-item">
-              <a href="#home" class="nav-link">Home</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="#about" class="nav-link">Soluções</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="time.html" class="nav-link">Time</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="blog.html" class="nav-link">Blog</a>
-            </li>
-
-            <li class="nav-item">
-              <a href="contato.html" class="nav-link">Contato</a>
-            </li>
-
+            <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="#about" class="nav-link">Soluções</a></li>
+            <li class="nav-item"><a href="time.html" class="nav-link">Time</a></li>
+            <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+            <li class="nav-item"><a href="contato.html" class="nav-link">Contato</a></li>
           </ul>
-
           <a href="login.html" class="btn btn-primary">Entrar</a>
-
         </nav>
-
       </div>
-
     </div>
-
   </header>
 
-
-
-
-
   <main>
-
     <article>
 
-      <!-- 
-        - #HERO
-      -->
-
+      <!-- HERO -->
       <section class="hero" id="home">
         <div class="container">
-
           <div class="hero-content">
-
             <h1 class="h1 hero-title">Transforme o Impacto Ambiental da Sua Empresa</h1>
-
             <p class="hero-text">
               Plataforma multidisciplinar construída para facilitar a gestão de biodigestores, emissões de gases e cursos sobre ESG e Sustentabilidade.
             </p>
-
             <button class="btn btn-primary">Vamos começar</button>
-
           </div>
-
           <div class="hero-banner"></div>
-
         </div>
-
         <img src="./assets/images/bg.png" alt="shape" class="shape-content">
       </section>
 
-
-
-
-
-      <!-- 
-        - #ABOUT
-      -->
-
+      <!-- ABOUT -->
       <section class="about" id="about">
         <div class="container">
-
           <div class="about-top">
-
             <h2 class="h2 section-title">Nossas soluções</h2>
-
             <p class="section-text">
               Temos uma gama de soluções para te ajudar com a gestão eficiente de biodigestores, redução de emissões de gases e capacitação em ESG e Sustentabilidade. Nossos serviços são personalizados para atender às necessidades do seu negócio, garantindo inovação, impacto positivo e conformidade ambiental.
-
-
             </p>
-
             <ul class="about-list">
-
               <li>
                 <div class="about-card">
-
                   <div class="card-icon">
                     <ion-icon name="desktop-outline"></ion-icon>
                   </div>
-
                   <h3 class="h3 card-title">Plataforma de gerenciamento</h3>
-
                   <p class="card-text">
                     Plataforma para gestão de energia e compensação de carbono.
                   </p>
-
                 </div>
               </li>
-
               <li>
                 <div class="about-card">
-
                   <div class="card-icon">
                     <ion-icon name="ribbon-outline"></ion-icon>
                   </div>
-
                   <h3 class="h3 card-title">Certificações</h3>
-
                   <p class="card-text">
                     Cursos: ESG e sustentabilidade, Biogás e Segurança do Trabalho.
                   </p>
-
                 </div>
               </li>
-
               <li>
                 <div class="about-card">
-
                   <div class="card-icon">
                     <ion-icon name="stats-chart-outline"></ion-icon>
                   </div>
-
                   <h3 class="h3 card-title">Análise preditiva dos seus dados</h3>
-
                   <p class="card-text">
                     Análise com base nos seu histórico.
                   </p>
-
                 </div>
               </li>
-
             </ul>
-
           </div>
-
         </div>
       </section>
 
-      <!-- 
-        - #CONTACT
-      -->
-
+      <!-- CONTACT -->
       <section class="contact" id="contact">
         <div class="container">
-
           <div class="contact-content">
-          
-
             <figure class="contact-banner">
               <h3 class="h3 contact-title">Conectando sustentabilidade e tecnologia para transformar empresas</h3>
             </figure>
           </div>
-
-          <form action="" class="contact-form">
-
+          <form id="contact-form-index" class="contact-form">
             <div class="input-wrapper">
               <label for="name" class="input-label">Nome *</label>
-
               <input type="text" name="name" id="name" required placeholder="Type Name" class="input-field">
             </div>
-
             <div class="input-wrapper">
               <label for="phone" class="input-label">Telefone</label>
-
               <input type="tel" name="phone" id="phone" placeholder="Type Phone Number" class="input-field">
             </div>
-
             <div class="input-wrapper">
               <label for="email" class="input-label">E-mail *</label>
-
               <input type="email" name="email" id="email" required placeholder="Type Email Address" class="input-field">
             </div>
-
             <div class="input-wrapper">
               <label for="message" class="input-label">Como podemos te ajudar? *</label>
-
-              <textarea name="message" id="message" placeholder="Type Description" required
-                class="input-field"></textarea>
+              <textarea name="message" id="message" placeholder="Type Description" required class="input-field"></textarea>
             </div>
-
             <button type="submit" class="btn btn-primary">Enviar</button>
-
           </form>
-
         </div>
       </section>
 
     </article>
-
   </main>
 
-
-
-
-
-  <!-- 
-    - #FOOTER
-  -->
-
+  <!-- FOOTER -->
   <footer>
     <div class="footer-top">
       <div class="container">
@@ -279,32 +169,44 @@
     </div>
   </footer>
 
-
-
-
-
-  <!-- 
-    - #GO TO TOP
-  -->
-
+  <!-- GO TO TOP -->
   <a href="#top" class="go-top active" data-go-top>
     <ion-icon name="chevron-up-outline"></ion-icon>
   </a>
 
-
-
-
-
-  <!-- 
-    - custom js link
-  -->
+  <!-- custom js link -->
   <script src="./assets/js/script.js"></script>
 
-  <!-- 
-    - ionicon link
-  -->
+  <!-- ionicon link -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <!-- EmailJS script -->
+  <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    // Inicialize o EmailJS com sua Public Key
+    (function() {
+      emailjs.init("gEggpAKFy2W0RhQMx");
+    })();
+
+    // JavaScript para enviar o formulário da seção de contato da página index via EmailJS usando sendForm
+    document.getElementById("contact-form-index").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      console.log("Enviando o formulário de contato da página index...");
+
+      // Envia o e-mail utilizando EmailJS
+      emailjs.sendForm("service_p30x7d8", "template_bqm8ks9", "#contact-form-index")
+        .then(function(response) {
+          console.log("SUCESSO:", response.status, response.text);
+          alert("Mensagem enviada com sucesso!");
+          document.getElementById("contact-form-index").reset();
+        }, function(error) {
+          console.error("ERRO:", error);
+          alert("Ocorreu um erro ao enviar a mensagem. Tente novamente.");
+        });
+    });
+  </script>
 
 </body>
 
