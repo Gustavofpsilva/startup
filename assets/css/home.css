@@ -255,21 +255,40 @@ header .container {
   position: relative;
   padding: 130px 0 140px;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh; /* ocupa a altura total da tela */
 }
 
-.hero-content { text-align: center; }
+.hero-content {
+  max-width: 600px; /* Define uma largura máxima para o conteúdo */
+  margin: 0 auto;
+}
 
 .hero-title,
-.hero-text { margin-bottom: 40px; }
+.hero-text {
+  margin-bottom: 40px;
+  text-align: center; /* Alinha o texto ao centro */
+}
 
 .hero-text {
   font-size: var(--fs-4);
   color: var(--oxford-blue);
+  text-align: center; /* Alinha o texto ao centro */
 }
 
-.hero .btn-primary { margin-inline: auto; }
 
-.hero-banner { display: none; }
+.hero .btn-primary {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+}
+
+.hero-banner {
+  display: none;
+}
 
 .shape-content {
   position: absolute;
@@ -279,7 +298,7 @@ header .container {
   z-index: -1;
 }
 
-/* Ou, se preferir, adicione um espaçamento superior na seção "contact" */
+/* Espaçamento superior adicional para a seção "contact" */
 .contact {
   margin-top: 100px; /* Ajuste o valor conforme necessário */
 }
@@ -903,7 +922,7 @@ footer .logo { margin-bottom: 30px; }
     transform: translateY(-50%);
     width: 500px;
     padding-top: 500px;
-    background: url("../images/hero-banner.png") no-repeat;
+    background: url("") no-repeat;
     background-size: contain;
   }
 
