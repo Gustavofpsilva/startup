@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ambin - Análises e Recomendações</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./assets/css/leads.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Adicionando o DomPurify para sanitizar o conteúdo HTML -->
     <script src="https://cdn.jsdelivr.net/npm/dompurify@2.0.10/dist/purify.min.js"></script>
-    <!-- Adicionando o html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 </head>
 <body>
@@ -21,7 +19,7 @@
             <nav>
                 <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
                 <a href="resumos.html"><i class="fa fa-file"></i> Resumo</a>
-                <a href="leads.html"class="active"><i class="fa fa-asterisk"></i> Leads</a>
+                <a href="leads.html" class="active"><i class="fa fa-asterisk"></i> Leads</a>
                 <a href="cadastrar_dados.html"><i class="fas fa-plus-circle"></i> Cadastrar Dados</a>
                 <a href="usuario.html"><i class="fas fa-user"></i> Usuário</a>
             </nav>
@@ -37,7 +35,6 @@
                     <button id="exportar-recomendacoes">Exportar Recomendações</button>
                 </div>
             </header>
-            </section>
 
             <!-- Seção de Recomendações e Atualizações -->
             <section class="recomendacoes">
@@ -51,6 +48,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
-    <script src="leads.js"></script>
+    <script src="./assets/js/leads.js"></script>
 </body>
 </html>

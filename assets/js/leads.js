@@ -31,42 +31,59 @@ async function carregarDadosAmbientais() {
     mostrarRecomendacoes(data); // Chama a função para exibir as recomendações
 }
 
-// Função para calcular as recomendações
+// Função para exibir as recomendações em blocos com ícones
 function mostrarRecomendacoes(dados) {
     const recomendacoesContainer = document.getElementById("feed-recomendacoes");
 
-    // Verifica se o container de recomendações existe
     if (!recomendacoesContainer) {
         console.error("Elemento de recomendações não encontrado.");
         return;
     }
 
-    let recomendacoes = "";
+    // Limpa o container antes de inserir as novas recomendações
+    recomendacoesContainer.innerHTML = "";
 
     // Calcular a média de temperatura e umidade
     const umidadeMedia = dados.reduce((acc, d) => acc + d.umidade, 0) / dados.length;
     const temperaturaMedia = dados.reduce((acc, d) => acc + d.temperatura, 0) / dados.length;
 
+    // Array para armazenar as recomendações como objetos
+    const recomendacoes = [];
+
     // Gerar recomendações com base na umidade
     if (umidadeMedia < 40) {
-        recomendacoes += `<p>A umidade está abaixo do ideal. Considere usar umidificadores para melhorar o conforto.</p>`;
+        recomendacoes.push({ texto: "A umidade está abaixo do ideal. Considere usar umidificadores para melhorar o conforto.", icone: "fas fa-tint" });
     } else if (umidadeMedia > 70) {
-        recomendacoes += `<p>A umidade está alta. Verifique se há problemas de ventilação ou se há necessidade de desumidificadores.</p>`;
+        recomendacoes.push({ texto: "A umidade está alta. Verifique se há problemas de ventilação ou se há necessidade de desumidificadores.", icone: "fas fa-fan" });
     } else {
-        recomendacoes += `<p>A umidade está no intervalo ideal. Continue monitorando para garantir que se mantenha estável.</p>`;
+        recomendacoes.push({ texto: "A umidade está no intervalo ideal. Continue monitorando para garantir que se mantenha estável.", icone: "fas fa-check-circle" });
     }
 
     // Gerar recomendações com base na temperatura
     if (temperaturaMedia > 30) {
-        recomendacoes += `<p>A temperatura média está acima do recomendado. Considere ajustar a climatização ou melhorar a ventilação.</p>`;
+        recomendacoes.push({ texto: "A temperatura média está acima do recomendado. Considere ajustar a climatização ou melhorar a ventilação.", icone: "fas fa-thermometer-full" });
     } else if (temperaturaMedia < 18) {
-        recomendacoes += `<p>A temperatura está muito baixa. Verifique se há necessidade de aquecimento adicional no ambiente.</p>`;
+        recomendacoes.push({ texto: "A temperatura está muito baixa. Verifique se há necessidade de aquecimento adicional no ambiente.", icone: "fas fa-thermometer-empty" });
     } else {
-        recomendacoes += `<p>A temperatura está dentro da faixa recomendada para conforto.</p>`;
+        recomendacoes.push({ texto: "A temperatura está dentro da faixa recomendada para conforto.", icone: "fas fa-check-circle" });
     }
 
-    // Exibir as recomendações no container
-    recomendacoesContainer.innerHTML = recomendacoes;
+    // Renderizar os blocos de recomendação
+    recomendacoes.forEach(rec => {
+        const bloco = document.createElement("div");
+        bloco.classList.add("recomendacao-bloco");
+
+        const icone = document.createElement("i");
+        icone.className = rec.icone;
+
+        const texto = document.createElement("p");
+        texto.classList.add("recomendacao-texto");
+        texto.innerText = rec.texto;
+
+        bloco.appendChild(icone);
+        bloco.appendChild(texto);
+        recomendacoesContainer.appendChild(bloco);
+    });
 }
 
 // Função para exportar as recomendações para PDF
@@ -107,43 +124,6 @@ function exportarRecomendacoesParaPDF() {
 
     // Salva o PDF com o nome especificado
     doc.save('recomendacoes_ambientais.pdf');
-}
-// Função para calcular as recomendações
-function mostrarRecomendacoes(dados) {
-    const recomendacoesContainer = document.getElementById("feed-recomendacoes");
-
-    // Verifica se o container de recomendações existe
-    if (!recomendacoesContainer) {
-        console.error("Elemento de recomendações não encontrado.");
-        return;
-    }
-
-    let recomendacoes = "";
-
-    // Calcular a média de temperatura e umidade
-    const umidadeMedia = dados.reduce((acc, d) => acc + d.umidade, 0) / dados.length;
-    const temperaturaMedia = dados.reduce((acc, d) => acc + d.temperatura, 0) / dados.length;
-
-    // Gerar recomendações com base na umidade
-    if (umidadeMedia < 40) {
-        recomendacoes += `A umidade está abaixo do ideal. Considere usar umidificadores para melhorar o conforto.\n\n`;
-    } else if (umidadeMedia > 70) {
-        recomendacoes += `A umidade está alta. Verifique se há problemas de ventilação ou se há necessidade de desumidificadores.\n\n`;
-    } else {
-        recomendacoes += `A umidade está no intervalo ideal. Continue monitorando para garantir que se mantenha estável.\n\n`;
-    }
-
-    // Gerar recomendações com base na temperatura
-    if (temperaturaMedia > 30) {
-        recomendacoes += `A temperatura média está acima do recomendado. Considere ajustar a climatização ou melhorar a ventilação.\n\n`;
-    } else if (temperaturaMedia < 18) {
-        recomendacoes += `A temperatura está muito baixa. Verifique se há necessidade de aquecimento adicional no ambiente.\n\n`;
-    } else {
-        recomendacoes += `A temperatura está dentro da faixa recomendada para conforto.\n\n`;
-    }
-
-    // Exibir as recomendações no container
-    recomendacoesContainer.innerText = recomendacoes;  // Usando innerText para capturar texto limpo
 }
 
 // Carregar dados e gerar recomendações ao carregar a página
