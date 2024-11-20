@@ -74,21 +74,23 @@
                 </div>
             </section>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data e Hora</th>
-                        <th>Localização</th>
-                        <th>CO2 (ppm)</th>
-                        <th>MP (µg/m³)</th>
-                        <th>SO2 (ppm)</th>
-                        <th>NOx (ppm)</th>
-                        <th>CO2 Produzido (kg)</th>
-                        <th>CO2 Compensado (kg)</th>
-                    </tr>
-                </thead>
-                <tbody id="dados-tabela-corpo"></tbody>
-            </table>
+            <section class="dados-tabela">
+                <p id="ultima-atualizacao">Última Atualização: --</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Localização</th>
+                            <th>CO2 (ppm)</th>
+                            <th>MP (µg/m³)</th>
+                            <th>SO2 (ppm)</th>
+                            <th>NOx (ppm)</th>
+                            <th>CO2 Produzido (kg)</th>
+                            <th>CO2 Compensado (kg)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dados-tabela-corpo"></tbody>
+                </table>
 
             <div id="page-info"></div>
             <button id="pagina-anterior" onclick="previousPage()">Página Anterior</button>
