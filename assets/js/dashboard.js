@@ -10,9 +10,7 @@ const rowsPerPage = 5; // Define o número de linhas por página
 
 // Função para carregar dados ambientais associados ao usuário
 async function carregarDadosAmbientais() {
-    // Obtém o usuário logado
     const { data: { user }, error: userError } = await supabase.auth.getUser();
-
     if (userError) {
         console.error("Erro ao obter o usuário:", userError);
         return;
@@ -20,7 +18,6 @@ async function carregarDadosAmbientais() {
 
     console.log("Carregando dados ambientais para o usuário:", user.id);
 
-    // Consulta os dados ambientais no Supabase
     const { data, error } = await supabase
         .from('dados_ambientais')
         .select('*')
@@ -39,14 +36,12 @@ async function carregarDadosAmbientais() {
 
     console.log("Dados ambientais carregados:", data);
 
-    // Atualizando a variável totalData com os dados recebidos
     totalData = data;
 
-    // Chamando as funções de exibição dos dados
     atualizarEstatisticas(totalData);
     displayTable();
     atualizarUltimaAtualizacao();
-    renderCharts(); // Renderiza os gráficos
+    renderCharts();
 }
 
 // Função para exibir a tabela
@@ -54,7 +49,7 @@ function displayTable() {
     const tableBody = document.getElementById("dados-tabela-corpo");
     if (!tableBody) return;
 
-    tableBody.innerHTML = ""; // Limpa a tabela antes de atualizar
+    tableBody.innerHTML = "";
     const start = (currentPage - 1) * rowsPerPage;
     const end = Math.min(start + rowsPerPage, totalData.length);
 
@@ -76,7 +71,6 @@ function displayTable() {
     document.getElementById("page-info").innerText = `Página ${currentPage} de ${Math.ceil(totalData.length / rowsPerPage)}`;
 }
 
-
 // Função para atualizar estatísticas
 function atualizarEstatisticas(data) {
     const totalCo2 = data.reduce((acc, item) => acc + (item.co2 || 0), 0);
@@ -85,6 +79,14 @@ function atualizarEstatisticas(data) {
     const totalNox = data.reduce((acc, item) => acc + (item.nox || 0), 0);
     const totalCo2Produzido = data.reduce((acc, item) => acc + (item.quantidade_co2_produzida || 0), 0);
     const totalCo2Compensado = data.reduce((acc, item) => acc + (item.quantidade_co2_compensada || 0), 0);
+
+    // Exibir os valores nas seções de estatísticas
+    document.getElementById("co2Data").innerText = totalCo2.toFixed(2);
+    document.getElementById("mp-value").innerText = totalMp.toFixed(2);
+    document.getElementById("so2-value").innerText = totalSo2.toFixed(2);
+    document.getElementById("nox-value").innerText = totalNox.toFixed(2);
+    document.getElementById("quantidade_co2_produzido").innerText = totalCo2Produzido.toFixed(2);
+    document.getElementById("quantidade_co2_compensada").innerText = totalCo2Compensado.toFixed(2);
 
     console.log("Total de CO2: ", totalCo2);
     console.log("Total de MP: ", totalMp);
@@ -102,151 +104,116 @@ function atualizarUltimaAtualizacao() {
 
 // Função para renderizar gráficos
 function renderCharts() {
+    const ctxCo2 = document.getElementById('chartCo2').getContext('2d');
+    const ctxMp = document.getElementById('chartMp').getContext('2d');
+    const ctxSo2 = document.getElementById('chartSo2').getContext('2d');
+
+    const labels = totalData.map(item => new Date(item.data_hora).toLocaleString());
+
     const co2Data = totalData.map(item => item.co2 || 0);
     const mpData = totalData.map(item => item.mp || 0);
     const so2Data = totalData.map(item => item.so2 || 0);
-    const noxData = totalData.map(item => item.nox || 0);
-    const co2ProduzidoData = totalData.map(item => item.quantidade_co2_produzida || 0);
-    const co2CompensadoData = totalData.map(item => item.quantidade_co2_compensada || 0);
 
-    // Gráfico de CO2
-    const co2Chart = new Chart(document.getElementById("co2-bar-chart"), {
+    new Chart(ctxCo2, {
         type: 'bar',
         data: {
-            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
+            labels: labels,
             datasets: [{
                 label: 'CO2 (ppm)',
                 data: co2Data,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Gráfico de MP
-    const mpChart = new Chart(document.getElementById("mp-bar-chart"), {
-        type: 'bar',
-        data: {
-            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
-            datasets: [{
-                label: 'MP (µg/m³)',
-                data: mpData,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Gráfico de SO2
-    const so2Chart = new Chart(document.getElementById("so2-bar-chart"), {
-        type: 'bar',
-        data: {
-            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
-            datasets: [{
-                label: 'SO2 (ppm)',
-                data: so2Data,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Gráfico de NOx
-    const noxChart = new Chart(document.getElementById("nox-bar-chart"), {
-        type: 'bar',
-        data: {
-            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
-            datasets: [{
-                label: 'NOx (ppm)',
-                data: noxData,
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                borderColor: 'rgba(153, 102, 255, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Gráfico de CO2 Produzido
-    const co2ProduzidoChart = new Chart(document.getElementById("co2-produzido-bar-chart"), {
-        type: 'bar',
-        data: {
-            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
-            datasets: [{
-                label: 'CO2 Produzido (kg)',
-                data: co2ProduzidoData,
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 borderColor: 'rgba(255, 159, 64, 1)',
                 borderWidth: 1
             }]
         },
         options: {
-            responsive: true,
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                y: { beginAtZero: true }
             }
         }
     });
 
-    // Gráfico de CO2 Compensado
-    const co2CompensadoChart = new Chart(document.getElementById("co2-compensado-bar-chart"), {
+    new Chart(ctxMp, {
         type: 'bar',
         data: {
-            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
+            labels: labels,
             datasets: [{
-                label: 'CO2 Compensado (kg)',
-                data: co2CompensadoData,
-                backgroundColor: 'rgba(153, 255, 51, 0.2)',
-                borderColor: 'rgba(153, 255, 51, 1)',
+                label: 'MP (µg/m³)',
+                data: mpData,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
         },
         options: {
-            responsive: true,
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    new Chart(ctxSo2, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'SO2 (ppm)',
+                data: so2Data,
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true }
             }
         }
     });
 }
 
-// Chamando a função inicial
-carregarDadosAmbientais();
+// Função para gerar relatório em CSV
+function generateCustomReport() {
+    if (!totalData || totalData.length === 0) {
+        alert("Nenhum dado disponível para gerar o relatório.");
+        return;
+    }
+
+    const headers = [
+        "Data/Hora",
+        "Localização",
+        "CO2 (ppm)",
+        "MP (µg/m³)",
+        "SO2 (ppm)",
+        "NOx (ppm)",
+        "CO2 Produzido (kg)",
+        "CO2 Compensado (kg)"
+    ];
+
+    const rows = totalData.map(item => [
+        item.data_hora ? new Date(item.data_hora).toLocaleString() : '',
+        item.localizacao || 'Desconhecido',
+        item.co2 || '',
+        item.mp || '',
+        item.so2 || '',
+        item.nox || '',
+        item.quantidade_co2_produzida || '',
+        item.quantidade_co2_compensada || ''
+    ]);
+
+    const csvContent = [headers.join(",")].concat(rows.map(e => e.join(","))).join("\n");
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'relatorio_ambiental.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+}
+
+// Chama a função para carregar dados ao carregar a página
+window.onload = carregarDadosAmbientais;
