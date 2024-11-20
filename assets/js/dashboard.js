@@ -42,6 +42,7 @@ async function carregarDadosAmbientais() {
     displayTable();
     atualizarUltimaAtualizacao();
     renderCharts();
+    renderCombinedChart(totalData);  // Adicionando o gráfico combinado aqui
 }
 
 // Função para exibir a tabela
@@ -158,6 +159,69 @@ function renderCharts() {
             }
         }
     });
+}
+
+// Função para renderizar gráficos combinados (Temperatura, Umidade, Qualidade do Ar)
+function renderCombinedChart(data) {
+    if (data.length === 0) return; // Verifica se há dados
+
+    const ctx = document.getElementById("combinedChart").getContext("2d");
+    ctx.canvas.style.backgroundColor = "white"; // Fundo branco
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: data.map(d => new Date(d.data_hora).toLocaleString()), // Eixo X
+            datasets: [
+                {
+                    label: "co2",
+                    data: data.map(d => d.co2 ),
+                    borderColor: "rgba(255, 99, 132, 1)",
+                    backgroundColor: "transparent",
+                    fill: true,
+                    tension: 0.8,
+                },
+                {
+                    label: "mp",
+                    data: data.map(d => d.mp),
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    backgroundColor: "transparent",
+                    fill: true,
+                    tension: 0.8,
+                },
+                {
+                    label: "so2",
+                    data: data.map(d => parseInt(d.so2 )), // Supondo que seja um número
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "transparent",
+                    fill: true,
+                    tension: 0.8,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "top",
+                },
+            },
+            scales: {
+                x: {
+                    type: "category",
+                    labels: data.map(d => new Date(d.data_hora).toLocaleString()),
+                },
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+}
+
+// Navegação entre páginas
+function navegarPagina(pagina) {
+    currentPage = pagina;
+    displayTable();
 }
 
 // Função para navegar entre as páginas
