@@ -6,8 +6,6 @@
     <title>Ambin - Cadastro de Dados</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Incluindo a biblioteca do Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
         /* Estilo para o indicador de carregamento */
         #loading-indicator {
@@ -33,7 +31,7 @@
                 <img src="assets/images/logo/AmbinLogo.png" alt="Logo Ambin" class="profile-img">
             </div>
             <nav>
-                <a href="dashboard.html" ><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
                 <a href="resumos.html"><i class="fa fa-file"></i> Resumo</a>
                 <a href="leads.html"><i class="fa fa-asterisk"></i> Leads</a>
                 <a href="cadastrar_dados.html" class="active"><i class="fas fa-plus-circle"></i> Cadastrar Dados</a>
@@ -49,33 +47,109 @@
         <!-- Conteúdo principal -->
         <main>
             <form id="data-form">
+                <!-- Campos -->
                 <div class="form-group">
                     <label for="localizacao">Localização:</label>
                     <input type="text" id="localizacao" placeholder="Ex: Latitude, Longitude" required>
                 </div>
                 <div class="form-group">
-                    <label for="temperatura">Temperatura (°C):</label>
-                    <input type="number" id="temperatura" placeholder="Temperatura" required>
+                    <label for="co2">CO2:</label>
+                    <input type="number" id="co2" placeholder="Concentração de CO2" step="0.01" required>
                 </div>
                 <div class="form-group">
-                    <label for="umidade">Umidade (%):</label>
-                    <input type="number" id="umidade" placeholder="Umidade" required>
+                    <label for="mp">MP:</label>
+                    <input type="number" id="mp" placeholder="Concentração de MP" step="0.01" required>
                 </div>
                 <div class="form-group">
-                    <label for="qualidade-ar">Qualidade do Ar:</label>
-                    <input type="text" id="qualidade-ar" placeholder="Qualidade do ar" required>
+                    <label for="so2">SO2:</label>
+                    <input type="number" id="so2" placeholder="Concentração de SO2" step="0.01" required>
                 </div>
+                <div class="form-group">
+                    <label for="nox">NOx:</label>
+                    <input type="number" id="nox" placeholder="Concentração de NOx" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantidade_co2_produzida">Quantidade de CO2 Produzida:</label>
+                    <input type="number" id="quantidade_co2_produzida" placeholder="Quantidade produzida" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantidade_co2_compensada">Quantidade de CO2 Compensada:</label>
+                    <input type="number" id="quantidade_co2_compensada" placeholder="Quantidade compensada" step="0.01" required>
+                </div>
+
+                <!-- Botões -->
                 <div class="form-group">
                     <label for="csv">Carregar dados via CSV:</label>
-                    <input type="file" id="csv" accept=".csv" required>
+                    <input type="file" id="csv" accept=".csv">
                 </div>
                 <button type="button" id="carregar-csv">Carregar CSV</button>
+
+                <!-- Novo botão para cadastro de dados -->
+                <button type="button" id="cadastrar-dados">Cadastrar Dados</button>
             </form>
 
             <!-- Indicador de carregamento -->
             <div id="loading-indicator" aria-live="polite">Carregando...</div>
         </main>
     </div>
-    <script src="app.js"></script> <!-- Certifique-se de que este script é carregado após a biblioteca do Supabase -->
+
+    <!-- Bibliotecas Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+    <!-- Script de Cadastro de Dados -->
+    <script>
+        // Função para ler e processar o CSV
+        function carregarCSV(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+
+            // Quando o arquivo for carregado, processar o conteúdo
+            reader.onload = function(e) {
+                const fileContent = e.target.result;
+                const data = Papa.parse(fileContent, {
+                    header: true,
+                    skipEmptyLines: true
+                });
+
+                console.log("Conteúdo do CSV", data);
+                // Aqui você pode fazer algo com os dados extraídos do CSV
+            };
+
+            reader.readAsText(file);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputCSV = document.getElementById("csv");
+            if (inputCSV) {
+                inputCSV.addEventListener("change", carregarCSV); // Aciona ao selecionar o arquivo
+            }
+
+            const botaoCadastrar = document.getElementById("cadastrar-dados");
+            if (botaoCadastrar) {
+                botaoCadastrar.addEventListener("click", function() {
+                    // Aqui você pode adicionar a lógica de cadastro dos dados
+                    console.log("Cadastro realizado!");
+                });
+            }
+
+            const botaoCarregarCSV = document.getElementById("carregar-csv");
+            if (botaoCarregarCSV) {
+                botaoCarregarCSV.addEventListener("click", function() {
+                    const inputCSV = document.getElementById("csv");
+                    if (inputCSV.files.length === 0) {
+                        alert("Por favor, selecione um arquivo CSV.");
+                    } else {
+                        carregarCSV({ target: inputCSV }); // Passa o evento diretamente para carregarCSV
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Script de Cadastro de Dados -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="assets/js/cadastrar_dados.js"></script> <!-- Certifique-se de que este script é carregado após a biblioteca do Supabase -->
 </body>
 </html>
