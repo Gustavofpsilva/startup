@@ -24,78 +24,83 @@ async function carregarDadosResumos() {
         .eq('user_id', user.id)
         .order('data_hora', { ascending: false });
 
+    console.log("Dados carregados:", data); // Verifique os dados retornados
+
     if (dataError) {
         console.error("Erro ao carregar dados:", dataError);
         return;
     }
 
-    totalData = data;
-    atualizarResumos();
+    totalData = data || [];
     displayTable();
-    atualizarUltimaAtualizacao();
-    calcularTendencias();
+    atualizarResumos();
 }
 
 // Função para atualizar os resumos
 function atualizarResumos() {
     const totalRecordsElem = document.getElementById("total-records");
-    const averagePollutionElem = document.getElementById("average-pollution");
-    const anomaliesCountElem = document.getElementById("anomalies-count");
+    const averageCO2Elem = document.getElementById("average-co2");
+    const co2ProducedElem = document.getElementById("co2-produced");
+    const co2CompensatedElem = document.getElementById("co2-compensated");
 
     if (totalRecordsElem) {
         totalRecordsElem.innerText = totalData.length;
     }
 
-    // Calcular média de poluição
-    if (averagePollutionElem) {
-        const totalPollution = totalData.reduce((acc, d) => acc + parseInt(d.qualidade_ar), 0);
-        const averagePollution = totalPollution / totalData.length;
-        averagePollutionElem.innerText = averagePollution.toFixed(2);
+    // Calcular média de CO2
+    if (averageCO2Elem) {
+        const totalCO2 = totalData.reduce((acc, d) => acc + parseInt(d.co2), 0);
+        const averageCO2 = totalCO2 / totalData.length;
+        averageCO2Elem.innerText = averageCO2.toFixed(2);
     }
 
-    // Calcular número de anomalias
-    if (anomaliesCountElem) {
-        const anomalies = totalData.filter(d => d.qualidade_ar < 30 || d.qualidade_ar > 70);  // Exemplo de anomalia
-        anomaliesCountElem.innerText = anomalies.length;
+    // Quantidade de CO2 produzido
+    if (co2ProducedElem) {
+        const totalCO2Produced = totalData.reduce((acc, d) => acc + parseInt(d.quantidade_co2_produzida), 0);
+        co2ProducedElem.innerText = totalCO2Produced.toFixed(2);
     }
 
-    // Média de Temperatura por Localização
-    calcularTemperaturaPorLocalizacao();
+    // Quantidade de CO2 compensado
+    if (co2CompensatedElem) {
+        const totalCO2Compensated = totalData.reduce((acc, d) => acc + parseInt(d.quantidade_co2_compensada), 0);
+        co2CompensatedElem.innerText = totalCO2Compensated.toFixed(2);
+    }
+
+    // Média de SO2, MP e NOx
+    calcularMediaPorIndicador();
 }
 
-// Função para calcular a média de temperatura por localização
-function calcularTemperaturaPorLocalizacao() {
-    const locations = {};
-    totalData.forEach(item => {
-        if (!locations[item.localizacao]) {
-            locations[item.localizacao] = { totalTemp: 0, count: 0 };
-        }
-        locations[item.localizacao].totalTemp += item.temperatura;
-        locations[item.localizacao].count += 1;
+// Função para calcular a média de SO2, MP e NOx
+function calcularMediaPorIndicador() {
+    const indicators = ["so2", "mp", "nox"];
+    let output = "<h3>Média de Indicadores:</h3><ul>";
+
+    indicators.forEach(indicator => {
+        const total = totalData.reduce((acc, d) => acc + parseInt(d[indicator]), 0);
+        const average = total / totalData.length;
+        output += `<li>${indicator.toUpperCase()}: ${average.toFixed(2)}</li>`;
     });
 
-    let output = "<h3>Média de Temperatura por Localização:</h3><ul>";
-    for (const location in locations) {
-        const averageTemp = locations[location].totalTemp / locations[location].count;
-        output += `<li>${location}: ${averageTemp.toFixed(2)} °C</li>`;
-    }
     output += "</ul>";
     document.getElementById("summary-content").innerHTML += output;
 }
 
-// Função para calcular e mostrar as tendências de temperatura e umidade
+// Função para calcular e mostrar as tendências
 function calcularTendencias() {
-    const temperatures = totalData.map(d => d.temperatura);
-    const humidities = totalData.map(d => d.umidade);
-
-    const tempTrend = calcularTendencia(temperatures);
-    const humidityTrend = calcularTendencia(humidities);
+    const trends = {
+        co2: calcularTendencia(totalData.map(d => d.co2)),
+        mp: calcularTendencia(totalData.map(d => d.mp)),
+        so2: calcularTendencia(totalData.map(d => d.so2)),
+        nox: calcularTendencia(totalData.map(d => d.nox))
+    };
 
     // Exibir as tendências
-    document.getElementById("summary-content").innerHTML += `
-        <p><strong>Tendência de Temperatura:</strong> ${tempTrend}</p>
-        <p><strong>Tendência de Umidade:</strong> ${humidityTrend}</p>
-    `;
+    let output = "<h3>Tendências:</h3><ul>";
+    for (const [key, value] of Object.entries(trends)) {
+        output += `<li>${key.toUpperCase()}: ${value}</li>`;
+    }
+    output += "</ul>";
+    document.getElementById("summary-content").innerHTML += output;
 }
 
 // Função para calcular a tendência (simples comparação de aumento ou diminuição)
@@ -127,9 +132,12 @@ function displayTable() {
         row.innerHTML = `
             <td>${new Date(item.data_hora).toLocaleString()}</td>
             <td>${item.localizacao}</td>
-            <td>${item.temperatura} °C</td>
-            <td>${item.umidade} %</td>
-            <td>${item.qualidade_ar}</td>
+            <td>${item.co2} ppm</td>
+            <td>${item.mp} μg/m³</td>
+            <td>${item.so2} ppb</td>
+            <td>${item.nox} ppb</td>
+            <td>${item.quantidade_co2_produzida} kg</td>
+            <td>${item.quantidade_co2_compensada} kg</td>
         `;
         tableBody.appendChild(row);
     });
@@ -186,45 +194,15 @@ document.getElementById("generate-report").addEventListener("click", async () =>
     // Gerar o relatório em PDF
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text("Relatório Personalizado", 14, 10);
-
-    doc.autoTable({
-        startY: 20,
-        head: [["Data", "Localização", ...selectedMetrics.map(m => m.charAt(0).toUpperCase() + m.slice(1))]],
-        body: data.map(d => [
-            new Date(d.data_hora).toLocaleString(),
-            d.localizacao,
-            ...selectedMetrics.map(m => d[m])
-        ])
+    doc.text("Relatório de Dados Ambientais", 10, 10);
+    doc.text(`Período: ${startDate} a ${endDate}`, 10, 20);
+    data.forEach((item, index) => {
+        let y = 30 + index * 10;
+        doc.text(`${item.data_hora}: ${item.localizacao} - CO2: ${item.co2} ppm, MP: ${item.mp} μg/m³`, 10, y);
     });
 
-    // Salvar o relatório gerado
-    doc.save(`AmbIn_relatorio_personalizado_${new Date().toLocaleDateString()}.pdf`);
+    doc.save("relatorio_dados_ambientais.pdf");
 });
-  
-// Função para atualizar a última atualização dos dados
-function atualizarUltimaAtualizacao() {
-    const agora = new Date();
-    const dataFormatada = agora.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
-    const ultimaAtualizacaoElem = document.getElementById("ultima-atualizacao");
-    if (ultimaAtualizacaoElem) {
-        ultimaAtualizacaoElem.textContent = `Última Atualização: ${dataFormatada}`;
-    }
-}
 
-// Inicializa o código apenas após o carregamento do DOM
-document.addEventListener("DOMContentLoaded", () => {
-    carregarDadosResumos();
-
-    const logoutButton = document.getElementById("logout-button");
-    if (logoutButton) {
-        logoutButton.addEventListener("click", async () => {
-            const { error } = await supabase.auth.signOut();
-            if (error) {
-                console.error("Erro ao fazer logout:", error);
-            } else {
-                window.location.href = "index.html";
-            }
-        });
-    }
-});
+// Carregar os dados iniciais ao carregar a página
+window.onload = carregarDadosResumos;

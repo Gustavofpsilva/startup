@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ambin - Resumo</title>
-    <!-- Alteração aqui: Usando resumo.css -->
     <link rel="stylesheet" href="resumo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -25,7 +24,7 @@
                 </ul>
             </nav>
             <div class="bottom-section">
-                <a href="#" class="logout" id="logout-button" aria-label="Sair do sistema"><i class=""></i> Logout</a>
+                <a href="#" class="logout" id="logout-button" aria-label="Sair do sistema"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </aside>
 
@@ -33,7 +32,7 @@
             <header>
                 <div class="user-info">
                     <button id="export-pdf">Exportar relatório padrão</button>
-                    <button id="custom-report" onclick="openReportModal()">Exportar relatório Personalizado</button>
+                    <button id="custom-report" onclick="openReportModal()">Exportar relatório personalizado</button>
                 </div>
             </header>
 
@@ -42,7 +41,7 @@
                 <h2>Resumo Periódico</h2>
                 <div id="summary-content">
                     <p><strong>Total de Registros:</strong> <span id="total-records">--</span></p>
-                    <p><strong>Média de Poluição:</strong> <span id="average-pollution">--</span></p>
+                    <p><strong>Média de CO2:</strong> <span id="average-co2">--</span></p>
                     <p><strong>Anomalias Detectadas:</strong> <span id="anomalies-count">--</span></p>
                 </div>
             </section>
@@ -55,9 +54,12 @@
                         <tr>
                             <th>Data</th>
                             <th>Localização</th>
-                            <th>Temperatura (°C)</th>
-                            <th>Umidade (%)</th>
-                            <th>Qualidade do Ar</th>
+                            <th>CO2 (ppm)</th>
+                            <th>MP (µg/m³)</th>
+                            <th>SO2 (ppm)</th>
+                            <th>NOx (ppm)</th>
+                            <th>CO2 Produzido (kg)</th>
+                            <th>CO2 Compensado (kg)</th>
                         </tr>
                     </thead>
                     <tbody id="dados-tabela-corpo"></tbody>
@@ -76,7 +78,7 @@
     <!-- Modal para Relatório Personalizado -->
     <div id="report-modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close" onclick="closeReportModal()" aria-label="Fechar modal">&times;</span>
+            <button class="close" onclick="closeReportModal()" aria-label="Fechar modal">&times;</button>
             <h2>Configurar Relatório Personalizado</h2>
             <label for="start-date">Data Inicial:</label>
             <input type="date" id="start-date">
@@ -84,9 +86,12 @@
             <input type="date" id="end-date">
             <label for="metrics">Escolha as Métricas:</label>
             <select id="metrics" multiple>
-                <option value="temperatura">Temperatura</option>
-                <option value="umidade">Umidade</option>
-                <option value="qualidade_ar">Qualidade do Ar</option>
+                <option value="co2">CO2</option>
+                <option value="mp">MP</option>
+                <option value="so2">SO2</option>
+                <option value="nox">NOx</option>
+                <option value="quantidade_co2_produzida">CO2 Produzido</option>
+                <option value="quantidade_co2_compensada">CO2 Compensado</option>
             </select>
             <button id="generate-report">Gerar Relatório</button>
         </div>
@@ -107,6 +112,5 @@
             document.getElementById('report-modal').style.display = 'none';
         }
     </script>
-
 </body>
 </html>

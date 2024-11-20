@@ -27,11 +27,27 @@ async function carregarCSV(event) {
                 return;
             }
 
+            // Obtendo o ID do usuário logado
+            const { data: { session }, error } = await supabase.auth.getSession();
+            
+            if (error || !session) {
+                alert("Você precisa estar autenticado para carregar os dados.");
+                return;
+            }
+
+            const userId = session.user.id; // Obtém o ID do usuário da sessão
+
+            // Adiciona o campo 'user_id' em cada registro para associar ao usuário
+            const dadosComUsuario = csvData.map(item => ({
+                ...item,
+                user_id: userId
+            }));
+
             try {
                 // Envia os dados do CSV para o Supabase
                 const { data, error } = await supabase
                     .from('dados_ambientais')
-                    .insert(csvData);
+                    .insert(dadosComUsuario);
 
                 if (error) {
                     console.error("Erro ao carregar dados:", error);
