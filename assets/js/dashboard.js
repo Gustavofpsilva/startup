@@ -6,7 +6,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // Variáveis globais
 let totalData = [];
 let currentPage = 1;
-const rowsPerPage = 5; // Define o número de linhas por página
+const rowsPerPage = 20; // Define o número de linhas por página
 
 // Função para carregar dados ambientais associados ao usuário
 async function carregarDadosAmbientais() {
