@@ -3,102 +3,24 @@ const SUPABASE_URL = "https://qlhbieemfchehmheqxip.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGJpZWVtZmNoZWhtaGVxeGlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA2MDMxMTIsImV4cCI6MjA0NjE3OTExMn0.E1eVfPSlm0P8N23T7YkkeVVFB1jyBB92Y_w6UnyAbHE";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Variáveis de controle de paginação
-const rowsPerPage = 50;
-let currentPage = 1;
+// Variáveis globais
 let totalData = [];
-
-// Função para registrar o login do usuário na tabela de logins
-async function registrarLogin(userId) {
-    const { error } = await supabase
-        .from('logins')
-        .insert([{ user_id: userId, data_hora: new Date().toISOString() }]);
-
-    if (error) {
-        console.error("Erro ao registrar o login:", error);
-    } else {
-        console.log("Login registrado com sucesso.");
-    }
-}
-
-// Função de autenticação do usuário e registro do login
-async function loginUser(email, password) {
-    const { data: { user }, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
-
-    if (error) {
-        console.error("Erro ao autenticar usuário:", error);
-        return;
-    }
-
-    if (user) {
-        // Registrar o login após autenticação bem-sucedida
-        await registrarLogin(user.id);
-        // Redirecionar para a página principal do app
-        window.location.href = "dashboard.html"; // Ajuste o caminho conforme necessário
-    }
-}
-
-// Função para exibir o nome e o e-mail do usuário na sidebar
-async function exibirNomeUsuario() {
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error || !user) {
-        console.error("Erro ao obter usuário:", error);
-        return;
-    }
-
-    const userNameElem = document.getElementById("sidebar-user-name");
-    const userEmailElem = document.getElementById("sidebar-user-email");
-
-    if (userNameElem && userEmailElem) {
-        userNameElem.innerText = user.user_metadata.full_name || "Usuário";
-        userEmailElem.innerText = user.email;
-    }
-}
-
-// Função para atualizar os valores dos cartões de estatísticas
-function atualizarEstatisticas(dados) {
-    const co2Value = document.getElementById("co2-value");
-    const mpValue = document.getElementById("mp-value");
-    const so2Value = document.getElementById("so2-value");
-    const noxValue = document.getElementById("nox-value");
-    const co2ProduzidoValue = document.getElementById("co2-produzido-value");
-    const co2CompensadoValue = document.getElementById("co2-compensado-value");
-    const localizacaoValue = document.getElementById("localizacao-value");
-
-    if (!co2Value || !mpValue || !so2Value || !noxValue || !co2ProduzidoValue || !co2CompensadoValue || !localizacaoValue) {
-        console.warn("Elementos de estatísticas não encontrados na página.");
-        return;
-    }
-
-    if (dados.length > 0) {
-        const ultimoDado = dados[0];
-        co2Value.innerText = `${ultimoDado.co2} ppm`;
-        mpValue.innerText = `${ultimoDado.mp} µg/m³`;
-        so2Value.innerText = `${ultimoDado.so2} ppm`;
-        noxValue.innerText = `${ultimoDado.nox} ppm`;
-        co2ProduzidoValue.innerText = `${ultimoDado.co2_produzido} kg`;
-        co2CompensadoValue.innerText = `${ultimoDado.co2_compensado} kg`;
-        localizacaoValue.innerText = ultimoDado.localizacao;
-    }
-}
-
-// Função para atualizar a última atualização dos dados
-function atualizarUltimaAtualizacao() {
-    const agora = new Date();
-    const dataFormatada = agora.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
-    const ultimaAtualizacaoElem = document.getElementById("ultima-atualizacao");
-    if (ultimaAtualizacaoElem) {
-        ultimaAtualizacaoElem.textContent = `Última Atualização: ${dataFormatada}`;
-    }
-}
+let currentPage = 1;
+const rowsPerPage = 5; // Define o número de linhas por página
 
 // Função para carregar dados ambientais associados ao usuário
 async function carregarDadosAmbientais() {
-    const { data: { user } } = await supabase.auth.getUser();
+    // Obtém o usuário logado
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+    if (userError) {
+        console.error("Erro ao obter o usuário:", userError);
+        return;
+    }
+
     console.log("Carregando dados ambientais para o usuário:", user.id);
+
+    // Consulta os dados ambientais no Supabase
     const { data, error } = await supabase
         .from('dados_ambientais')
         .select('*')
@@ -106,7 +28,7 @@ async function carregarDadosAmbientais() {
         .order('data_hora', { ascending: false });
 
     if (error) {
-        console.error("Erro ao carregar dados:", error);
+        console.error("Erro ao carregar dados ambientais:", error);
         return;
     }
 
@@ -115,34 +37,38 @@ async function carregarDadosAmbientais() {
         return;
     }
 
-    console.log("Dados carregados:", data);
+    console.log("Dados ambientais carregados:", data);
+
+    // Atualizando a variável totalData com os dados recebidos
     totalData = data;
+
+    // Chamando as funções de exibição dos dados
     atualizarEstatisticas(totalData);
     displayTable();
     atualizarUltimaAtualizacao();
-    renderCharts();
+    renderCharts(); // Renderiza os gráficos
 }
 
-// Função para exibir a tabela com paginação
+// Função para exibir a tabela
 function displayTable() {
     const tableBody = document.getElementById("dados-tabela-corpo");
     if (!tableBody) return;
 
-    tableBody.innerHTML = "";
+    tableBody.innerHTML = ""; // Limpa a tabela antes de atualizar
     const start = (currentPage - 1) * rowsPerPage;
     const end = Math.min(start + rowsPerPage, totalData.length);
 
     totalData.slice(start, end).forEach(item => {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${new Date(item.data_hora).toLocaleString()}</td>
-            <td>${item.localizacao}</td>
-            <td>${item.co2} ppm</td>
-            <td>${item.mp} µg/m³</td>
-            <td>${item.so2} ppm</td>
-            <td>${item.nox} ppm</td>
-            <td>${item.co2_produzido} kg</td>
-            <td>${item.co2_compensado} kg</td>
+            <td>${item.data_hora ? new Date(item.data_hora).toLocaleString() : 'Dados indisponíveis'}</td>
+            <td>${item.localizacao || 'Desconhecido'}</td>
+            <td>${item.co2 !== undefined ? item.co2 + ' ppm' : 'Dados indisponíveis'}</td>
+            <td>${item.mp !== undefined ? item.mp + ' µg/m³' : 'Dados indisponíveis'}</td>
+            <td>${item.so2 !== undefined ? item.so2 + ' ppm' : 'Dados indisponíveis'}</td>
+            <td>${item.nox !== undefined ? item.nox + ' ppm' : 'Dados indisponíveis'}</td>
+            <td>${item.quantidade_co2_produzida !== undefined ? item.quantidade_co2_produzida + ' kg' : 'Dados indisponíveis'}</td>
+            <td>${item.quantidade_co2_compensada !== undefined ? item.quantidade_co2_compensada + ' kg' : 'Dados indisponíveis'}</td>
         `;
         tableBody.appendChild(row);
     });
@@ -150,51 +76,177 @@ function displayTable() {
     document.getElementById("page-info").innerText = `Página ${currentPage} de ${Math.ceil(totalData.length / rowsPerPage)}`;
 }
 
-// Funções de navegação de página
-function nextPage() {
-    if ((currentPage * rowsPerPage) < totalData.length) {
-        currentPage++;
-        displayTable();
-    }
+
+// Função para atualizar estatísticas
+function atualizarEstatisticas(data) {
+    const totalCo2 = data.reduce((acc, item) => acc + (item.co2 || 0), 0);
+    const totalMp = data.reduce((acc, item) => acc + (item.mp || 0), 0);
+    const totalSo2 = data.reduce((acc, item) => acc + (item.so2 || 0), 0);
+    const totalNox = data.reduce((acc, item) => acc + (item.nox || 0), 0);
+    const totalCo2Produzido = data.reduce((acc, item) => acc + (item.quantidade_co2_produzida || 0), 0);
+    const totalCo2Compensado = data.reduce((acc, item) => acc + (item.quantidade_co2_compensada || 0), 0);
+
+    console.log("Total de CO2: ", totalCo2);
+    console.log("Total de MP: ", totalMp);
+    console.log("Total de SO2: ", totalSo2);
+    console.log("Total de NOx: ", totalNox);
+    console.log("Total de CO2 Produzido: ", totalCo2Produzido);
+    console.log("Total de CO2 Compensado: ", totalCo2Compensado);
 }
 
-function prevPage() {
-    if (currentPage > 1) {
-        currentPage--;
-        displayTable();
-    }
+// Função para atualizar a data e hora da última atualização
+function atualizarUltimaAtualizacao() {
+    const ultimaAtualizacao = new Date().toLocaleString();
+    document.getElementById("ultima-atualizacao").innerText = `Última atualização: ${ultimaAtualizacao}`;
 }
 
-// Função para exportar dados para PDF
-function exportToPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+// Função para renderizar gráficos
+function renderCharts() {
+    const co2Data = totalData.map(item => item.co2 || 0);
+    const mpData = totalData.map(item => item.mp || 0);
+    const so2Data = totalData.map(item => item.so2 || 0);
+    const noxData = totalData.map(item => item.nox || 0);
+    const co2ProduzidoData = totalData.map(item => item.quantidade_co2_produzida || 0);
+    const co2CompensadoData = totalData.map(item => item.quantidade_co2_compensada || 0);
 
-    doc.text('Dados Ambientais', 14, 10);
-    doc.autoTable({
-        startY: 20,
-        head: [['Data', 'Localização', 'CO2 (ppm)', 'MP (µg/m³)', 'SO2 (ppm)', 'NOx (ppm)', 'CO2 Produzido (kg)', 'CO2 Compensado (kg)']],
-        body: totalData.map(item => [
-            new Date(item.data_hora).toLocaleString(),
-            item.localizacao,
-            item.co2,
-            item.mp,
-            item.so2,
-            item.nox,
-            item.co2_produzido,
-            item.co2_compensado
-        ])
+    // Gráfico de CO2
+    const co2Chart = new Chart(document.getElementById("co2-bar-chart"), {
+        type: 'bar',
+        data: {
+            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
+            datasets: [{
+                label: 'CO2 (ppm)',
+                data: co2Data,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
     });
 
-    doc.save('AmbIn_relatório.pdf');
+    // Gráfico de MP
+    const mpChart = new Chart(document.getElementById("mp-bar-chart"), {
+        type: 'bar',
+        data: {
+            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
+            datasets: [{
+                label: 'MP (µg/m³)',
+                data: mpData,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Gráfico de SO2
+    const so2Chart = new Chart(document.getElementById("so2-bar-chart"), {
+        type: 'bar',
+        data: {
+            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
+            datasets: [{
+                label: 'SO2 (ppm)',
+                data: so2Data,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Gráfico de NOx
+    const noxChart = new Chart(document.getElementById("nox-bar-chart"), {
+        type: 'bar',
+        data: {
+            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
+            datasets: [{
+                label: 'NOx (ppm)',
+                data: noxData,
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Gráfico de CO2 Produzido
+    const co2ProduzidoChart = new Chart(document.getElementById("co2-produzido-bar-chart"), {
+        type: 'bar',
+        data: {
+            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
+            datasets: [{
+                label: 'CO2 Produzido (kg)',
+                data: co2ProduzidoData,
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Gráfico de CO2 Compensado
+    const co2CompensadoChart = new Chart(document.getElementById("co2-compensado-bar-chart"), {
+        type: 'bar',
+        data: {
+            labels: totalData.map(item => new Date(item.data_hora).toLocaleDateString()),
+            datasets: [{
+                label: 'CO2 Compensado (kg)',
+                data: co2CompensadoData,
+                backgroundColor: 'rgba(153, 255, 51, 0.2)',
+                borderColor: 'rgba(153, 255, 51, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
 
-// Função de logout
-async function logoutUser() {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-        console.error("Erro ao fazer logout:", error);
-    } else {
-        window.location.href = "index.html";
-    }
-}
+// Chamando a função inicial
+carregarDadosAmbientais();

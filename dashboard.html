@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </head>
 <body>
     <div class="container">
@@ -16,14 +17,14 @@
             </div>
             <nav>
                 <a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
-                <a href="resumos.html"><i class="fa fa-file"></i> Resumo</a>
-                <a href="leads.html"><i class="fa fa-asterisk"></i> Leads</a>
+                <a href="resumos.html"><i class="fas fa-file"></i> Resumo</a>
+                <a href="leads.html"><i class="fas fa-asterisk"></i> Leads</a>
                 <a href="cadastrar_dados.html"><i class="fas fa-plus-circle"></i> Cadastrar Dados</a>
                 <a href="usuario.html"><i class="fas fa-user"></i> Usuário</a>
             </nav>
             <div class="user-info"></div>
             <div class="bottom-section">
-                <a href="#" class="logout" id="logout-button"><i class=""></i> Logout</a>
+                <a href="#" class="logout" id="logout-button"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </aside>
 
@@ -31,26 +32,34 @@
             <header>
                 <div class="user-info">
                     <button id="export-pdf">Exportar relatório padrão</button>
-                    <button id="custom-report">Exportar relatório Personalizado</button>
+                    <button id="custom-report" onclick="openReportModal()">Exportar relatório Personalizado</button>
                 </div>
             </header>
 
             <section class="stats-cards">
                 <div class="card">
-                    <h3>Temperatura</h3>
-                    <p><span id="temp-value">--</span> °C</p>
+                    <h3>CO2</h3>
+                    <p><span id="co2Data"></span> ppm</p>
                 </div>
                 <div class="card">
-                    <h3>Umidade</h3>
-                    <p><span id="humidade-value">--</span> %</p>
+                    <h3>MP</h3>
+                    <p><span id="mp-value"></span> µg/m³</p>
                 </div>
                 <div class="card">
-                    <h3>Qualidade do Ar</h3>
-                    <p><span id="qualidade-ar-value">--</span></p>
+                    <h3>SO2</h3>
+                    <p><span id="so2-value"></span> µg/m³</p>
                 </div>
                 <div class="card">
-                    <h3>Localização</h3>
-                    <p><span id="localizacao-value">--</span></p>
+                    <h3>NOX</h3>
+                    <p><span id="nox-value"></span> µg/m³</p>
+                </div>
+                <div class="card">
+                    <h3>Quantidade CO2 Produzida</h3>
+                    <p><span id="quantidade_co2_produzido"></span> kg</p>
+                </div>
+                <div class="card">
+                    <h3>Quantidade CO2 Compensada</h3>
+                    <p><span id="quantidade_co2_compensada"></span> kg</p>
                 </div>
             </section>
 
@@ -65,34 +74,33 @@
                 </div>
             </section>
 
-            <section class="dados-tabela">
-                <p id="ultima-atualizacao">Última Atualização: --</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Localização</th>
-                            <th>Temperatura (°C)</th>
-                            <th>Umidade (%)</th>
-                            <th>Qualidade do Ar</th>
-                        </tr>
-                    </thead>
-                    <tbody id="dados-tabela-corpo"></tbody>
-                </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data e Hora</th>
+                        <th>Localização</th>
+                        <th>CO2 (ppm)</th>
+                        <th>MP (µg/m³)</th>
+                        <th>SO2 (ppm)</th>
+                        <th>NOx (ppm)</th>
+                        <th>CO2 Produzido (kg)</th>
+                        <th>CO2 Compensado (kg)</th>
+                    </tr>
+                </thead>
+                <tbody id="dados-tabela-corpo"></tbody>
+            </table>
 
-                <div id="pagination-controls">
-                    <button class="pagination-button previous-button" onclick="prevPage()">&#8592; Anterior</button>
-                    <span id="page-info">Página 1 de 1</span>
-                    <button class="pagination-button next-button" onclick="nextPage()">Próximo &#8594;</button>
-                </div>
-            </section>
+            <div id="page-info"></div>
+            <button id="pagina-anterior" onclick="previousPage()">Página Anterior</button>
+            <button id="proxima-pagina" onclick="nextPage()">Próxima Página</button>
+            <div id="ultima-atualizacao"></div>
         </main>
     </div>
 
     <!-- Modal para Relatório Personalizado -->
     <div id="report-modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" onclick="closeReportModal()">&times;</span>
             <h2>Configurar Relatório Personalizado</h2>
             <label for="start-date">Data Inicial:</label>
             <input type="date" id="start-date">
@@ -100,18 +108,41 @@
             <input type="date" id="end-date">
             <label for="metrics">Escolha as Métricas:</label>
             <select id="metrics" multiple>
-                <option value="temperatura">Temperatura</option>
-                <option value="umidade">Umidade</option>
-                <option value="qualidade_ar">Qualidade do Ar</option>
+                <option value="co2">CO2</option>
+                <option value="mp">MP</option>
+                <option value="so2">SO2</option>
+                <option value="nox">NOX</option>
+                <option value="quantidade_co2_produzida">Quantidade CO2 Produzida</option>
+                <option value="quantidade_co2_compensada">Quantidade CO2 Compensada</option>
             </select>
-            <button id="generate-report">Gerar Relatório</button>
+            <button id="generate-report" onclick="generateCustomReport()">Gerar Relatório</button>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js"></script>
-    <script src="app.js"></script>
+    <script src="assets/js/dashboard.js"></script>
 
+    <script>
+        // Funções JavaScript adicionais
+        function openReportModal() {
+            document.getElementById('report-modal').style.display = 'block';
+        }
+
+        function closeReportModal() {
+            document.getElementById('report-modal').style.display = 'none';
+        }
+
+        function generateCustomReport() {
+            // Função para gerar o relatório personalizado
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            const selectedMetrics = Array.from(document.getElementById('metrics').selectedOptions).map(option => option.value);
+
+            // Aqui você pode adicionar o código para gerar o relatório com base nas opções selecionadas
+            console.log('Gerando relatório de:', startDate, endDate, selectedMetrics);
+        }
+    </script>
 </body>
 </html>
