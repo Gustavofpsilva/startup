@@ -73,27 +73,15 @@ function displayTable() {
 
 // Função para atualizar estatísticas
 function atualizarEstatisticas(data) {
-    const totalCo2 = data.reduce((acc, item) => acc + (item.co2 || 0), 0);
-    const totalMp = data.reduce((acc, item) => acc + (item.mp || 0), 0);
-    const totalSo2 = data.reduce((acc, item) => acc + (item.so2 || 0), 0);
-    const totalNox = data.reduce((acc, item) => acc + (item.nox || 0), 0);
-    const totalCo2Produzido = data.reduce((acc, item) => acc + (item.quantidade_co2_produzida || 0), 0);
-    const totalCo2Compensado = data.reduce((acc, item) => acc + (item.quantidade_co2_compensada || 0), 0);
+    // Exibindo apenas o último valor de cada indicador
+    const lastItem = data[0]; // Assume que os dados estão ordenados pela data, então pegamos o primeiro item
 
-    // Exibir os valores nas seções de estatísticas
-    document.getElementById("co2Data").innerText = totalCo2.toFixed(2);
-    document.getElementById("mp-value").innerText = totalMp.toFixed(2);
-    document.getElementById("so2-value").innerText = totalSo2.toFixed(2);
-    document.getElementById("nox-value").innerText = totalNox.toFixed(2);
-    document.getElementById("quantidade_co2_produzido").innerText = totalCo2Produzido.toFixed(2);
-    document.getElementById("quantidade_co2_compensada").innerText = totalCo2Compensado.toFixed(2);
-
-    console.log("Total de CO2: ", totalCo2);
-    console.log("Total de MP: ", totalMp);
-    console.log("Total de SO2: ", totalSo2);
-    console.log("Total de NOx: ", totalNox);
-    console.log("Total de CO2 Produzido: ", totalCo2Produzido);
-    console.log("Total de CO2 Compensado: ", totalCo2Compensado);
+    document.getElementById("co2Data").innerText = lastItem.co2 !== undefined ? lastItem.co2 + ' ppm' : 'Dados indisponíveis';
+    document.getElementById("mp-value").innerText = lastItem.mp !== undefined ? lastItem.mp + ' µg/m³' : 'Dados indisponíveis';
+    document.getElementById("so2-value").innerText = lastItem.so2 !== undefined ? lastItem.so2 + ' ppm' : 'Dados indisponíveis';
+    document.getElementById("nox-value").innerText = lastItem.nox !== undefined ? lastItem.nox + ' ppm' : 'Dados indisponíveis';
+    document.getElementById("quantidade_co2_produzido").innerText = lastItem.quantidade_co2_produzida !== undefined ? lastItem.quantidade_co2_produzida + ' kg' : 'Dados indisponíveis';
+    document.getElementById("quantidade_co2_compensada").innerText = lastItem.quantidade_co2_compensada !== undefined ? lastItem.quantidade_co2_compensada + ' kg' : 'Dados indisponíveis';
 }
 
 // Função para atualizar a data e hora da última atualização
@@ -172,47 +160,39 @@ function renderCharts() {
     });
 }
 
-// Função para gerar relatório em CSV
+// Função para navegar entre as páginas
+function changePage(direction) {
+    if (direction === 'next') {
+        if (currentPage * rowsPerPage < totalData.length) {
+            currentPage++;
+        }
+    } else if (direction === 'previous') {
+        if (currentPage > 1) {
+            currentPage--;
+        }
+    }
+    displayTable();
+}
+
+// Função para gerar o relatório em CSV
 function generateCustomReport() {
-    if (!totalData || totalData.length === 0) {
-        alert("Nenhum dado disponível para gerar o relatório.");
-        return;
-    }
+    const csvContent = "data:text/csv;charset=utf-8,"
+        + totalData.map(item => [
+            item.data_hora ? new Date(item.data_hora).toLocaleString() : '',
+            item.localizacao || '',
+            item.co2 || '',
+            item.mp || '',
+            item.so2 || '',
+            item.nox || '',
+            item.quantidade_co2_produzida || '',
+            item.quantidade_co2_compensada || ''
+        ].join(",")).join("\n");
 
-    const headers = [
-        "Data/Hora",
-        "Localização",
-        "CO2 (ppm)",
-        "MP (µg/m³)",
-        "SO2 (ppm)",
-        "NOx (ppm)",
-        "CO2 Produzido (kg)",
-        "CO2 Compensado (kg)"
-    ];
-
-    const rows = totalData.map(item => [
-        item.data_hora ? new Date(item.data_hora).toLocaleString() : '',
-        item.localizacao || 'Desconhecido',
-        item.co2 || '',
-        item.mp || '',
-        item.so2 || '',
-        item.nox || '',
-        item.quantidade_co2_produzida || '',
-        item.quantidade_co2_compensada || ''
-    ]);
-
-    const csvContent = [headers.join(",")].concat(rows.map(e => e.join(","))).join("\n");
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
-    if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'relatorio_ambiental.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "relatorio_ambiental.csv");
+    link.click();
 }
 
 // Chama a função para carregar dados ao carregar a página
