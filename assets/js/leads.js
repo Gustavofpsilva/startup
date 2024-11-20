@@ -43,29 +43,57 @@ function mostrarRecomendacoes(dados) {
     // Limpa o container antes de inserir as novas recomendações
     recomendacoesContainer.innerHTML = "";
 
-    // Calcular a média de temperatura e umidade
-    const umidadeMedia = dados.reduce((acc, d) => acc + d.umidade, 0) / dados.length;
-    const temperaturaMedia = dados.reduce((acc, d) => acc + d.temperatura, 0) / dados.length;
+    // Calcular a média dos novos indicadores
+    const co2Media = dados.reduce((acc, d) => acc + d.co2, 0) / dados.length;
+    const mpMedia = dados.reduce((acc, d) => acc + d.mp, 0) / dados.length;
+    const so2Media = dados.reduce((acc, d) => acc + d.so2, 0) / dados.length;
+    const noxMedia = dados.reduce((acc, d) => acc + d.nox, 0) / dados.length;
+    const quantidadeCo2ProduzidaMedia = dados.reduce((acc, d) => acc + d.quantidade_co2_produzida, 0) / dados.length;
+    const quantidadeCo2CompensadaMedia = dados.reduce((acc, d) => acc + d.quantidade_co2_compensada, 0) / dados.length;
 
     // Array para armazenar as recomendações como objetos
     const recomendacoes = [];
 
-    // Gerar recomendações com base na umidade
-    if (umidadeMedia < 40) {
-        recomendacoes.push({ texto: "A umidade está abaixo do ideal. Considere usar umidificadores para melhorar o conforto.", icone: "fas fa-tint" });
-    } else if (umidadeMedia > 70) {
-        recomendacoes.push({ texto: "A umidade está alta. Verifique se há problemas de ventilação ou se há necessidade de desumidificadores.", icone: "fas fa-fan" });
+    // Gerar recomendações com base no CO2
+    if (co2Media > 50) {
+        recomendacoes.push({ texto: "A concentração de CO2 está alta. Considere melhorar a ventilação no ambiente.", icone: "fas fa-cloud" });
     } else {
-        recomendacoes.push({ texto: "A umidade está no intervalo ideal. Continue monitorando para garantir que se mantenha estável.", icone: "fas fa-check-circle" });
+        recomendacoes.push({ texto: "A concentração de CO2 está dentro do nível recomendado.", icone: "fas fa-check-circle" });
     }
 
-    // Gerar recomendações com base na temperatura
-    if (temperaturaMedia > 30) {
-        recomendacoes.push({ texto: "A temperatura média está acima do recomendado. Considere ajustar a climatização ou melhorar a ventilação.", icone: "fas fa-thermometer-full" });
-    } else if (temperaturaMedia < 18) {
-        recomendacoes.push({ texto: "A temperatura está muito baixa. Verifique se há necessidade de aquecimento adicional no ambiente.", icone: "fas fa-thermometer-empty" });
+    // Gerar recomendações com base na MP (material particulado)
+    if (mpMedia > 100) {
+        recomendacoes.push({ texto: "A concentração de material particulado está elevada. Certifique-se de que os filtros de ar estão funcionando corretamente.", icone: "fas fa-smog" });
     } else {
-        recomendacoes.push({ texto: "A temperatura está dentro da faixa recomendada para conforto.", icone: "fas fa-check-circle" });
+        recomendacoes.push({ texto: "Os níveis de material particulado estão dentro dos limites aceitáveis.", icone: "fas fa-check-circle" });
+    }
+
+    // Gerar recomendações com base no SO2
+    if (so2Media > 50) {
+        recomendacoes.push({ texto: "A concentração de SO2 está elevada. Verifique fontes de poluição no ambiente.", icone: "fas fa-cloud-sun" });
+    } else {
+        recomendacoes.push({ texto: "Os níveis de SO2 estão dentro dos parâmetros aceitáveis.", icone: "fas fa-check-circle" });
+    }
+
+    // Gerar recomendações com base no NOx
+    if (noxMedia > 50) {
+        recomendacoes.push({ texto: "Os níveis de NOx estão altos. Tente reduzir a emissão de poluentes no ambiente.", icone: "fas fa-exclamation-triangle" });
+    } else {
+        recomendacoes.push({ texto: "Os níveis de NOx estão dentro dos limites recomendados.", icone: "fas fa-check-circle" });
+    }
+
+    // Gerar recomendações com base na quantidade de CO2 produzida
+    if (quantidadeCo2ProduzidaMedia > 1000) {
+        recomendacoes.push({ texto: "A quantidade de CO2 produzida está elevada. Considere estratégias para reduzir as emissões.", icone: "fas fa-archive" });
+    } else {
+        recomendacoes.push({ texto: "A quantidade de CO2 produzida está dentro dos limites aceitáveis.", icone: "fas fa-check-circle" });
+    }
+
+    // Gerar recomendações com base na quantidade de CO2 compensada
+    if (quantidadeCo2CompensadaMedia < 100) {
+        recomendacoes.push({ texto: "A compensação de CO2 está abaixo do ideal. Tente aumentar suas ações de compensação de carbono.", icone: "fas fa-leaf" });
+    } else {
+        recomendacoes.push({ texto: "A compensação de CO2 está dentro dos limites recomendados.", icone: "fas fa-check-circle" });
     }
 
     // Renderizar os blocos de recomendação
