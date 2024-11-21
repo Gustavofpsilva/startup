@@ -56,9 +56,9 @@ function mostrarRecomendacoes(dados) {
 
     // Gerar recomendações com base no CO2
     if (co2Media > 50) {
-        recomendacoes.push({ texto: "A concentração de CO2 está alta. Considere melhorar a ventilação no ambiente.", icone: "fas fa-cloud" });
+        recomendacoes.push({ texto: "A concentração de co² está alta. Considere melhorar a ventilação no ambiente.", icone: "fas fa-cloud" });
     } else {
-        recomendacoes.push({ texto: "A concentração de CO2 está dentro do nível recomendado.", icone: "fas fa-check-circle" });
+        recomendacoes.push({ texto: "A concentração de co² está dentro do nível recomendado.", icone: "fas fa-check-circle" });
     }
 
     // Gerar recomendações com base na MP (material particulado)
@@ -70,9 +70,9 @@ function mostrarRecomendacoes(dados) {
 
     // Gerar recomendações com base no SO2
     if (so2Media > 50) {
-        recomendacoes.push({ texto: "A concentração de SO2 está elevada. Verifique fontes de poluição no ambiente.", icone: "fas fa-cloud-sun" });
+        recomendacoes.push({ texto: "A concentração de so² está elevada. Verifique fontes de poluição no ambiente.", icone: "fas fa-cloud-sun" });
     } else {
-        recomendacoes.push({ texto: "Os níveis de SO2 estão dentro dos parâmetros aceitáveis.", icone: "fas fa-check-circle" });
+        recomendacoes.push({ texto: "Os níveis de so² estão dentro dos parâmetros aceitáveis.", icone: "fas fa-check-circle" });
     }
 
     // Gerar recomendações com base no NOx
@@ -84,16 +84,16 @@ function mostrarRecomendacoes(dados) {
 
     // Gerar recomendações com base na quantidade de CO2 produzida
     if (quantidadeCo2ProduzidaMedia > 1000) {
-        recomendacoes.push({ texto: "A quantidade de CO2 produzida está elevada. Considere estratégias para reduzir as emissões.", icone: "fas fa-archive" });
+        recomendacoes.push({ texto: "A quantidade de co² produzida está elevada. Considere estratégias para reduzir as emissões.", icone: "fas fa-archive" });
     } else {
-        recomendacoes.push({ texto: "A quantidade de CO2 produzida está dentro dos limites aceitáveis.", icone: "fas fa-check-circle" });
+        recomendacoes.push({ texto: "A quantidade de co² produzida está dentro dos limites aceitáveis.", icone: "fas fa-check-circle" });
     }
 
     // Gerar recomendações com base na quantidade de CO2 compensada
     if (quantidadeCo2CompensadaMedia < 100) {
-        recomendacoes.push({ texto: "A compensação de CO2 está abaixo do ideal. Tente aumentar suas ações de compensação de carbono.", icone: "fas fa-leaf" });
+        recomendacoes.push({ texto: "A compensação de co² está abaixo do ideal. Tente aumentar suas ações de compensação de carbono.", icone: "fas fa-leaf" });
     } else {
-        recomendacoes.push({ texto: "A compensação de CO2 está dentro dos limites recomendados.", icone: "fas fa-check-circle" });
+        recomendacoes.push({ texto: "A compensação de co² está dentro dos limites recomendados.", icone: "fas fa-check-circle" });
     }
 
     // Renderizar os blocos de recomendação
