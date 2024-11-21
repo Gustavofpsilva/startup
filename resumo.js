@@ -5,7 +5,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Variáveis de controle de dados
 let totalData = [];
-const rowsPerPage = 50;
+const rowsPerPage = 20;
 let currentPage = 1;
 
 // Função para carregar os dados e preencher os resumos
