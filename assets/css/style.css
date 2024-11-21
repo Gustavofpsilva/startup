@@ -257,23 +257,45 @@ button:hover {
     }
 }
 
-#combinedChart,
-#barChart,
-#radarChart,
-#bubbleChart {
-    width: 100%;
-    height: 300px;
-    border-radius: 5px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Ajustes para os gráficos */
+.charts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaço entre as linhas de gráficos */
 }
 
+.chart-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Espaço entre os gráficos na mesma linha */
+}
+
+.chart {
+    width: 48%; /* Cada gráfico ocupa 48% da largura disponível */
+    height: 400px; /* Definindo uma altura fixa para todos os gráficos */
+    border-radius: 8px; /* Adicionando borda arredondada para estética */
+    background-color: #f1f1f1; /* Fundo para melhorar a visibilidade */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Responsividade */
+@media screen and (max-width: 768px) {
+    .chart-row {
+        flex-direction: column; /* Para telas menores, empilhe os gráficos */
+    }
+
+    .chart {
+        width: 100%; /* Os gráficos vão ocupar 100% da largura */
+        height: 300px; /* Ajuste na altura para telas menores */
+    }
+}
+
+/* Ajustes para telas maiores */
 @media (min-width: 768px) {
-    #combinedChart,
-    #barChart,
-    #radarChart,
-    #bubbleChart {
-        height: 500px;
+    .graph-chart {
+        height: 100px; /* Ajusta a altura em telas maiores */
     }
 }
 

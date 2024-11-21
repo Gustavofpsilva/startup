@@ -142,7 +142,7 @@ function renderCharts() {
     });
 
     new Chart(ctxSo2, {
-        type: 'bar',
+        type: 'bubble',
         data: {
             labels: labels,
             datasets: [{

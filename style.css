@@ -257,23 +257,29 @@ button:hover {
     }
 }
 
-#combinedChart,
-#barChart,
-#radarChart,
-#bubbleChart {
-    width: 100%;
-    height: 300px;
+/* Configuração para a linha que contém os gráficos */
+.chart-row {
+    display: flex; /* Organiza os gráficos em linha */
+    flex-wrap: wrap; /* Permite que os gráficos se movam para a próxima linha em telas menores */
+    gap: 0px; /* Espaçamento entre os gráficos */
+    
+    padding: 0px; /* Espaçamento interno */
+}
+
+/* Estilização para os gráficos individuais */
+.graph-chart {
+    flex: 1 1 200px; /* Define largura mínima de 300px e expansibilidade */
+    max-width: 200px; /* Define uma largura máxima */
+    height: 200px; /* Altura padrão */
     border-radius: 5px;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Ajustes para telas maiores */
 @media (min-width: 768px) {
-    #combinedChart,
-    #barChart,
-    #radarChart,
-    #bubbleChart {
-        height: 500px;
+    .graph-chart {
+        height: 800px; /* Ajusta a altura em telas maiores */
     }
 }
 
