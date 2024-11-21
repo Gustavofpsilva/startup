@@ -275,24 +275,38 @@ function changePage(direction) {
 }
 
 // Função para gerar o relatório em CSV
-function generateCustomReport() {
-    const csvContent = "data:text/csv;charset=utf-8,"
-        + totalData.map(item => [
-            item.data_hora ? new Date(item.data_hora).toLocaleString() : '',
-            item.localizacao || '',
-            item.co2 || '',
-            item.mp || '',
-            item.so2 || '',
-            item.nox || '',
-            item.quantidade_co2_produzida || '',
-            item.quantidade_co2_compensada || ''
-        ].join(",")).join("\n");
+function gerarRelatorioPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "relatorio_ambiental.csv");
-    link.click();
+    // Título do relatório
+    doc.text('Relatório de Dados Ambientais', 14, 10);
+
+    // Cabeçalhos da tabela
+    const headers = ['Data/Hora', 'Localização', 'CO2 (ppm)', 'MP (µg/m³)', 'SO2 (ppm)', 'NOx (ppm)', 'CO2 Produzido (kg)', 'CO2 Compensado (kg)'];
+    let yPosition = 20;
+
+    // Adiciona os cabeçalhos da tabela
+    doc.autoTable({
+        startY: yPosition,
+        head: [headers],
+        body: totalData.map(item => [
+            item.data_hora ? new Date(item.data_hora).toLocaleString() : 'Dados indisponíveis',
+            item.localizacao || 'Desconhecido',
+            item.co2 !== undefined ? item.co2 + ' ppm' : 'Dados indisponíveis',
+            item.mp !== undefined ? item.mp + ' µg/m³' : 'Dados indisponíveis',
+            item.so2 !== undefined ? item.so2 + ' ppm' : 'Dados indisponíveis',
+            item.nox !== undefined ? item.nox + ' ppm' : 'Dados indisponíveis',
+            item.quantidade_co2_produzida !== undefined ? item.quantidade_co2_produzida + ' kg' : 'Dados indisponíveis',
+            item.quantidade_co2_compensada !== undefined ? item.quantidade_co2_compensada + ' kg' : 'Dados indisponíveis'
+        ]),
+        margin: { top: 20, bottom: 20 },
+        theme: 'grid', // Estilo de tabela com linhas
+        tableWidth: 'auto'
+    });
+
+    // Gerar o download do PDF
+    doc.save('relatorio_AmbIn.pdf');
 }
 
 // Chama a função para carregar dados ao carregar a página
