@@ -108,15 +108,6 @@
             <input type="date" id="start-date">
             <label for="end-date">Data Final:</label>
             <input type="date" id="end-date">
-            <label for="metrics">Escolha as Métricas:</label>
-            <select id="metrics" multiple>
-                <option value="co2">CO2</option>
-                <option value="mp">MP</option>
-                <option value="so2">SO2</option>
-                <option value="nox">NOX</option>
-                <option value="quantidade_co2_produzida">Quantidade CO2 Produzida</option>
-                <option value="quantidade_co2_compensada">Quantidade CO2 Compensada</option>
-            </select>
             <button onclick="gerarRelatorioPDF()">Gerar Relatório PDF</button>
         </div>
     </div>
@@ -134,16 +125,6 @@
 
         function closeReportModal() {
             document.getElementById('report-modal').style.display = 'none';
-        }
-
-        function generateCustomReport() {
-            // Função para gerar o relatório personalizado
-            const startDate = document.getElementById('start-date').value;
-            const endDate = document.getElementById('end-date').value;
-            const selectedMetrics = Array.from(document.getElementById('metrics').selectedOptions).map(option => option.value);
-
-            // Aqui você pode adicionar o código para gerar o relatório com base nas opções selecionadas
-            console.log('Gerando relatório de:', startDate, endDate, selectedMetrics);
         }
     </script>
 </body>

@@ -161,48 +161,39 @@ function prevPage() {
 }
 
 // Função para gerar o relatório personalizado
-document.getElementById("generate-report").addEventListener("click", async () => {
-    const startDate = document.getElementById("start-date").value;
-    const endDate = document.getElementById("end-date").value + "T23:59:59"; // Inclui até o último segundo do dia final
-    const selectedMetrics = Array.from(document.getElementById("metrics").selectedOptions).map(opt => opt.value);
-
-    // Validação das entradas
-    if (!startDate || !endDate || selectedMetrics.length === 0) {
-        alert("Por favor, preencha todos os campos.");
-        return;
-    }
-
-    // Consultar dados do banco de dados com base no intervalo de datas e métricas selecionadas
-    const { data, error } = await supabase
-        .from('dados_ambientais')
-        .select(['data_hora', 'localizacao', ...selectedMetrics].join(','))
-        .gte('data_hora', startDate)
-        .lte('data_hora', endDate)
-        .order('data_hora', { ascending: true });
-
-    if (error) {
-        console.error("Erro ao gerar relatório:", error);
-        alert("Erro ao carregar os dados para o relatório.");
-        return;
-    }
-
-    if (data.length === 0) {
-        alert("Nenhum dado encontrado para o intervalo selecionado.");
-        return;
-    }
-
-    // Gerar o relatório em PDF
+function gerarRelatorioPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text("Relatório de Dados Ambientais", 10, 10);
-    doc.text(`Período: ${startDate} a ${endDate}`, 10, 20);
-    data.forEach((item, index) => {
-        let y = 30 + index * 10;
-        doc.text(`${item.data_hora}: ${item.localizacao} - CO2: ${item.co2} ppm, MP: ${item.mp} μg/m³`, 10, y);
+
+    // Título do relatório
+    doc.text('Resumo AmbIn', 14, 10);
+
+    // Cabeçalhos da tabela
+    const headers = ['Data/Hora', 'Localização', 'CO2 (ppm)', 'MP (µg/m³)', 'SO2 (ppm)', 'NOx (ppm)', 'CO2 Produzido (kg)', 'CO2 Compensado (kg)'];
+    let yPosition = 20;
+
+    // Adiciona os cabeçalhos da tabela
+    doc.autoTable({
+        startY: yPosition,
+        head: [headers],
+        body: totalData.map(item => [
+            item.data_hora ? new Date(item.data_hora).toLocaleString() : 'Dados indisponíveis',
+            item.localizacao || 'Desconhecido',
+            item.co2 !== undefined ? item.co2 + ' ppm' : 'Dados indisponíveis',
+            item.mp !== undefined ? item.mp + ' µg/m³' : 'Dados indisponíveis',
+            item.so2 !== undefined ? item.so2 + ' ppm' : 'Dados indisponíveis',
+            item.nox !== undefined ? item.nox + ' ppm' : 'Dados indisponíveis',
+            item.quantidade_co2_produzida !== undefined ? item.quantidade_co2_produzida + ' kg' : 'Dados indisponíveis',
+            item.quantidade_co2_compensada !== undefined ? item.quantidade_co2_compensada + ' kg' : 'Dados indisponíveis'
+        ]),
+        margin: { top: 20, bottom: 20 },
+        theme: 'grid', // Estilo de tabela com linhas
+        tableWidth: 'auto'
     });
 
-    doc.save("relatorio_dados_ambientais.pdf");
-});
+    // Gerar o download do PDF
+    doc.save('Resumo_AmbIn.pdf');
+}
 
 // Carregar os dados iniciais ao carregar a página
 window.onload = carregarDadosResumos;

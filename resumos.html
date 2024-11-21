@@ -6,6 +6,7 @@
     <title>Ambin - Resumo</title>
     <link rel="stylesheet" href="resumo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -77,22 +78,13 @@
     <!-- Modal para Relatório Personalizado -->
     <div id="report-modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <button class="close" onclick="closeReportModal()" aria-label="Fechar modal">&times;</button>
+            <span class="close" onclick="closeReportModal()">&times;</span>
             <h2>Configurar Relatório Personalizado</h2>
             <label for="start-date">Data Inicial:</label>
             <input type="date" id="start-date">
             <label for="end-date">Data Final:</label>
             <input type="date" id="end-date">
-            <label for="metrics">Escolha as Métricas:</label>
-            <select id="metrics" multiple>
-                <option value="co2">CO2</option>
-                <option value="mp">MP</option>
-                <option value="so2">SO2</option>
-                <option value="nox">NOx</option>
-                <option value="quantidade_co2_produzida">CO2 Produzido</option>
-                <option value="quantidade_co2_compensada">CO2 Compensado</option>
-            </select>
-            <button id="generate-report">Gerar Relatório</button>
+            <button onclick="gerarRelatorioPDF()">Gerar Relatório PDF</button>
         </div>
     </div>
 
