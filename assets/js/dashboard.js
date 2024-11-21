@@ -110,14 +110,24 @@ function renderCharts() {
             datasets: [{
                 label: 'CO2 (ppm)',
                 data: co2Data,
-                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                borderColor: 'rgba(255, 159, 64, 1)',
+                backgroundColor: 'rgba(118, 13, 51, 1)',
+                borderColor: 'transparent',
                 borderWidth: 1
             }]
         },
         options: {
             scales: {
-                y: { beginAtZero: true }
+                x: {
+                    grid: {
+                        display: false // Remove o grid do eixo X
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false // Remove o grid do eixo Y
+                    },
+                    beginAtZero: true
+                }
             }
         }
     });
@@ -129,33 +139,53 @@ function renderCharts() {
             datasets: [{
                 label: 'MP (µg/m³)',
                 data: mpData,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(28, 55, 168, 1)',
+                borderColor: 'transparent',
                 borderWidth: 1
             }]
         },
         options: {
             scales: {
-                y: { beginAtZero: true }
+                x: {
+                    grid: {
+                        display: false // Remove o grid do eixo X
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false // Remove o grid do eixo Y
+                    },
+                    beginAtZero: true
+                }
             }
         }
     });
 
     new Chart(ctxSo2, {
-        type: 'bubble',
+        type: 'line',
         data: {
             labels: labels,
             datasets: [{
                 label: 'SO2 (ppm)',
                 data: so2Data,
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                borderColor: 'rgba(153, 102, 255, 1)',
+                backgroundColor: 'rgba(234, 155, 33, 1)',
+                borderColor: 'transparent',
                 borderWidth: 1
             }]
         },
         options: {
             scales: {
-                y: { beginAtZero: true }
+                x: {
+                    grid: {
+                        display: false // Remove o grid do eixo X
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false // Remove o grid do eixo Y
+                    },
+                    beginAtZero: true
+                }
             }
         }
     });
@@ -175,7 +205,7 @@ function renderCombinedChart(data) {
                 {
                     label: "co2",
                     data: data.map(d => d.co2 ),
-                    borderColor: "rgba(255, 99, 132, 1)",
+                    borderColor: "rgba(118, 13, 51, 1)",
                     backgroundColor: "transparent",
                     fill: true,
                     tension: 0.8,
@@ -183,7 +213,7 @@ function renderCombinedChart(data) {
                 {
                     label: "mp",
                     data: data.map(d => d.mp),
-                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderColor: "rgba(28, 55, 168, 1)",
                     backgroundColor: "transparent",
                     fill: true,
                     tension: 0.8,
@@ -191,7 +221,7 @@ function renderCombinedChart(data) {
                 {
                     label: "so2",
                     data: data.map(d => parseInt(d.so2 )), // Supondo que seja um número
-                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderColor: "rgba(234, 155, 33, 1)",
                     backgroundColor: "transparent",
                     fill: true,
                     tension: 0.8,
@@ -209,9 +239,15 @@ function renderCombinedChart(data) {
                 x: {
                     type: "category",
                     labels: data.map(d => new Date(d.data_hora).toLocaleString()),
+                    grid: {
+                        display: false // Remove o grid do eixo X
+                    }
                 },
                 y: {
                     beginAtZero: true,
+                    grid: {
+                        display: false // Remove o grid do eixo Y
+                    }
                 },
             },
         },

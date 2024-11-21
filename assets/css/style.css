@@ -274,7 +274,7 @@ button:hover {
     width: 48%; /* Cada gráfico ocupa 48% da largura disponível */
     height: 400px; /* Definindo uma altura fixa para todos os gráficos */
     border-radius: 8px; /* Adicionando borda arredondada para estética */
-    background-color: #f1f1f1; /* Fundo para melhorar a visibilidade */
+    background-color: #fff; /* Fundo para melhorar a visibilidade */
     display: flex;
     justify-content: center;
     align-items: center;
