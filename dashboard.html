@@ -38,27 +38,27 @@
 
             <section class="stats-cards">
                 <div class="card">
-                    <h3>CO2</h3>
+                    <h3>co²</h3>
                     <p><span id="co2Data"></span> </p>
                 </div>
                 <div class="card">
-                    <h3>MP</h3>
+                    <h3>mp</h3>
                     <p><span id="mp-value"></span> </p>
                 </div>
                 <div class="card">
-                    <h3>SO2</h3>
+                    <h3>so²</h3>
                     <p><span id="so2-value"></span> </p>
                 </div>
                 <div class="card">
-                    <h3>NOX</h3>
+                    <h3>nox</h3>
                     <p><span id="nox-value"></span> </p>
                 </div>
                 <div class="card">
-                    <h3>Quantidade CO2 Produzida</h3>
+                    <h3>Quantidade co² Produzida</h3>
                     <p><span id="quantidade_co2_produzido"></span> </p>
                 </div>
                 <div class="card">
-                    <h3>Quantidade CO2 Compensada</h3>
+                    <h3>Quantidade co² Compensada</h3>
                     <p><span id="quantidade_co2_compensada"></span> </p>
                 </div>
             </section>
@@ -81,20 +81,20 @@
                         <tr>
                             <th>Data</th>
                             <th>Localização</th>
-                            <th>CO2 (ppm)</th>
-                            <th>MP (µg/m³)</th>
-                            <th>SO2 (ppm)</th>
+                            <th>co² (ppm)</th>
+                            <th>mp (µg/m³)</th>
+                            <th>so² (ppm)</th>
                             <th>NOx (ppm)</th>
-                            <th>CO2 Produzido (kg)</th>
-                            <th>CO2 Compensado (kg)</th>
+                            <th>co² Produzido (kg)</th>
+                            <th>co² Compensado (kg)</th>
                         </tr>
                     </thead>
                     <tbody id="dados-tabela-corpo"></tbody>
                 </table>
 
             <div id="page-info"></div>
-            <button id="pagina-anterior" onclick="previousPage()">Página Anterior</button>
-            <button id="proxima-pagina" onclick="nextPage()">Próxima Página</button>
+            <button id="pagina-anterior" onclick="prevPage()">Página Anterior</button>
+            <button id="proxima-pagina" onclick="navegarPagina(currentPage + 1)">Próxima Página</button>
             <div id="ultima-atualizacao"></div>
         </main>
     </div>

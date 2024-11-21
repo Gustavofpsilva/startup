@@ -108,7 +108,7 @@ function renderCharts() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'CO2 (ppm)',
+                label: 'co² (ppm)',
                 data: co2Data,
                 backgroundColor: 'rgba(118, 13, 51, 1)',
                 borderColor: 'transparent',
@@ -137,7 +137,7 @@ function renderCharts() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'MP (µg/m³)',
+                label: 'mp (µg/m³)',
                 data: mpData,
                 backgroundColor: 'rgba(28, 55, 168, 1)',
                 borderColor: 'transparent',
@@ -166,7 +166,7 @@ function renderCharts() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'SO2 (ppm)',
+                label: 'so² (ppm)',
                 data: so2Data,
                 backgroundColor: 'rgba(234, 155, 33, 1)',
                 borderColor: 'transparent',
@@ -203,7 +203,7 @@ function renderCombinedChart(data) {
             labels: data.map(d => new Date(d.data_hora).toLocaleString()), // Eixo X
             datasets: [
                 {
-                    label: "co2",
+                    label: "co²",
                     data: data.map(d => d.co2 ),
                     borderColor: "rgba(118, 13, 51, 1)",
                     backgroundColor: "transparent",
@@ -219,7 +219,7 @@ function renderCombinedChart(data) {
                     tension: 0.8,
                 },
                 {
-                    label: "so2",
+                    label: "so²",
                     data: data.map(d => parseInt(d.so2 )), // Supondo que seja um número
                     borderColor: "rgba(234, 155, 33, 1)",
                     backgroundColor: "transparent",
@@ -254,6 +254,12 @@ function renderCombinedChart(data) {
     });
 }
 
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;  // Decrementa a página atual
+        displayTable();  // Atualiza a tabela ou conteúdo
+    }
+}
 // Navegação entre páginas
 function navegarPagina(pagina) {
     currentPage = pagina;
@@ -283,7 +289,7 @@ function gerarRelatorioPDF() {
     doc.text('Relatório de Dados Ambientais', 14, 10);
 
     // Cabeçalhos da tabela
-    const headers = ['Data/Hora', 'Localização', 'CO2 (ppm)', 'MP (µg/m³)', 'SO2 (ppm)', 'NOx (ppm)', 'CO2 Produzido (kg)', 'CO2 Compensado (kg)'];
+    const headers = ['Data/Hora', 'Localização', 'co² (ppm)', 'mp (µg/m³)', 'so² (ppm)', 'nox (ppm)', 'co² Produzido (kg)', 'co² Compensado (kg)'];
     let yPosition = 20;
 
     // Adiciona os cabeçalhos da tabela
