@@ -255,40 +255,21 @@ header .container {
   position: relative;
   padding: 130px 0 140px;
   z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 100vh; /* ocupa a altura total da tela */
 }
 
-.hero-content {
-  max-width: 600px; /* Define uma largura máxima para o conteúdo */
-  margin: 0 auto;
-}
+.hero-content { text-align: center; }
 
 .hero-title,
-.hero-text {
-  margin-bottom: 40px;
-  text-align: center; /* Alinha o texto ao centro */
-}
+.hero-text { margin-bottom: 40px; }
 
 .hero-text {
   font-size: var(--fs-4);
   color: var(--oxford-blue);
-  text-align: center; /* Alinha o texto ao centro */
 }
 
+.hero .btn-primary { margin-inline: auto; }
 
-.hero .btn-primary {
-  margin: 0 auto;
-  display: block;
-  text-align: center;
-}
-
-.hero-banner {
-  display: none;
-}
+.hero-banner { display: none; }
 
 .shape-content {
   position: absolute;
