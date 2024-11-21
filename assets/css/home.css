@@ -898,14 +898,15 @@ footer .logo { margin-bottom: 30px; }
   .hero-banner {
     display: block;
     position: absolute;
-    top: 50%;
-    right: 0;
+    top: 65%;
+    right: 65%; /* Ajuste menor para colocar a imagem mais no canto */
     transform: translateY(-50%);
-    width: 900px;
-    padding-top: 900px;
-    background: url("") no-repeat;
+    width: 800px;
+    padding-top: 800px;
+    background: url("../images/AR.png") no-repeat;
     background-size: contain;
-  }
+}
+
 
 
   /**
